@@ -1,53 +1,70 @@
-import React, { useContext } from 'react';
-import { AppContext } from "../Context/Context";
-import { Link } from 'react-router-dom';
-import { Layout, Menu } from 'antd';
+import React from 'react';
+// import { AppContext } from "../Context/Context";
+// import { Link } from 'react-router-dom';
+import { Layout, Menu, Checkbox, Rate } from 'antd';
+
 import {
-  NotificationOutlined,
+  TagsTwoTone,
   UserOutlined,
-  LineChartOutlined
+  StarTwoTone
 } from '@ant-design/icons';
 
 const { SubMenu } = Menu;
 const { Sider } = Layout;
 
 const SiderNav = () => {
-    const { isToggled } = useContext(AppContext);
 
     return (
-        <Sider
-            trigger={null}
-            collapsible
-            collapsed={false}
-            width={!isToggled ? 200 : 0}
-            className='site-layout-background'
-          >
-          <Menu
-            mode='inline'
-            defaultSelectedKeys={['0']}
-            style={{ height: '100%', borderRight: 0 }}
-          >
-            <SubMenu key='sub1' icon={<UserOutlined />} title='Categories'>
-              <Menu.Item key='1'>option1</Menu.Item>
-              <Menu.Item key='2'>option2</Menu.Item>
-              <Menu.Item key='3'>option3</Menu.Item>
-              <Menu.Item key='4'>option4</Menu.Item>
-            </SubMenu>
-            <Menu.Item key='sub2' icon={<LineChartOutlined />}>
-              <Link to="/price-comparison">Price Comparison</Link>
-            </Menu.Item>
-            <SubMenu
-              key='sub3'
-              icon={<NotificationOutlined />}
-              title='subnav 3'
-            >
-              <Menu.Item key='9'>option9</Menu.Item>
-              <Menu.Item key='10'>option10</Menu.Item>
-              <Menu.Item key='11'>option11</Menu.Item>
-              <Menu.Item key='12'>option12</Menu.Item>
-            </SubMenu>
-          </Menu>
-        </Sider>
+    <Sider
+      // style={{
+      //   overflow: 'auto',
+      //   height: '100vh',
+      //   position: 'fixed',
+      //   left: 20,
+      //   background: '#fff'
+      // }}
+    >
+      <Menu
+        mode='inline'
+        style={{ height: '100%', border: 'none', padding: '0 0 0 10%'}}
+        defaultOpenKeys={['sub1', 'sub2']}
+      >
+        {/* Shipping */}
+        <SubMenu key='sub1' icon={<UserOutlined />} title='Shipping'>
+          <Menu.Item key='1'>
+            <Checkbox>Fast Shipping</Checkbox>
+          </Menu.Item>
+        </SubMenu>
+
+        {/* Discounts */}
+        <SubMenu
+          key='sub2'
+          icon={<TagsTwoTone twoToneColor="#cf1322"/>}
+          title='Discounts'
+        >
+          <Menu.Item key='2'>
+            <Checkbox>under 20%</Checkbox>
+          </Menu.Item>
+          <Menu.Item key='3'>
+            <Checkbox>20% to 40%</Checkbox>
+          </Menu.Item>
+          <Menu.Item key='4'>
+            <Checkbox>Over 50%</Checkbox>
+          </Menu.Item>
+        </SubMenu>
+
+        {/* Price Range */}
+        <SubMenu
+          key='sub2'
+          icon={<StarTwoTone twoToneColor="#cf1322"/>}
+          title='Price Range'
+        >
+          <Menu.Item key='5'>
+            
+          </Menu.Item>
+        </SubMenu>
+      </Menu>
+    </Sider>
     )
 }
 

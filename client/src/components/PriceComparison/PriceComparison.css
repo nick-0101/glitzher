@@ -1,0 +1,30 @@
+/* Input + button border radius */
+.ant-input-search .ant-input-group .ant-input-affix-wrapper:not(:last-child) {
+  border-top-left-radius: 32px;
+  border-bottom-left-radius: 32px;
+}
+
+.ant-input-search
+  > .ant-input-group
+  > .ant-input-group-addon:last-child
+  .ant-input-search-button {
+  border-radius: 0 32px 32px 0;
+}
+
+/* Button and prefix spacing*/
+.ant-input-affix-wrapper-lg {
+  padding: 11px 11px;
+}
+
+.ant-input-search-large .ant-input-search-button {
+  height: 50px;
+}
+
+.ant-btn-lg {
+  font-size: 20px;
+}
+
+.ant-input-prefix {
+  margin: 4px;
+  margin-right: 7px;
+}

@@ -4,23 +4,25 @@ import { CheckCircleTwoTone, TrophyTwoTone, CaretRightOutlined, CaretLeftOutline
 import axios from 'axios';
 import ReactPaginate from 'react-paginate';
 
+// Components 
 import SkeletonLoader from '../../components/SkeletonLoader/SkeletonLoader';
+import SiderNav from '../../components/SiderNav/SiderNav';
+import PriceComparison from '../../components/PriceComparison/PriceComparison';
 
 import './Homepage.css'
 
 // import fire from './Images/SALE.png';
-const { Paragraph, Text, Link  } = Typography;
-
+const { Paragraph, Text, Link, Title } = Typography;
 
 const Homepage = () => {
     const [offset, setOffset] = useState(0);
-    const [data, setData] = useState([]);
-    const [perPage] = useState(60); // 60 is what amazon has (60 products per page)
+    const [data, setData] = useState('');
+    const [perPage] = useState(60);
     const [pageCount, setPageCount] = useState(0)
 
     useEffect(() => {
-        const getData = async() => {
-            const res = await axios.get(`/api?page=${offset}&limit=100&discounted=false`)
+        async function getData() {
+            const res = await axios.get(`/api?page=${offset}&limit=100&discounted=true`)
             const data = res.data;
 
             const sliceData = data.slice(offset, offset + perPage)
@@ -43,18 +45,27 @@ const Homepage = () => {
 
     // make it so when the api updates at 12pm every day, redis also caches it.
     // cahcing system is really needed. When trying to paginate with 300 obj it doesn't load
-    // when clicking on new pagination tab, redirect to top of page.
 
     return (
         <>
+        {/* Section 1 */}
+        <PriceComparison />
+
+        {/* Section 2 */}
+        <Title level={3} style={{textAlign: 'center', marginBottom: '3%'}}>View todays top discounts</Title>
+        <Row style={{textAlign: 'center'}}>
+            <Col span={4} style={{borderRight: '2px solid #f0f0f0'}}>
+               <SiderNav /> 
+            </Col>
+            <Col span={20} >
             {data ?
-                <Row justiy="center" align="center">
+                <Row justiy="center" align="center" style={{marginLeft: '20px'}}>
                     {data.map((item, index) => {        
                         return (
-                            <Row style={{textAlign: 'center', padding: '20px'}} key={index} gutter={16}>
-                                <Col style={{width: '400px'}}> 
+                            <Row style={{textAlign: 'center', padding: '0 10px'}} key={index} gutter={16}>
+                                <Col style={{width: '400px', height: 'auto'}}> 
                                 {/* style={{border: item.price.savings_percent >= 30 ? '3px solid red' : null}} */}
-                                    <Card>
+                                    <Card style={{ borderTop: '2px solid #f0f0f0', borderBottom: '0px', borderRight: '0px', borderLeft: '0px'}}>
                                         {/* Product Image */}
                                         <a target="_blank" rel="noopener noreferrer" href={item.url}>
                                             <img
@@ -119,7 +130,7 @@ const Homepage = () => {
                                         </Row>
 
                                         {/* Add to cart */}
-                                        <Row style={{ marginTop: '15px' }}>
+                                        <Row style={{marginTop:'15px'}}>
                                             <Button 
                                                 type="primary" 
                                                 shape="round" 
@@ -136,22 +147,27 @@ const Homepage = () => {
                     })}
                 </Row>
                 : <SkeletonLoader /> 
-            }  
-            <Row justiy="center" align="center" style={{margin: '2rem 0'}}>
-                <ReactPaginate
-                    previousLabel={<CaretLeftOutlined />}
-                    nextLabel={<CaretRightOutlined /> }
-                    breakLabel={"..."}
-                    breakClassName={"break-me"}
-                    pageCount={pageCount}
-                    marginPagesDisplayed={2}
-                    pageRangeDisplayed={5}
-                    onPageChange={handlePageClick}
-                    containerClassName={"pagination"}
-                    subContainerClassName={"pages pagination"}
-                    activeClassName={"active"}
-                />
-            </Row> 
+            }
+                {data ? 
+                    <Row justiy="center" align="center" style={{margin: '2rem 0'}}>
+                        <ReactPaginate
+                            previousLabel={<CaretLeftOutlined />}
+                            nextLabel={<CaretRightOutlined /> }
+                            breakLabel={"..."}
+                            breakClassName={"break-me"}
+                            pageCount={pageCount}
+                            marginPagesDisplayed={2}
+                            pageRangeDisplayed={5}
+                            onPageChange={handlePageClick}
+                            containerClassName={"pagination"}
+                            subContainerClassName={"pages pagination"}
+                            activeClassName={"active"}
+                            onClick={window.scrollTo(0, 0)}
+                        />
+                    </Row> 
+                : null} 
+                </Col>
+            </Row>
         </>   
     )
 }
