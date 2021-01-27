@@ -1,23 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Col, Row, Typography, Rate, Button } from 'antd';
-import { CheckCircleTwoTone, TrophyTwoTone, CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
+import { CheckCircleTwoTone, TrophyTwoTone, ShoppingCartOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import ReactPaginate from 'react-paginate';
 
 // Components 
 import SkeletonLoader from '../../components/SkeletonLoader/SkeletonLoader';
 import SiderNav from '../../components/SiderNav/SiderNav';
-import PriceComparison from '../../components/PriceComparison/PriceComparison';
+import PriceComparison from '../../components/ComparisonSearch/ComparisonSearch';
 
 import './Homepage.css'
 
-// import fire from './Images/SALE.png';
 const { Paragraph, Text, Link, Title } = Typography;
 
 const Homepage = () => {
     const [offset, setOffset] = useState(0);
     const [data, setData] = useState('');
-    const [perPage] = useState(60);
+    const [perPage] = useState(10);
     const [pageCount, setPageCount] = useState(0)
 
     useEffect(() => {
@@ -52,25 +51,24 @@ const Homepage = () => {
         <PriceComparison />
 
         {/* Section 2 */}
-        <Title level={3} style={{textAlign: 'center', marginBottom: '3%'}}>View todays top discounts</Title>
-        <Row style={{textAlign: 'center'}}>
-            <Col span={4} style={{borderRight: '2px solid #f0f0f0'}}>
+        <Title level={3} style={{textAlign: 'center', marginBottom: '4%'}}>View todays top discounts</Title>
+        <Row style={{textAlign: 'center', margin: '0 3%'}}>
+            <Col xs={0} sm={0} md={0} lg={0} xl={2} xxl={4} style={{borderRight: '2px solid #f0f0f0'}}> 
                <SiderNav /> 
             </Col>
-            <Col span={20} >
+            <Col xs={24} sm={24} md={24} lg={24} xl={22} xxl={20} justiy="center" align="center">
             {data ?
                 <Row justiy="center" align="center" style={{marginLeft: '20px'}}>
                     {data.map((item, index) => {        
                         return (
                             <Row style={{textAlign: 'center', padding: '0 10px'}} key={index} gutter={16}>
-                                <Col style={{width: '400px', height: 'auto'}}> 
-                                {/* style={{border: item.price.savings_percent >= 30 ? '3px solid red' : null}} */}
+                                <Col style={{width: '400px', height: '460px'}}> 
                                     <Card style={{ borderTop: '2px solid #f0f0f0', borderBottom: '0px', borderRight: '0px', borderLeft: '0px'}}>
                                         {/* Product Image */}
                                         <a target="_blank" rel="noopener noreferrer" href={item.url}>
                                             <img
                                                 src={item.thumbnail}
-                                                alt={item.asin + 'amazon image'} 
+                                                alt={item.asin + 'image'} 
                                                 style={{width: '200px', height: '200px', objectFit: 'scale-down'}}
                                             />
                                         </a>
@@ -81,7 +79,7 @@ const Homepage = () => {
                                         {/* Product title */}
                                         <a target="_blank" rel="noopener noreferrer" href={item.url}>
                                             <Row style={{marginTop: "15px", marginBottom: '6px'}}>
-                                                <Paragraph style={{textAlign: 'left', fontSize: '16px', marginBottom: 0}}>
+                                                <Paragraph ellipsis={{ rows: 2 }} style={{textAlign: 'left', fontSize: '16px', marginBottom: 0}}>
                                                     {item.title}
                                                 </Paragraph>
                                             </Row>
@@ -89,10 +87,10 @@ const Homepage = () => {
 
                                         {/* Product reviews */}
                                         <Row>
-                                            <Rate disabled allowHalf defaultValue={item.reviews.rating} style={{fontSize: '18px'}} />
-                                            <Link target="_blank" rel="noopener noreferrer" href={item.url + '/#customerReviews'} style={{margin: "6px 0 0 13px"}}>
+                                            <Rate disabled allowHalf defaultValue={item.reviews.rating} style={{fontSize: '14px'}} />
+                                            {/* <Link target="_blank" rel="noopener noreferrer" href={item.url + '/#customerReviews'} style={{margin: "6px 0 0 13px"}}>
                                                 {item.reviews.total_reviews.toLocaleString()} Reviews
-                                            </Link>
+                                            </Link> */}
                                         </Row>
 
                                         {/* Product price */}
@@ -102,42 +100,48 @@ const Homepage = () => {
                                             </Text>
                                             {item.price.savings_percent ? 
                                             <Row>
-                                                <Text style={{fontSize: '16px', marginTop: '15px', marginLeft: '10px'}}>
-                                                    {Math.ceil(item.price.savings_percent)}% off
+                                                <Text delete style={{ marginTop: '17px', marginLeft: '10px'}}>
+                                                    ${item.price.before_price}
+                                                </Text>
+                                                <Text strong style={{color: '#ff4d4f', fontSize: '16px', marginTop: '14px', marginLeft: '5px'}}>
+                                                    {Math.ceil(item.price.savings_percent)}% OFF
                                                 </Text>
                                             </Row>
                                             : null}    
                                         </Row>
 
                                         {/* Product extra */}
+                                        {/* {item.bestSeller ? 
+                                            <Row style={{marginTop: '6px'}}> 
+                                                <TrophyTwoTone twoToneColor="#ff4d4f" style={{fontSize: '20px'}} /> 
+                                                <Text style={{marginLeft: '6px'}}>
+                                                    Best Seller
+                                                </Text>
+                                            </Row>     
+                                        : null}
+                                        {item.amazonPrime ?                          
+                                            <Row style={{marginTop: '6px'}}> 
+                                                <CheckCircleTwoTone twoToneColor="#ff4d4f" style={{fontSize: '20px'}} /> 
+                                                <Text style={{marginLeft: '6px'}}>
+                                                    Fast Shipping
+                                                </Text>
+                                            </Row>     
+                                        : null} */}
                                         <Row>
-                                            {item.bestSeller ? 
-                                                <Row style={{marginTop: '6px'}}> 
-                                                    <TrophyTwoTone twoToneColor="#cf1322" style={{fontSize: '20px'}} /> 
-                                                    <Text style={{marginLeft: '6px'}}>
-                                                        Best Seller
-                                                    </Text>
-                                                </Row>     
-                                            : null}
-                                            {item.amazonPrime ?                          
-                                                <Row style={{marginTop: '6px'}}> 
-                                                    <CheckCircleTwoTone twoToneColor="#cf1322" style={{fontSize: '20px'}} /> 
-                                                    <Text style={{marginLeft: '6px'}}>
-                                                        Fast Shipping
-                                                    </Text>
-                                                </Row>     
-                                            : null}
+                                            <Link href="" target="_blank" style={{color: '#000000'}}>
+                                                Compare prices on this product
+                                            </Link>
                                         </Row>
 
                                         {/* Add to cart */}
-                                        <Row style={{marginTop:'15px'}}>
+                                        <Row style={{margin:'15px 0'}} >
                                             <Button 
                                                 type="primary" 
                                                 shape="round" 
                                                 size="medium" 
                                                 ghost 
                                             >
-                                                Add to cart
+                                                <ShoppingCartOutlined /> Add to cart
                                             </Button>
                                         </Row>   
                                     </Card>

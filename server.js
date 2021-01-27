@@ -22,6 +22,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Routes
 app.use('/', require('./routes/index'));
+app.use('/', require('./routes/fetchProducts'));
 
 // Server
 const PORT = process.env.PORT || 5000;

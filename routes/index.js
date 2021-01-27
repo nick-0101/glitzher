@@ -1,17 +1,13 @@
-const express = require('express'),
-  ipfilter = require('express-ipfilter').IpFilter;
-const amazonScraper = require('amazon-buddy');
-const schedule = require('node-schedule');
+const express = require('express');
 const _ = require('underscore');
 const Data = require('../models/Data');
 const redis = require('redis');
+const { isValidObjectId } = require('mongoose');
 
 const PORT_REDIS = process.env.PORT || 6379;
 const redisClient = redis.createClient(PORT_REDIS);
 
 const router = express.Router();
-
-const ips = ['::1'];
 
 // Todo
 // start the front-end and display the information in a way where you can compare
@@ -20,44 +16,6 @@ const ips = ['::1'];
 // the problem is that /api is fetching from database and is not checking if there is a cache
 
 var update_id = 'key';
-
-// Update db with new api info
-async function updateDb(products) {
-  const _id = '5ffa527bf6524639bc6b54e0';
-
-  if (Object.keys(products).length > 0) {
-    await Data.updateOne({ _id }, { $set: { api: products } }, (err) => {
-      if (err) {
-        throw err; // display proper error
-      }
-      console.log('Updated');
-    });
-  } else {
-    return;
-  }
-}
-
-async function getProducts(req, res, next) {
-  try {
-    console.log('Fetching Data...');
-
-    // Collect 50 products from CA
-    const products = await amazonScraper.products({
-      keyword: 'Makeup',
-      number: 150,
-      country: 'CA',
-      randomUa: true,
-    });
-
-    // Filter out adverts
-
-    // Send data to updateDb
-    res.send(updateDb(products));
-  } catch (err) {
-    console.error(err);
-    res.status(500);
-  }
-}
 
 const set = (key, value) => {
   // set 43200 (12hrs) as cache time
@@ -74,21 +32,16 @@ const get = (req, res, next) => {
   });
 };
 
-// Update api everyday at 12am
-schedule.scheduleJob('00 00 12 * * 0-7', () => {
-  getProducts();
-  console.log('Scheduled update completed at ' + new Date());
-});
-
 // Routes
 router.get('/', (req, res) => {
   res.send('helloi');
 });
 
 router.get('/api', async (req, res) => {
+  const _id = '60108f05160579104738afa3';
   try {
     // Fetch Data
-    const data = await Data.find();
+    const data = await Data.find({ _id });
     const dataCount = Object.keys(data[0].api.result).length;
 
     // Querys
@@ -113,10 +66,20 @@ router.get('/api', async (req, res) => {
       // set(update_id, dataResult);
     }
   } catch (err) {
-    res.status(500).send({ message: 'Something has went wrong' });
+    res.sendStatus(500).send({ message: 'Something has went wrong' });
   }
 });
 
-router.get('/updateapi', ipfilter(ips, { mode: 'allow' }), getProducts);
+router.get('/api/products/sephora-products', async (req, res) => {
+  try {
+    // Fetch Data
+    const data = await Data.find({ _id: '6010dc757012b34ebd11068f' });
+    const dataCount = data[0].api.result;
+
+    res.send(dataCount);
+  } catch (err) {
+    console.error(err);
+  }
+});
 
 module.exports = router;

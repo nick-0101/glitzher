@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { NavBar, PriceComparison } from './components';
+import { NavBar, ComparisonSearch } from './components';
 import { Layout } from 'antd';
 
 // Pages
@@ -16,13 +16,9 @@ function App() {
         <Layout>
           {/* <SiderNav /> */}
           <Content style={{ background: '#fff' }}>
-            <Route path='/' exact render={(props) => <Homepage />} />
             <Switch>
-              <Route
-                path='/price-comparison'
-                exact
-                render={(props) => <PriceComparison />}
-              />
+              <Route path='/' exact render={(props) => <Homepage />} />
+              <Route path='/search' render={(props) => <ComparisonSearch />} />
             </Switch>
           </Content>
         </Layout>

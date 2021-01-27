@@ -1,7 +1,7 @@
 import React from 'react';
 import '../../App.css';
 // import { AppContext } from "../Context/Context";
-import { Layout, Menu, Input } from 'antd';
+import { Layout, Menu } from 'antd';
 import { ShoppingCartOutlined } from '@ant-design/icons';
 
 const { Header } = Layout;

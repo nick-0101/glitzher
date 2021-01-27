@@ -1,12 +1,9 @@
 import React from 'react';
-// import { AppContext } from "../Context/Context";
-// import { Link } from 'react-router-dom';
-import { Layout, Menu, Checkbox, Rate } from 'antd';
+import { Layout, Menu, Checkbox } from 'antd';
 
 import {
   TagsTwoTone,
   UserOutlined,
-  StarTwoTone
 } from '@ant-design/icons';
 
 const { SubMenu } = Menu;
@@ -23,10 +20,13 @@ const SiderNav = () => {
       //   left: 20,
       //   background: '#fff'
       // }}
+      breakpoint="lg"
+      collapsedWidth="0"
+      trigger={null}
     >
       <Menu
         mode='inline'
-        style={{ height: '100%', border: 'none', padding: '0 0 0 10%'}}
+        style={{ height: '100vh', border: 'none', padding: '0'}}
         defaultOpenKeys={['sub1', 'sub2']}
       >
         {/* Shipping */}
@@ -54,15 +54,12 @@ const SiderNav = () => {
         </SubMenu>
 
         {/* Price Range */}
-        <SubMenu
-          key='sub2'
+        {/* <SubMenu
+          key='sub3'
           icon={<StarTwoTone twoToneColor="#cf1322"/>}
           title='Price Range'
         >
-          <Menu.Item key='5'>
-            
-          </Menu.Item>
-        </SubMenu>
+        </SubMenu> */}
       </Menu>
     </Sider>
     )
