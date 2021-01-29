@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { NavBar, ComparisonSearch } from './components';
+import { NavBar } from './components';
 import { Layout } from 'antd';
 
 // Pages
-import { Homepage } from './pages';
+import { Homepage, PriceComparison } from './pages';
 
 const { Content } = Layout;
 
@@ -18,7 +18,7 @@ function App() {
           <Content style={{ background: '#fff' }}>
             <Switch>
               <Route path='/' exact render={(props) => <Homepage />} />
-              <Route path='/search' render={(props) => <ComparisonSearch />} />
+              <Route path='/search' render={(props) => <PriceComparison />} />
             </Switch>
           </Content>
         </Layout>

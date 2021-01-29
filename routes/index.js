@@ -2,7 +2,7 @@ const express = require('express');
 const _ = require('underscore');
 const Data = require('../models/Data');
 const redis = require('redis');
-const { isValidObjectId } = require('mongoose');
+// const { isValidObjectId } = require('mongoose');
 
 const PORT_REDIS = process.env.PORT || 6379;
 const redisClient = redis.createClient(PORT_REDIS);
@@ -15,7 +15,7 @@ const router = express.Router();
 // have a way to load as you scroll
 // the problem is that /api is fetching from database and is not checking if there is a cache
 
-var update_id = 'key';
+var update_id = 'key2';
 
 const set = (key, value) => {
   // set 43200 (12hrs) as cache time
@@ -37,7 +37,7 @@ router.get('/', (req, res) => {
   res.send('helloi');
 });
 
-router.get('/api', async (req, res) => {
+router.get('/api', get, async (req, res) => {
   const _id = '60108f05160579104738afa3';
   try {
     // Fetch Data
@@ -62,24 +62,32 @@ router.get('/api', async (req, res) => {
       // set(update_id, filterDiscounted);
     } else {
       // Send data to client
+      set(update_id, dataResult);
       res.send(dataResult);
-      // set(update_id, dataResult);
     }
   } catch (err) {
     res.sendStatus(500).send({ message: 'Something has went wrong' });
   }
 });
 
-router.get('/api/products/sephora-products', async (req, res) => {
+router.get('/api/products/sephora-products', get, async (req, res) => {
   try {
     // Fetch Data
     const data = await Data.find({ _id: '6010dc757012b34ebd11068f' });
     const dataCount = data[0].api.result;
 
+    set(update_id, dataCount);
     res.send(dataCount);
   } catch (err) {
     console.error(err);
   }
+});
+
+router.get('/test', async (req, res) => {
+  const data = await Data.find();
+
+  // idea - get data[0] and data[1] etc and chain them together and then paginate them
+  res.send(data);
 });
 
 module.exports = router;

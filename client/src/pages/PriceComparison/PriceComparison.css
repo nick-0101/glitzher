@@ -1,0 +1,30 @@
+.productButtons {
+  width: 40%;
+}
+
+@media screen and (max-width: 1283px) {
+  .column {
+    flex: 100% !important; /* !important so that it overrides the inline style because by default it has higher priority */
+  }
+
+  /* Best Price css*/
+  .productTitle {
+    text-align: center;
+  }
+  .productImage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .productDetails {
+    padding-top: 30px;
+  }
+  .productPrice,
+  .productReviews {
+    justify-content: center;
+    text-align: center;
+  }
+  .productButtons {
+    width: 100%;
+  }
+}

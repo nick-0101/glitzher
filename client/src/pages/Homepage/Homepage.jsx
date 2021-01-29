@@ -128,7 +128,7 @@ const Homepage = () => {
                                             </Row>     
                                         : null} */}
                                         <Row>
-                                            <Link href="" target="_blank" style={{color: '#000000'}}>
+                                            <Link href="" target="_blank" style={{color: '#000000d9'}}>
                                                 Compare prices on this product
                                             </Link>
                                         </Row>
@@ -137,11 +137,9 @@ const Homepage = () => {
                                         <Row style={{margin:'15px 0'}} >
                                             <Button 
                                                 type="primary" 
-                                                shape="round" 
-                                                size="medium" 
-                                                ghost 
+                                                size='medium' 
                                             >
-                                                <ShoppingCartOutlined /> Add to cart
+                                                <ShoppingCartOutlined style={{ fontSize: '19px', color: '#fff' }}/> Add to cart
                                             </Button>
                                         </Row>   
                                     </Card>
