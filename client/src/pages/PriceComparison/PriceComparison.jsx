@@ -1,9 +1,14 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
+import { AppContext } from "../../components/Context/Context";
 import { Col, Row, Typography, Divider, Button, Rate, Tag, Table } from 'antd';
 import { ShoppingOutlined, ShoppingCartOutlined } from '@ant-design/icons';
+import { withRouter } from "react-router-dom";
+import axios from 'axios';
 
-// Get search query from search component. If the 'query' param is empty 
-// just redirect to homepage
+// Get search query from search component. If the 'query' param is empty just redirect to homepage
+// here get context api value and plug it into fetch api. From there display skeleton loader until
+// data is done fetching & manipulated
+
 
 import './PriceComparison.css'
 
@@ -48,7 +53,7 @@ const columns = [
   },
 ];
 
-const data = [
+const dataTest = [
   {
     key: '1',
     merchant: 'http://placehold.it/75x25',
@@ -59,7 +64,33 @@ const data = [
   },
 ];
 
-const PriceComparison = () => {
+const PriceComparison = ({ history }) => {
+    // Context (search value)
+    const ctx = useContext(AppContext);
+    const isMounted = useRef(false)
+    const [data, setData] = useState('')
+    
+    // Fetch data
+    useEffect(() => {
+        isMounted.current = true;
+        const getProductData = async () => {
+            if(ctx.searchValue === '') {
+                history.push('/')
+                return () => (isMounted.current = false)
+            } else {
+                const res = await axios.get(`/api/bestProduct?q=${ctx.searchValue}`)
+                const data = res.data;
+
+                // Get the lowest price
+
+                setData(data)
+                console.log(data)
+                return () => (isMounted.current = false)
+            }
+        }
+        getProductData()
+    }, [ctx.searchValue, history]);
+
     return (
         <>
             <Divider /> 
@@ -70,7 +101,7 @@ const PriceComparison = () => {
                 <Tag color="volcano" style={{margin: 'auto 10px'}}>BEST PRICE</Tag>
                 <Divider />
                 {/* Product image */}
-                <Col flex="0 0 40%" className="column" className="column productImage"> 
+                <Col flex="0 0 40%" className="column productImage"> 
                     <img src='http://placehold.it/308x308' className="image" alt="test"/>
                 </Col>
                 {/* Product Information */}
@@ -115,7 +146,7 @@ const PriceComparison = () => {
                 {/* Compare title */}
                 <Title level={2} style={{margin:0}}>Compare Prices</Title>
                 <Divider />
-                <Table style={{width: '100%'}} columns={columns} dataSource={data} pagination={false}/>
+                <Table style={{width: '100%'}} columns={columns} dataSource={dataTest} pagination={false}/>
                 {/* Comparison table labels*/}
                 {/* <Row className="tableLabels">
                     <Row className="shopLabel" style={{width: '12.5%'}}>
@@ -161,7 +192,7 @@ const PriceComparison = () => {
     )
 }
 
-export default PriceComparison
+export default withRouter(PriceComparison)
 
 
 

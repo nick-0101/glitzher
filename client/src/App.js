@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { Router, Switch, Route } from 'react-router-dom';
 import { NavBar } from './components';
 import { Layout } from 'antd';
 
@@ -8,14 +8,14 @@ import { Homepage, PriceComparison } from './pages';
 
 // History
 import { createBrowserHistory } from 'history';
-export const history = createBrowserHistory();
+const history = createBrowserHistory();
 
 const { Content } = Layout;
 
 function App() {
   return (
     <Layout style={{ height: 'auto' }}>
-      <BrowserRouter history={history}>
+      <Router history={history}>
         <NavBar />
         <Layout>
           {/* <SiderNav /> */}
@@ -26,7 +26,7 @@ function App() {
             </Switch>
           </Content>
         </Layout>
-      </BrowserRouter>
+      </Router>
     </Layout>
   );
 }

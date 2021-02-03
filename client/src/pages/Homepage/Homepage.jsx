@@ -1,12 +1,10 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Card, Col, Row, Typography, Rate, Button } from 'antd';
-import { CheckCircleTwoTone, TrophyTwoTone, ShoppingCartOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
+import { ShoppingCartOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import ReactPaginate from 'react-paginate';
 
 // Components 
-import { AppContext } from "../../components/Context/Context";
-
 import SkeletonLoader from '../../components/SkeletonLoader/SkeletonLoader';
 import SiderNav from '../../components/SiderNav/SiderNav';
 import PriceComparison from '../../components/ComparisonSearch/ComparisonSearch';
@@ -16,16 +14,15 @@ import './Homepage.css'
 const { Paragraph, Text, Link, Title } = Typography;
 
 const Homepage = () => {
-    const ctx = useContext(AppContext);
-    console.log(ctx)
-
-
-    const [offset, setOffset] = useState(0);
+    const isMounted = useRef(false)
+    const [offset, setOffset] = useState(1);
     const [data, setData] = useState('');
     const [perPage] = useState(10);
     const [pageCount, setPageCount] = useState(0)
 
     useEffect(() => {
+        isMounted.current = true;
+
         async function getData() {
             const res = await axios.get(`/api?page=${offset}&limit=100&discounted=true`)
             const data = res.data;
@@ -35,6 +32,7 @@ const Homepage = () => {
             setPageCount(Math.ceil(data.length / perPage))
 
             console.log(data)
+            return () => (isMounted.current = false)
         }
         getData()
     }, [offset, perPage])

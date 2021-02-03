@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { AppContext } from "../Context/Context";
+import { withRouter } from "react-router-dom";
 import { Input, Row, Col, Typography, Divider } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
@@ -8,12 +9,16 @@ import './ComparisonSearch.css'
 const { Search } = Input;
 const { Title } = Typography;
 
-const ComparisonSearch = ({history}) => {
+const ComparisonSearch = ({ history  }) => {
     const { setSearch } = useContext(AppContext);
 
     const handleSetSearch = (value) => {
-      setSearch(value);
-      history.push('/search');
+        if (value !== '') {
+            setSearch(value);
+            history.push('/search');
+        } else {
+            return
+        }
     };
 
 
@@ -30,4 +35,4 @@ const ComparisonSearch = ({history}) => {
     );
 }
 
-export default ComparisonSearch;
+export default withRouter(ComparisonSearch);
