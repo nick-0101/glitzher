@@ -1,5 +1,5 @@
-import React from 'react';
-import { Col, Row, Typography, Divider, Button, Rate } from 'antd';
+import React, { useContext } from 'react';
+import { Col, Row, Typography, Divider, Button, Rate, Tag, Table } from 'antd';
 import { ShoppingOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 
 // Get search query from search component. If the 'query' param is empty 
@@ -9,17 +9,69 @@ import './PriceComparison.css'
 
 const { Text, Title, Link } = Typography;
 
+const columns = [
+    // Merchant
+  {
+    title: 'Shops',
+    dataIndex: 'merchant',
+    key: 'merchant',
+    render: merchantImage => <img alt={merchantImage} src={merchantImage} />,
+  },
+  // Product Image
+   {
+    title: "Image",
+    dataIndex: "imageURL", 
+    render: theImageURL => <img alt={theImageURL} src={theImageURL} /> 
+  },
+  // Details
+  {
+    title: 'Product Details',
+    dataIndex: 'details',
+    key: 'details',
+    responsive: ['md'],
+  },
+  // Price
+  {
+    title: 'Price',
+    dataIndex: 'price',
+    key: 'price',
+  },
+  // Shop Button
+  {
+    title: '',
+    dataIndex: 'shopButton',
+    key: 'shopButton',
+    render: shopButton => 
+    <Button type="primary" size='medium' style={{height: '45px', fontSize: '15px'}} icon={<ShoppingOutlined/>}>
+        {shopButton}
+    </Button>
+  },
+];
+
+const data = [
+  {
+    key: '1',
+    merchant: 'http://placehold.it/75x25',
+    imageURL: 'http://placehold.it/115x115',
+    details: 'Apple iPhone XR 64GB White in Very Good condition Unlocked',
+    price: '$699.00',
+    shopButton: 'Buy Now'
+  },
+];
+
 const PriceComparison = () => {
     return (
         <>
             <Divider /> 
-            <Row style={{margin: '0 20%', paddingTop: '20px'}}>
-                {/* Best Price Title */}
-                <Title level={2} style={{margin:0}} className="column productTitle">iPhone X</Title>
+            {/* Best price product wrapper */}
+            <Row className="productWrapper">
+                {/* Product title */}
+                <Title level={2} style={{margin:0}}>iPhone X 64gb space-grey</Title>
+                <Tag color="volcano" style={{margin: 'auto 10px'}}>BEST PRICE</Tag>
                 <Divider />
-                {/* Product Image */}
+                {/* Product image */}
                 <Col flex="0 0 40%" className="column" className="column productImage"> 
-                    <img src='http://placehold.it/308x308' alt="test"/>
+                    <img src='http://placehold.it/308x308' className="image" alt="test"/>
                 </Col>
                 {/* Product Information */}
                 <Col flex="0 0 60%" className="column productDetails">
@@ -32,7 +84,7 @@ const PriceComparison = () => {
                         </Col>
                         {/* <Col style={{margin: 'auto 0', marginLeft: 'auto'}}>
                             <Button type="primary" size='medium' icon={<ShoppingOutlined/>} >
-                                Buy Now
+                                Compare Prices
                             </Button>
                         </Col>     */}
                     </Row>
@@ -46,17 +98,64 @@ const PriceComparison = () => {
                         </Link>
                     </Row>
                     <Divider />
-                    <Row justify="left">
-                        <Button className="productButtons" type="primary" size='medium' icon={<ShoppingCartOutlined/>} style={{ marginBottom: '15px', height: '45px', fontSize: '16px'}}>
-                            Add to cart
-                        </Button>
-                    </Row>
-                    <Row justify="left">
-                        <Button className="productButtons" type="primary" size='medium' icon={<ShoppingOutlined/>}  style={{height: '45px', fontSize: '16px'}}>
-                            Buy Now
-                        </Button>
-                    </Row>
+                    <Col>
+                        <Row justify="left">
+                            <Button className="productButtons" type="primary" size='medium' icon={<ShoppingCartOutlined/>} style={{ marginTop: '10px', marginBottom: '10px', height: '45px', fontSize: '16px'}}>
+                                Add to cart
+                            </Button>
+                        </Row>
+                        <Row justify="left">
+                            <Button className="productButtons" type="primary" size='medium' icon={<ShoppingOutlined/>}  style={{height: '45px', fontSize: '16px'}}>
+                                Buy Now
+                            </Button>
+                        </Row>
+                    </Col>
                 </Col>
+                <Divider />
+                {/* Compare title */}
+                <Title level={2} style={{margin:0}}>Compare Prices</Title>
+                <Divider />
+                <Table style={{width: '100%'}} columns={columns} dataSource={data} pagination={false}/>
+                {/* Comparison table labels*/}
+                {/* <Row className="tableLabels">
+                    <Row className="shopLabel" style={{width: '12.5%'}}>
+                        <Text>Shops</Text>
+                    </Row>
+                    <Row className="imageLabel" style={{width: '14.5%'}}>
+                        <Text>Product Image</Text>
+                    </Row>
+                    <Row className="productLabel" style={{width: '38.5%'}}>
+                        <Text>Product Details</Text>
+                    </Row>
+                    <Row className="shippingLabel" style={{width: '8.5%'}}>
+                        <Text>
+                            Shipping
+                        </Text>
+                    </Row>
+                    <Row className="priceLabel" style={{width: '26%'}}>
+                        <Text>Price</Text>
+                    </Row>
+                </Row>
+                <Row>
+                    <a href="#" className="tableWrapper" style={{padding: '20px 0'}}> 
+                        <Row>
+                            <Row style={{paddingRight: '50px', width: '12.5%'}} >
+                                <img src='http://placehold.it/75x25' alt="test"/>
+                            </Row>
+                        </Row>
+                        <Row>
+                             <Row style={{width: '14.5%'}}>
+                                <img src='http://placehold.it/115x115'  alt="ipgoe"/>
+                            </Row>
+                        </Row>
+                        <Row>
+                            <Text>Apple iPhone XR 64GB White in Very Good condition Unlocked</Text>
+                        </Row>
+                        <Row>
+                            <Text>In Stock</Text>
+                        </Row>
+                    </a>
+                </Row> */}
             </Row>
         </>
     )

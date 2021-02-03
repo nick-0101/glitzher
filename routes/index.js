@@ -15,7 +15,7 @@ const router = express.Router();
 // have a way to load as you scroll
 // the problem is that /api is fetching from database and is not checking if there is a cache
 
-var update_id = 'key2';
+var update_id = 'key1322';
 
 const set = (key, value) => {
   // set 43200 (12hrs) as cache time
@@ -66,28 +66,34 @@ router.get('/api', get, async (req, res) => {
       res.send(dataResult);
     }
   } catch (err) {
-    res.sendStatus(500).send({ message: 'Something has went wrong' });
+    console.error(err);
+    return res.status(500).json({
+      message: 'Hmm. Something went wrong on our end.',
+      type: 'ServerError',
+    });
   }
 });
 
-router.get('/api/products/sephora-products', get, async (req, res) => {
+router.get('/api/bestProduct', async (req, res) => {
   try {
     // Fetch Data
-    const data = await Data.find({ _id: '6010dc757012b34ebd11068f' });
-    const dataCount = data[0].api.result;
+    const data = await Data.find();
+    const amazon = data[0].api.result;
+    const sephora = data[1].api.result;
+    const result = Object.assign(sephora, amazon);
 
-    set(update_id, dataCount);
-    res.send(dataCount);
+    // Querys
+    const query = req.query.q;
+
+    // Filter
+    const test = result.filter(({ title }) => title.includes(query));
+
+    res.status(200).send(test);
+    // HAVE 2 APIS 1 for displaying products on front page and one for getting the best price
   } catch (err) {
+    // res.sendStatus(500).send({ message: 'Something has went wrong' });
     console.error(err);
   }
-});
-
-router.get('/test', async (req, res) => {
-  const data = await Data.find();
-
-  // idea - get data[0] and data[1] etc and chain them together and then paginate them
-  res.send(data);
 });
 
 module.exports = router;

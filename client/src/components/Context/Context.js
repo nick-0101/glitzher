@@ -1,14 +1,14 @@
 import React, { createContext, useState } from 'react';
 
 export const AppContext = createContext({});
-const AppProvider = ({ children }) => {
-  const [isToggled, setToggled] = useState(false);
+const AppProvider = ({ children, history }) => {
+  const [searchValue, setSearchValue] = useState('');
 
-  const toggleDisplay = () => {
-    setToggled(() => !isToggled);
+  const setSearch = (value) => {
+    setSearchValue(value);
   };
 
-  const value = { isToggled, toggleDisplay };
+  const value = { searchValue, setSearch };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
 

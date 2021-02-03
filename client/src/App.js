@@ -6,12 +6,16 @@ import { Layout } from 'antd';
 // Pages
 import { Homepage, PriceComparison } from './pages';
 
+// History
+import { createBrowserHistory } from 'history';
+export const history = createBrowserHistory();
+
 const { Content } = Layout;
 
 function App() {
   return (
     <Layout style={{ height: 'auto' }}>
-      <BrowserRouter>
+      <BrowserRouter history={history}>
         <NavBar />
         <Layout>
           {/* <SiderNav /> */}

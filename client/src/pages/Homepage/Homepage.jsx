@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Card, Col, Row, Typography, Rate, Button } from 'antd';
 import { CheckCircleTwoTone, TrophyTwoTone, ShoppingCartOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import ReactPaginate from 'react-paginate';
 
 // Components 
+import { AppContext } from "../../components/Context/Context";
+
 import SkeletonLoader from '../../components/SkeletonLoader/SkeletonLoader';
 import SiderNav from '../../components/SiderNav/SiderNav';
 import PriceComparison from '../../components/ComparisonSearch/ComparisonSearch';
@@ -14,6 +16,10 @@ import './Homepage.css'
 const { Paragraph, Text, Link, Title } = Typography;
 
 const Homepage = () => {
+    const ctx = useContext(AppContext);
+    console.log(ctx)
+
+
     const [offset, setOffset] = useState(0);
     const [data, setData] = useState('');
     const [perPage] = useState(10);
