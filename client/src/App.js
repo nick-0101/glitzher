@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { NavBar } from './components';
 import { Layout } from 'antd';
 
@@ -15,10 +15,9 @@ const { Content } = Layout;
 function App() {
   return (
     <Layout style={{ height: 'auto' }}>
-      <Router history={history}>
+      <BrowserRouter history={history}>
         <NavBar />
         <Layout>
-          {/* <SiderNav /> */}
           <Content style={{ background: '#fff' }}>
             <Switch>
               <Route path='/' exact render={(props) => <Homepage />} />
@@ -26,7 +25,7 @@ function App() {
             </Switch>
           </Content>
         </Layout>
-      </Router>
+      </BrowserRouter>
     </Layout>
   );
 }

@@ -76,6 +76,8 @@ router.get('/api', get, async (req, res) => {
 
 router.get('/api/bestProduct', async (req, res) => {
   try {
+    // ** have validation to confirm if query is empty, if so return //**
+
     // Fetch Data
     const data = await Data.find();
     const amazon = data[0].api.result;
@@ -86,9 +88,9 @@ router.get('/api/bestProduct', async (req, res) => {
     const query = req.query.q;
 
     // Filter
-    const test = result.filter(({ title }) => title.includes(query));
+    const filterdResults = result.filter(({ title }) => title.includes(query));
 
-    res.status(200).send(test);
+    res.status(200).send(filterdResults);
     // HAVE 2 APIS 1 for displaying products on front page and one for getting the best price
   } catch (err) {
     // res.sendStatus(500).send({ message: 'Something has went wrong' });

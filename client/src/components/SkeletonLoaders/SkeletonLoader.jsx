@@ -19,7 +19,7 @@ const SkeletonLoader = () => {
                                 <Skeleton.Input style={{ width: 250, height: 20, borderRadius: 4, marginBottom: 15 }} active  />
                                 <Skeleton.Input style={{ width: 150, height: 20, borderRadius: 4, marginBottom: 25}} active  />
                                 <Row>
-                                    <Skeleton.Button style={{ width: 90, height: 35}} active size='default' shape='round' />
+                                    <Skeleton.Button style={{ width: 90, height: 35}} active size='default' />
                                 </Row>
                             </Card>
                         </Col>

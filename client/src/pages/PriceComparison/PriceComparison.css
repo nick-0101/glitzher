@@ -2,26 +2,44 @@
   margin: 0 20%;
 }
 
+/* Buying buttons */
 .productButtons {
   width: 40%;
 }
 
+.productButtonWrapper {
+  width: 100%;
+}
+
+.productButton {
+  width: 40%;
+  background: #ea0215;
+}
+/* //Buying buttons */
+.productThumbnail {
+  width: 308px;
+  height: 308px;
+  object-fit: scale-down;
+}
+
 /* Table */
-.tableLabels {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 0 0 50px;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  border-radius: 2px;
-  border-bottom: 0px;
+.table-striped-rows .ant-table-tbody > tr:first-child > td {
+  border: 2px solid #ffa39e;
+  background: #fff1f04d;
+  border-left: 0;
+  border-right: 0;
+}
+/* Left */
+.table-striped-rows .ant-table-tbody > tr:first-child > td:first-child {
+  border-left: 2px solid #ffa39e;
 }
 
-.tableWrapper {
-  width: 100%;
+/* Right */
+.table-striped-rows .ant-table-tbody > tr:first-child > td:last-child {
+  border-right: 2px solid #ffa39e;
 }
 
-@media screen and (max-width: 1283px) {
+@media screen and (max-width: 1284px) {
   .column {
     flex: 100% !important; /* !important so that it overrides the inline style because by default it has higher priority */
   }
@@ -41,7 +59,7 @@
     justify-content: center;
     align-items: center;
   }
-  .image {
+  .productThumbnail {
     width: 250px;
     height: 250px;
     object-fit: scale-down;
@@ -54,10 +72,20 @@
     justify-content: center;
     text-align: center;
   }
+  /* Buying buttons */
   .productButtons {
     width: 100%;
     margin: 0 30%;
   }
+
+  .productButtonWrapper,
+  .productButton {
+    width: 100%;
+  }
+  .productButtonWrapper {
+    margin: 0 30%;
+  }
+  /* //Buying buttons */
 
   /* Price Comparison */
   .tableLabels {
@@ -72,6 +100,13 @@
 @media screen and (max-width: 900px) {
   .productButtons {
     width: 100%;
+    margin: 0 10%;
+  }
+  .productButtonWrapper,
+  .productButton {
+    width: 100%;
+  }
+  .productButtonWrapper {
     margin: 0 10%;
   }
 }

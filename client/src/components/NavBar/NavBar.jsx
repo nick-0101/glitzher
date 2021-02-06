@@ -1,18 +1,11 @@
 import React from 'react';
 import '../../App.css';
-// import { AppContext } from "../Context/Context";
 import { Layout, Menu } from 'antd';
 import { ShoppingCartOutlined } from '@ant-design/icons';
 
 const { Header } = Layout;
 
 const NavBar = () => {
-    // const { toggleDisplay } = useContext(AppContext);
-
-    // const handleToggleChange = (e) => {
-    //   toggleDisplay();
-    // };
-
   return (
     <>
       <Layout theme='light'>
@@ -20,12 +13,13 @@ const NavBar = () => {
           <div className='logo' />
           Price Flame 
           <Menu
-            mode='horizontal'
-            defaultSelectedKeys={['1']}
-            style={{ float: 'right' }}
+            // mode='horizontal'
+            style={{ float: 'right'}}
             theme='light'
           >
-            <Menu.Item key='1'><ShoppingCartOutlined style={{fontSize: '24px'}} /></Menu.Item>
+            <Menu.Item key='1'>
+              <ShoppingCartOutlined style={{fontSize: '24px',  verticalAlign: 'middle', border:0}} />
+            </Menu.Item>
           </Menu>
         </Header>
       </Layout>

@@ -21,7 +21,6 @@ const ComparisonSearch = ({ history  }) => {
         }
     };
 
-
     return (
     <>
         <Row justify="center" align="middle" style={{height: '200px',margin: '5% 0 5% 0', textAlign: 'center'}}>

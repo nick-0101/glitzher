@@ -1,0 +1,11 @@
+.skeletonButton,
+.priceSkeleton {
+  justify-content: left;
+}
+
+@media screen and (max-width: 1284px) {
+  .skeletonButton,
+  .priceSkeleton {
+    justify-content: center;
+  }
+}

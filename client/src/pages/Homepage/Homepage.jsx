@@ -5,7 +5,7 @@ import axios from 'axios';
 import ReactPaginate from 'react-paginate';
 
 // Components 
-import SkeletonLoader from '../../components/SkeletonLoader/SkeletonLoader';
+import SkeletonLoader from '../../components/SkeletonLoaders/SkeletonLoader';
 import SiderNav from '../../components/SiderNav/SiderNav';
 import PriceComparison from '../../components/ComparisonSearch/ComparisonSearch';
 
@@ -21,9 +21,8 @@ const Homepage = () => {
     const [pageCount, setPageCount] = useState(0)
 
     useEffect(() => {
-        isMounted.current = true;
-
         async function getData() {
+            isMounted.current = true;
             const res = await axios.get(`/api?page=${offset}&limit=100&discounted=true`)
             const data = res.data;
 
