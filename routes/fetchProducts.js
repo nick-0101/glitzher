@@ -9,23 +9,7 @@ const router = express.Router();
 
 const ips = ['::1'];
 
-// Update db with new api info
-// async function updateDb(products) {
-//   const _id = '60108f05160579104738afa3';
-
-//   if (Object.keys(products).length > 0) {
-//     await Data.updateOne({ _id }, { $set: { api: products } }, (err) => {
-//       if (err) {
-//         throw err; // display proper error
-//       }
-//       console.log('Updated');
-//     });
-//   } else {
-//     return;
-//   }
-// }
-
-async function getProducts(req, res, next) {
+async function getProducts(req, res) {
   try {
     console.log('Fetching Data...');
 
@@ -37,8 +21,7 @@ async function getProducts(req, res, next) {
       randomUa: true,
     });
 
-    // Send data to updateDb
-    // res.send(updateDb(products));
+    // Update db
     const _id = '60108f05160579104738afa3';
 
     if (Object.keys(products).length > 0) {

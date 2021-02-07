@@ -1,6 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { Card, Col, Row, Typography, Rate, Button } from 'antd';
 import { ShoppingCartOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
+import { withRouter } from "react-router-dom";
+import { AppContext } from "../../components/Context/Context";
 import axios from 'axios';
 import ReactPaginate from 'react-paginate';
 
@@ -13,12 +15,13 @@ import './Homepage.css'
 
 const { Paragraph, Text, Link, Title } = Typography;
 
-const Homepage = () => {
+const Homepage = ({ history }) => {
     const isMounted = useRef(false)
     const [offset, setOffset] = useState(1);
     const [data, setData] = useState('');
     const [perPage] = useState(10);
     const [pageCount, setPageCount] = useState(0)
+    const { setSearch } = useContext(AppContext);
 
     useEffect(() => {
         async function getData() {
@@ -39,6 +42,18 @@ const Homepage = () => {
     const handlePageClick = (e) => {
         const selectedPage = e.selected;
         setOffset(selectedPage + 1)
+    };
+
+    const handleSetSearch = (value) => {
+        if (value !== '') {
+            setSearch(value);
+            history.push({
+                pathname: '/search',
+                search: `?q=${value}`
+            })
+        } else {
+            return
+        }
     };
 
     //TODO:
@@ -131,7 +146,7 @@ const Homepage = () => {
                                             </Row>     
                                         : null} */}
                                         <Row>
-                                            <Link href="" target="_blank" style={{color: '#000000d9'}}>
+                                            <Link onClick={(() => handleSetSearch(item.title))} target="_blank" style={{color: '#000000d9'}}>
                                                 Compare prices on this product
                                             </Link>
                                         </Row>
@@ -177,4 +192,4 @@ const Homepage = () => {
     )
 }
 
-export default Homepage;
+export default withRouter(Homepage);

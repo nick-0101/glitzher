@@ -109,4 +109,9 @@
   .productButtonWrapper {
     margin: 0 10%;
   }
+  .productTitle {
+    margin: 0 10%;
+    justify-content: center;
+    align-items: center;
+  }
 }

@@ -15,7 +15,10 @@ const ComparisonSearch = ({ history  }) => {
     const handleSetSearch = (value) => {
         if (value !== '') {
             setSearch(value);
-            history.push('/search');
+            history.push({
+                pathname: '/search',
+                search: `?q=${value}`
+            })
         } else {
             return
         }

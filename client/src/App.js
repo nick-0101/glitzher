@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { NavBar } from './components';
+import { NavBar, Error } from './components';
 import { Layout } from 'antd';
 
 // Pages
@@ -22,6 +22,7 @@ function App() {
             <Switch>
               <Route path='/' exact render={(props) => <Homepage />} />
               <Route path='/search' render={(props) => <PriceComparison />} />
+              <Route path='*' render={(props) => <Error />} />
             </Switch>
           </Content>
         </Layout>
