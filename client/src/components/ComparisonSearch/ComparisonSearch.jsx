@@ -14,10 +14,17 @@ const ComparisonSearch = ({ history  }) => {
 
     const handleSetSearch = (value) => {
         if (value !== '') {
+            if (typeof(Storage) !== "undefined") {
+                sessionStorage.removeItem('searchResult');
+                sessionStorage.setItem("searchResult", value);
+            } else {
+                console.log('No session storage support')
+            }
+
             setSearch(value);
             history.push({
                 pathname: '/search',
-                search: `?q=${value}`
+                search: `?q=${sessionStorage.getItem("searchResult")}`
             })
         } else {
             return

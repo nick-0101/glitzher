@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Card, Col, Row, Typography, Rate, Button } from 'antd';
 import { ShoppingCartOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
 import { withRouter } from "react-router-dom";
@@ -16,7 +16,6 @@ import './Homepage.css'
 const { Paragraph, Text, Link, Title } = Typography;
 
 const Homepage = ({ history }) => {
-    const isMounted = useRef(false)
     const [offset, setOffset] = useState(1);
     const [data, setData] = useState('');
     const [perPage] = useState(10);
@@ -24,19 +23,31 @@ const Homepage = ({ history }) => {
     const { setSearch } = useContext(AppContext);
 
     useEffect(() => {
-        async function getData() {
-            isMounted.current = true;
-            const res = await axios.get(`/api?page=${offset}&limit=100&discounted=true`)
-            const data = res.data;
+        const CancelToken = axios.CancelToken;
+        const source = CancelToken.source();
 
-            const sliceData = data.slice(offset, offset + perPage)
-            setData(sliceData)
-            setPageCount(Math.ceil(data.length / perPage))
+        const getData = async() => {
+            try {      
+                axios.get(`/api?page=${offset}&limit=100&discounted=true`, { cancelToken: source.token })
+                .then(res => {
+                    const data = res.data;
 
-            console.log(data)
-            return () => (isMounted.current = false)
+                    const sliceData = data.slice(offset, offset + perPage)
+                    setData(sliceData)
+                    setPageCount(Math.ceil(data.length / perPage))
+                });
+            } catch (err) {
+                if (axios.isCancel(err)) {
+                    console.log("cancelled");
+                } else {
+                    console.error(err)
+                }
+            }
         }
         getData()
+        return () => {
+            source.cancel();
+        };
     }, [offset, perPage])
 
     const handlePageClick = (e) => {
@@ -106,9 +117,6 @@ const Homepage = ({ history }) => {
                                         {/* Product reviews */}
                                         <Row>
                                             <Rate disabled allowHalf defaultValue={item.reviews.rating} style={{fontSize: '14px'}} />
-                                            {/* <Link target="_blank" rel="noopener noreferrer" href={item.url + '/#customerReviews'} style={{margin: "6px 0 0 13px"}}>
-                                                {item.reviews.total_reviews.toLocaleString()} Reviews
-                                            </Link> */}
                                         </Row>
 
                                         {/* Product price */}

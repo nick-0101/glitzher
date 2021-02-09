@@ -9,6 +9,9 @@ dotenv.config({ path: './config/env.config' });
 
 connectDB();
 
+// const Sentry = require('@sentry/node');
+// const Tracing = require('@sentry/tracing');
+
 const app = express();
 
 // Morgan

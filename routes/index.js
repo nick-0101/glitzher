@@ -2,7 +2,6 @@ const express = require('express');
 const _ = require('underscore');
 const Data = require('../models/Data');
 const redis = require('redis');
-// const { isValidObjectId } = require('mongoose');
 
 const PORT_REDIS = process.env.PORT || 6379;
 const redisClient = redis.createClient(PORT_REDIS);
@@ -33,10 +32,6 @@ const get = (req, res, next) => {
 };
 
 // Routes
-router.get('/', (req, res) => {
-  res.send('helloi');
-});
-
 router.get('/api', get, async (req, res) => {
   const _id = '60108f05160579104738afa3';
   try {
@@ -75,26 +70,46 @@ router.get('/api', get, async (req, res) => {
 });
 
 router.get('/api/bestProduct', async (req, res) => {
+  const { q } = req.query;
   try {
-    // ** have validation to confirm if query is empty, if so return //**
+    // Client validation
+    if (q === '' || q.length < 3 || q.length > 150) {
+      console.log(q.length);
+      return res.sendStatus(400);
+    }
 
-    // Fetch Data
-    const data = await Data.find();
-    const amazon = data[0].api.result;
-    const sephora = data[1].api.result;
-    const result = Object.assign(sephora, amazon);
+    try {
+      // Fetch Data
+      const data = await Data.find();
+      const amazon = data[0].api.result;
+      const sephora = data[1].api.result;
+      const result = Object.assign(sephora, amazon);
 
-    // Querys
-    const query = req.query.q;
+      // Querys
+      const query = req.query.q;
 
-    // Filter
-    const filterdResults = result.filter(({ title }) => title.includes(query));
+      // Filter
+      const filterdResults = result.filter(({ title }) =>
+        title.includes(query)
+      );
 
-    res.status(200).send(filterdResults);
-    // HAVE 2 APIS 1 for displaying products on front page and one for getting the best price
+      // Sort results
+      const sortedResults = filterdResults.sort(
+        (a, b) =>
+          // Special expression is replacing '$'
+          parseFloat(a.price.replace(/\$/g, '')) -
+          parseFloat(b.price.replace(/\$/g, ''))
+      );
+
+      // Send data to front end
+      res.status(200).send(sortedResults);
+    } catch (err) {
+      console.error(err);
+      return res.sendStatus(500); // Server error
+    }
   } catch (err) {
-    // res.sendStatus(500).send({ message: 'Something has went wrong' });
     console.error(err);
+    return res.sendStatus(500); // Server error
   }
 });
 
