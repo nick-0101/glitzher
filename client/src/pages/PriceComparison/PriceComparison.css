@@ -22,6 +22,14 @@
   object-fit: scale-down;
 }
 
+.productTitle {
+  font-size: 24px;
+  font-weight: 600;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0rem;
+}
+
 /* Table */
 .table-striped-rows .ant-table-tbody > tr:first-child > td {
   border: 2px solid #ffa39e;
@@ -39,6 +47,18 @@
   border-right: 2px solid #ffa39e;
 }
 
+.table-details {
+  display: block;
+  width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.testerr {
+  display: none;
+}
+
 @media screen and (max-width: 1284px) {
   .column {
     flex: 100% !important; /* !important so that it overrides the inline style because by default it has higher priority */
@@ -53,6 +73,7 @@
   }
   .productTitle {
     font-size: 24px;
+    margin: 0 10%;
   }
   .productImage {
     display: flex;
@@ -109,9 +130,13 @@
   .productButtonWrapper {
     margin: 0 10%;
   }
-  .productTitle {
-    margin: 0 10%;
-    justify-content: center;
-    align-items: center;
+  .table-details {
+    width: 100px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .testerr {
+    display: block;
   }
 }

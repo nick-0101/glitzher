@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef, useCallback  } from 'react';
+import React, { useContext, useEffect, useState  } from 'react';
 import { AppContext } from "../../components/Context/Context";
 import { Col, Row, Typography, Divider, Button, Rate, Table, Image, Tooltip } from 'antd';
 import { ShoppingOutlined, ShoppingCartOutlined, ArrowRightOutlined, InfoCircleOutlined } from '@ant-design/icons';
@@ -10,9 +10,9 @@ import SkeletonLoader from '../../components/SkeletonLoaders/ComparisonSkeleton'
 
 import './PriceComparison.css'
 
-const { Text, Title, Link } = Typography;
+const { Text, Title, Link, Paragraph } = Typography;
 
-const PriceComparison = ({ history }) => {
+const PriceComparison = () => {
     const ctx = useContext(AppContext);
     const [data, setData] = useState('')
     const [tableData, setTableData] = useState('')
@@ -32,6 +32,12 @@ const PriceComparison = ({ history }) => {
                 .then(res => {
                     const data = res.data;
 
+                    if (res.status === 200) {
+                        console.log('all goood')                 
+                    } else {
+                       console.log('not good')
+                    }
+
                     if(!Array.isArray(data) || !data.length) {
                         return setError(`Sorry, we couldn't find: ${searchValue || ctx.searchValue}`)
                     } else {
@@ -41,27 +47,30 @@ const PriceComparison = ({ history }) => {
                             merchant: item.brand,
                             imageURL: item.thumbnail || item.subThumbnail || 'data:image/png;base64,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',
                             details: item.title,
-                            price: item.price.current_price || item.price ,
-                            shopButton: item.url || item.link
+                            price: item.price.current_price,
+                            shopButton: item.url
                         }))
                         
                         setTableData(tabledData)
                         setData(data)
                         console.log(data)
                     }   
-                });
+                })
+                .catch(err => {
+                    if (axios.isCancel(err)) {
+                        console.log("cancelled");
+                    } else {
+                        return setError(`Error: Oops, there's been a problem on our end. Please try again later.`)
+                    }
+
+                    // Status Errors
+                    // Still get cant find status off
+                })
             } catch (err) {
                 if (axios.isCancel(err)) {
                     console.log("cancelled");
                 } else {
-                    console.error(err)
-                }
-
-                // Status Errors
-                if (err.response.status === 400) {
-                    return setError(`Sorry, we couldn't find: ${searchValue}`)
-                } else {
-                    return setError(`Error: Oops, there's been a problem on our end. Please try again later.`)
+                    console.log(err)
                 }
             }
         }
@@ -78,20 +87,24 @@ const PriceComparison = ({ history }) => {
             title: 'Shop',
             dataIndex: 'merchant',
             key: 'merchant',
+            responsive: ['md'],
             render: merchant => <Title level={5} style={{margin:0}}>{merchant === undefined ? 'Unknown' : merchant}</Title>,
         },
         // Product Image
         {
             title: "Image",
             dataIndex: "imageURL", 
-            render: theImageURL => <Image preview={false} width={115} height={115} src={theImageURL} />  
+            render: theImageURL => <Image preview={false} style={{width: '115px', height: '115px', objectFit: 'scale-down'}} src={theImageURL} />  
         },
         // Details
         {
             title: 'Product Details',
             dataIndex: 'details',
             key: 'details',
-            responsive: ['md'],
+            render: details => 
+                <Paragraph className="table-details" ellipsis={{ rows:0, expandable: false }}>
+                    {details}
+                </Paragraph>
         },
         // Price
         {
@@ -105,12 +118,28 @@ const PriceComparison = ({ history }) => {
             title: '',
             dataIndex: 'shopButton',
             key: 'shopButton',
+            responsive: ['md'],
             render: shopButton => 
             <Link target="_blank" rel="noopener noreferrer" href={shopButton} className="productButtonWrapper">
                 <Button type="primary" size='medium' style={{height: '45px', fontSize: '15px', paddingTop:'4.5px'}} icon={<ShoppingOutlined/>}>
                     Buy Now
                 </Button>
             </Link>
+        },
+
+        // Responsive
+        {
+            title: '',
+            dataIndex: 'shopButton',
+            key: 'shopButton',
+            render: shopButton =>
+            <Col>
+                <Link target="_blank" rel="noopener noreferrer" href={shopButton} className="testerr">
+                    <Button type="primary" size='medium' style={{height: '45px', fontSize: '15px', paddingTop:'4.5px'}}>
+                        <ShoppingOutlined/>
+                    </Button>
+                </Link>
+            </Col> 
         },
     ];
 
@@ -119,7 +148,7 @@ const PriceComparison = ({ history }) => {
         {error ? 
             <Row justify="center" align="center">
                 <Col>
-                    <Title className="productTitle" style={{marginBottom: '5%', textAlign:'center'}}>{error}</Title>
+                    <Title level={3} className="errorTitle" style={{marginBottom: '5%', textAlign:'center'}}>{error}</Title>
                     <Row justify="center">
                         <Link href="/">
                             <Button className="productButton" type="primary" size='medium' icon={<ArrowRightOutlined/>}  style={{marginTop: '10px', marginBottom: '10px', height: '45px', fontSize: '16px'}}>
@@ -135,16 +164,26 @@ const PriceComparison = ({ history }) => {
                     <>
                     <Divider style={{marginTop: 0}} /> 
                         <Row className="productWrapper">
-                            <Title className="productTitle" level={2} style={{margin:0}}>{data[0].title}</Title>
+                            <Paragraph 
+                                className="productTitle" 
+                                ellipsis={{ rows: 1, expandable: false }}
+                                style={{marginBottom: 0}}
+                                >
+                                    {data[0].title}
+                            </Paragraph>
                             <Divider />
                             {/* Product image */}
                             <Col flex="0 0 40%" className="column productImage">
                                 {data[0].thumbnail || data[0].subThumbnail ?
                                     <> 
                                     {data[0].thumbnail ?
-                                        <img src={data[0].thumbnail} className="productThumbnail" alt={data[0].title} />
+                                        <a target="_blank" rel="noopener noreferrer" href={data[0].url}>
+                                            <img src={data[0].thumbnail} className="productThumbnail" alt={data[0].title} />     
+                                        </a>
                                         :
-                                        <img src={data[0].subThumbnail} className="productThumbnail" alt={data[0].title} />
+                                        <a target="_blank" rel="noopener noreferrer" href={data[0].url}>
+                                            <img src={data[0].subThumbnail} className="productThumbnail" alt={data[0].title} />
+                                        </a>
                                     }
                                     </>
                                     : 
@@ -172,11 +211,11 @@ const PriceComparison = ({ history }) => {
                                         {/* Price */}
                                         {data[0].price.current_price ? 
                                             <Title level={3} style={{margin:0}}>
-                                                { '$' + data[0].price.current_price }
+                                                {(data[0].price.current_price).includes('$') ? data[0].price.current_price : '$' + data[0].price.current_price}    
                                             </Title> 
                                             :
                                             <Title level={3} style={{margin:0}}>
-                                                {(data[0].price).includes('$') ? data[0].price : '$' + data[0].price}     
+                                                $0.00
                                             </Title>
                                         }
                                     </Col>
@@ -185,26 +224,24 @@ const PriceComparison = ({ history }) => {
                                 {/* Product reviews */}
                                 <Row className="column productReviews">
                                     {/* Rating Number */}
-                                    {data[0].rating ? 
-                                        <Title level={4} style={{marginRight: '10px', marginBottom: 0}}>{data[0].rating === "No Stars" ? 'N/A' : data[0].rating + ' / 5'}</Title>
-                                        :  
+                                    {data[0].reviews.rating ? 
                                         <Title level={4} style={{marginRight: '10px', marginBottom: 0}}>{data[0].reviews.rating} / 5</Title>
+                                        :  
+                                        null
                                     }
                                     {/* Star Rating */}
-                                    {data[0].totalReviews ?
-                                        <Rate disabled allowHalf defaultValue={parseFloat(data[0].rating)} style={{fontSize: '16px'}} />
-                                        :
+                                    {data[0].total_reviews ?
                                         <Rate disabled allowHalf defaultValue={parseFloat(data[0].reviews.rating)} style={{fontSize: '16px'}} />
+                                        :
+                                        <Rate disabled allowHalf defaultValue={0} style={{fontSize: '16px'}} />
                                     }
                                     {/* Total Reviews */}
-                                    {data[0].totalReviews ? 
-                                        <Link target="_blank" rel="noopener noreferrer" href={data[0].link} style={{margin: "6px 0 0 13px"}}>
-                                            {data[0].totalReviews === "N/A" ? 'N/A' : parseFloat(data[0].totalReviews ) + ' reviews'} 
-                                        </Link>
-                                        :  
+                                    {data[0].total_reviews ? 
                                         <Link target="_blank" rel="noopener noreferrer" href={data[0].url + '/#customerReviews'} style={{margin: "6px 0 0 13px"}}>
-                                            {data[0].reviews.total_reviews} reviews
+                                            {parseFloat(data[0].reviews.total_reviews) + ' reviews'}
                                         </Link>
+                                        :
+                                        null
                                     }
                                 </Row>
                                 <Divider />
@@ -217,7 +254,7 @@ const PriceComparison = ({ history }) => {
                                         </Link>
                                     </Row>
                                     <Row justify="left">
-                                        <Link target="_blank" rel="noopener noreferrer" href={data[0].link ? data[0].link : data[0].url} className="productButtonWrapper">
+                                        <Link target="_blank" rel="noopener noreferrer" href={data[0].url} className="productButtonWrapper">
                                             <Button className="productButton" type="primary" size='medium' icon={<ShoppingOutlined/>}  style={{height: '45px', fontSize: '16px'}}>
                                                 Buy Now
                                             </Button>
@@ -228,9 +265,9 @@ const PriceComparison = ({ history }) => {
                             <Divider />
                             {/* Compare title */}
                             <Row>
-                                <Title level={2} style={{margin:0}}>Compare Prices</Title>
+                                <Title level={3} style={{margin:0}}>Compare Prices</Title>
                                 <Tooltip placement="topLeft" title="We may be compensated through affiliate links on some products.">
-                                    <InfoCircleOutlined style={{fontSize: '19px', margin: 'auto 10px'}}/>
+                                    <InfoCircleOutlined style={{fontSize: '18px', margin: 'auto 10px'}}/>
                                 </Tooltip>
                             </Row>
                             <Divider />

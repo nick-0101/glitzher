@@ -3,8 +3,9 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const colors = require('colors');
+// const cookieParser = require('cookie-parser');
 const connectDB = require('./config/db');
-const redis = require('redis');
+// const { cookie } = require('./middleware/Cookie');
 dotenv.config({ path: './config/env.config' });
 
 connectDB();
@@ -18,6 +19,10 @@ const app = express();
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+
+// Cookies
+// app.use(cookieParser());
+// app.use(cookie);
 
 // Middleware
 app.use(bodyParser.json());

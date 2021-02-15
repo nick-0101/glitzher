@@ -9,12 +9,11 @@ const redisClient = redis.createClient(PORT_REDIS);
 const router = express.Router();
 
 // Todo
-// start the front-end and display the information in a way where you can compare
 // use affiliatejs to make all links affiliate links.
-// have a way to load as you scroll
 // the problem is that /api is fetching from database and is not checking if there is a cache
+// the problem with the cahcing is that we need indivial cache for each endpoint
 
-var update_id = 'key1322';
+var update_id = 'key1142';
 
 const set = (key, value) => {
   // set 43200 (12hrs) as cache time
@@ -31,13 +30,23 @@ const get = (req, res, next) => {
   });
 };
 
+router.get('/test', (req, res) => {
+  res.sendStatus(200).json('Hello');
+});
+
 // Routes
 router.get('/api', get, async (req, res) => {
-  const _id = '60108f05160579104738afa3';
+  // const _id = '60108f05160579104738afa3';
+
   try {
     // Fetch Data
-    const data = await Data.find({ _id });
-    const dataCount = Object.keys(data[0].api.result).length;
+    const data = await Data.find();
+
+    // Assign Data
+    const amazon = data[0].api.result;
+    const sephora = data[1].api.result;
+    const result = Object.assign(sephora, amazon);
+    const dataCount = Object.keys(result).length;
 
     // Querys
     const page = parseInt(req.query.page) || 1;
@@ -47,34 +56,31 @@ router.get('/api', get, async (req, res) => {
     // Add Pages
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
-    const dataResult = data[0].api.result.slice(startIndex, endIndex);
+    const dataResult = result.slice(startIndex, endIndex);
+
+    // Cache
+    set(update_id, dataResult);
 
     // Filter api
     if (discounted === 'true') {
       // Filter results for discount
       const filterDiscounted = dataResult.filter((x) => x.price.discounted);
-      res.send(filterDiscounted);
-      // set(update_id, filterDiscounted);
+      res.status(200).json(filterDiscounted);
     } else {
       // Send data to client
-      set(update_id, dataResult);
-      res.send(dataResult);
+      res.status(200).json(dataResult);
     }
   } catch (err) {
     console.error(err);
-    return res.status(500).json({
-      message: 'Hmm. Something went wrong on our end.',
-      type: 'ServerError',
-    });
+    return res.sendStatus(500);
   }
 });
 
-router.get('/api/bestProduct', async (req, res) => {
+router.get('/api/bestProduct', get, async (req, res) => {
   const { q } = req.query;
   try {
     // Client validation
     if (q === '' || q.length < 3 || q.length > 150) {
-      console.log(q.length);
       return res.sendStatus(400);
     }
 
@@ -97,8 +103,8 @@ router.get('/api/bestProduct', async (req, res) => {
       const sortedResults = filterdResults.sort(
         (a, b) =>
           // Special expression is replacing '$'
-          parseFloat(a.price.replace(/\$/g, '')) -
-          parseFloat(b.price.replace(/\$/g, ''))
+          parseFloat(a.price.current_price.replace(/\$/g, '')) -
+          parseFloat(b.price.current_price.replace(/\$/g, ''))
       );
 
       // Send data to front end
