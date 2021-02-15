@@ -36,8 +36,6 @@ router.get('/test', (req, res) => {
 
 // Routes
 router.get('/api', get, async (req, res) => {
-  // const _id = '60108f05160579104738afa3';
-
   try {
     // Fetch Data
     const data = await Data.find();
@@ -78,41 +76,42 @@ router.get('/api', get, async (req, res) => {
 
 router.get('/api/bestProduct', get, async (req, res) => {
   const { q } = req.query;
+
+  // Client validation
+  if (q === '' || q.length < 3 || q.length > 150) {
+    return res.sendStatus(400);
+  }
+
   try {
-    // Client validation
-    if (q === '' || q.length < 3 || q.length > 150) {
+    // Fetch Data
+    const data = await Data.find();
+    const amazon = data[0].api.result;
+    const sephora = data[1].api.result;
+    const result = Object.assign(sephora, amazon);
+
+    // Querys
+    const query = req.query.q;
+
+    // Filter
+    const filterdResults = result.filter(({ title }) =>
+      title.toLowerCase().includes(query.toLowerCase())
+    );
+
+    // Result Validation
+    if (!Array.isArray(filterdResults) || !filterdResults.length) {
       return res.sendStatus(400);
     }
 
-    try {
-      // Fetch Data
-      const data = await Data.find();
-      const amazon = data[0].api.result;
-      const sephora = data[1].api.result;
-      const result = Object.assign(sephora, amazon);
+    // Sort results
+    const sortedResults = filterdResults.sort(
+      (a, b) =>
+        // Special expression is replacing '$'
+        parseFloat(a.price.current_price.replace(/\$/g, '')) -
+        parseFloat(b.price.current_price.replace(/\$/g, ''))
+    );
 
-      // Querys
-      const query = req.query.q;
-
-      // Filter
-      const filterdResults = result.filter(({ title }) =>
-        title.includes(query)
-      );
-
-      // Sort results
-      const sortedResults = filterdResults.sort(
-        (a, b) =>
-          // Special expression is replacing '$'
-          parseFloat(a.price.current_price.replace(/\$/g, '')) -
-          parseFloat(b.price.current_price.replace(/\$/g, ''))
-      );
-
-      // Send data to front end
-      res.status(200).send(sortedResults);
-    } catch (err) {
-      console.error(err);
-      return res.sendStatus(500); // Server error
-    }
+    // Send data to front end
+    res.status(200).send(sortedResults);
   } catch (err) {
     console.error(err);
     return res.sendStatus(500); // Server error
