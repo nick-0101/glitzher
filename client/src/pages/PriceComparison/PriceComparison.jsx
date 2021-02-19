@@ -1,8 +1,13 @@
-import React, { useContext, useEffect, useState  } from 'react';
+// App 
+import React, { useContext, useEffect, useState } from 'react';
 import { AppContext } from "../../components/Context/Context";
+import { withRouter } from "react-router-dom";
+
+// Ant Design 
 import { Col, Row, Typography, Divider, Button, Rate, Table, Image, Tooltip } from 'antd';
 import { ShoppingOutlined, ShoppingCartOutlined, ArrowRightOutlined, InfoCircleOutlined } from '@ant-design/icons';
-import { withRouter } from "react-router-dom";
+
+// Application Packages 
 import Axios from 'axios';
 
 // Components
@@ -16,6 +21,7 @@ const PriceComparison = () => {
     const ctx = useContext(AppContext);
     const [data, setData] = useState('')
     const [tableData, setTableData] = useState('')
+
     // Errors
     const [error, setError] = useState('')
     
@@ -48,11 +54,13 @@ const PriceComparison = () => {
                     console.log(data)             
                 })
                 .catch(err => {
-                    if (err.response.status === 400) {
-                        return setError(`Sorry, we couldn't find: ${searchValue || ctx.searchValue}`)
-                    } else {
-                        return setError(`Error: Oops, there's been a problem on our end. Please try again later.`)
-                    }
+                    // if (err.response.status === 400) {
+                    //     return setError(`Sorry, we couldn't find: ${searchValue || ctx.searchValue}`)
+                    // } else {
+                    //     return setError(`Error: Oops, there's been a problem on our end. Please try again later.`)
+                    // }
+                    console.log(err)
+                    return setError(`Error: Oops, there's been a problem on our end. Please try again later.`)
                 })
             } catch (err) {
                 if (Axios.isCancel(err)) {
@@ -203,7 +211,7 @@ const PriceComparison = () => {
                                         {/* Price */}
                                         {data[0].price.current_price ? 
                                             <Title level={3} style={{margin:0}}>
-                                                {(data[0].price.current_price).includes('$') ? data[0].price.current_price : '$' + data[0].price.current_price}    
+                                                {'$' + data[0].price.current_price}    
                                             </Title> 
                                             :
                                             <Title level={3} style={{margin:0}}>

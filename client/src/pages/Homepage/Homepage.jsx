@@ -1,14 +1,20 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Card, Col, Row, Typography, Rate, Button, Image } from 'antd';
-import { ShoppingCartOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
+// App
+import React, { useState, useEffect, useContext, useRef, useCallback } from 'react';
 import { withRouter } from "react-router-dom";
 import { AppContext } from "../../components/Context/Context";
+
+// AntD
+import { Card, Col, Row, Typography, Rate, Button, Image } from 'antd';
+import { ShoppingCartOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
+
+// Extra
+import { useVirtual } from "react-virtual";
 import axios from 'axios';
 import ReactPaginate from 'react-paginate';
 
 // Components 
 import SkeletonLoader from '../../components/SkeletonLoaders/SkeletonLoader';
-import SiderNav from '../../components/SiderNav/SiderNav';
+// import SiderNav from '../../components/SiderNav/SiderNav';
 import PriceComparison from '../../components/ComparisonSearch/ComparisonSearch';
 
 import './Homepage.css'
@@ -21,6 +27,7 @@ const Homepage = ({ history }) => {
     const [perPage] = useState(10);
     const [pageCount, setPageCount] = useState(0)
     const { setSearch } = useContext(AppContext);
+    const parentRef = useRef();
 
     useEffect(() => {
         const CancelToken = axios.CancelToken;
@@ -50,6 +57,13 @@ const Homepage = ({ history }) => {
         };
     }, [offset, perPage])
 
+    // react virtual
+    // const rowVirtualizer = useVirtual({
+    //     size: data.length,
+    //     parentRef,
+    //     estimateSize: React.useCallback(() => 220, [])
+    // });
+
     const handlePageClick = (e) => {
         const selectedPage = e.selected;
         setOffset(selectedPage + 1)
@@ -57,11 +71,26 @@ const Homepage = ({ history }) => {
 
     const handleSetSearch = (value) => {
         if (value !== '') {
-            setSearch(value);
-            history.push({
-                pathname: '/search',
-                search: `?q=${value}`
-            })
+            if (typeof(Storage) !== "undefined") {
+                sessionStorage.removeItem('searchResult');
+                sessionStorage.setItem("searchResult", value);
+
+                console.log(value)
+                // Complete search  
+                history.push({
+                    pathname: '/search',
+                    search: `?q=${sessionStorage.getItem("searchResult")}`
+                })
+            } else {
+                console.log('No session storage support')
+
+                // Complete search with context
+                setSearch(value)
+                history.push({
+                    pathname: '/search',
+                    search: `?q=${setSearch}`
+                })
+            }
         } else {
             return
         }
@@ -74,6 +103,8 @@ const Homepage = ({ history }) => {
     // make it so when the api updates at 12pm every day, redis also caches it.
     // cahcing system is really needed. When trying to paginate with 300 obj it doesn't load
 
+    
+
     return (
         <>
         {/* Section 1 */}
@@ -82,9 +113,9 @@ const Homepage = ({ history }) => {
         {/* Section 2 */}
         <Title level={3} style={{textAlign: 'center', marginBottom: '4%'}}>View todays top discounts</Title>
         <Row style={{textAlign: 'center', margin: '0 3%'}}>
-            <Col xs={0} sm={0} md={0} lg={0} xl={2} xxl={4} style={{borderRight: '2px solid #f0f0f0'}}> 
+            {/* <Col xs={0} sm={0} md={0} lg={0} xl={2} xxl={4} style={{borderRight: '2px solid #f0f0f0'}}> 
                <SiderNav /> 
-            </Col>
+            </Col> */}
             <Col xs={24} sm={24} md={24} lg={24} xl={22} xxl={20} justiy="center" align="center">
             {data ?
                 <Row justiy="center" align="center" style={{marginLeft: '20px'}}>
@@ -154,6 +185,9 @@ const Homepage = ({ history }) => {
 
                                         {/* Compare Prices */}        
                                         <Row>
+                                            {/* the problem is that this function is sending the whole response
+                                                object, not just the title of the clicked on button.
+                                            */}
                                             <Link onClick={(() => handleSetSearch(item.title))} target="_blank" style={{color: '#000000d9'}}>
                                                 Compare prices on this product
                                             </Link>
@@ -164,6 +198,7 @@ const Homepage = ({ history }) => {
                                             <Button 
                                                 type="primary" 
                                                 size='medium' 
+                                                style={{height: '45px', fontSize: '14px'}}
                                             >
                                                 <ShoppingCartOutlined style={{ fontSize: '19px', color: '#fff' }}/> Add to cart
                                             </Button>

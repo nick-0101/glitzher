@@ -26,7 +26,7 @@ const SiderNav = () => {
         trigger={null}
       >
         <Menu
-          // mode='inline'
+          mode='inline'
           style={{ height: '100vh', border: 'none', padding: '0'}}
           defaultOpenKeys={['sub1', 'sub2']}
         >

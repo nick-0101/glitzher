@@ -1,9 +1,13 @@
+// Required
 import React, { useContext } from 'react';
 import { AppContext } from "../Context/Context";
 import { withRouter } from "react-router-dom";
+
+// Ant D 
 import { Input, Row, Col, Typography, Divider } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
+// Css
 import './ComparisonSearch.css'
 
 const { Search } = Input;
@@ -17,15 +21,22 @@ const ComparisonSearch = ({ history  }) => {
             if (typeof(Storage) !== "undefined") {
                 sessionStorage.removeItem('searchResult');
                 sessionStorage.setItem("searchResult", value);
+
+                // Complete search
+                history.push({  
+                    pathname: '/search',
+                    search: `?q=${sessionStorage.getItem("searchResult")}`
+                })
             } else {
                 console.log('No session storage support')
+                
+                // Complete search with context
+                setSearch(value);
+                history.push({
+                    pathname: '/search',
+                    search: `?q=${setSearch}`
+                })
             }
-
-            setSearch(value);
-            history.push({
-                pathname: '/search',
-                search: `?q=${sessionStorage.getItem("searchResult")}`
-            })
         } else {
             return
         }
