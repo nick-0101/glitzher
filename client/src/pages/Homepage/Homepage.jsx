@@ -1,20 +1,18 @@
 // App
-import React, { useState, useEffect, useContext, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { withRouter } from "react-router-dom";
 import { AppContext } from "../../components/Context/Context";
 
 // AntD
 import { Card, Col, Row, Typography, Rate, Button, Image } from 'antd';
-import { ShoppingCartOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
+import { ShoppingOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
 
 // Extra
-import { useVirtual } from "react-virtual";
 import axios from 'axios';
 import ReactPaginate from 'react-paginate';
 
 // Components 
 import SkeletonLoader from '../../components/SkeletonLoaders/SkeletonLoader';
-// import SiderNav from '../../components/SiderNav/SiderNav';
 import PriceComparison from '../../components/ComparisonSearch/ComparisonSearch';
 
 import './Homepage.css'
@@ -27,49 +25,49 @@ const Homepage = ({ history }) => {
     const [perPage] = useState(10);
     const [pageCount, setPageCount] = useState(0)
     const { setSearch } = useContext(AppContext);
-    const parentRef = useRef();
 
-    useEffect(() => {
-        const CancelToken = axios.CancelToken;
-        const source = CancelToken.source();
 
-        const getData = async() => {
-            try {      
-                axios.get(`/api?page=${offset}`, { cancelToken: source.token })
-                .then(res => {
-                    const data = res.data;
-
-                    const sliceData = data.slice(offset, offset + perPage)
-                    setData(sliceData)
-                    setPageCount(Math.ceil(data.length / perPage))
-                });
-            } catch (err) {
-                if (axios.isCancel(err)) {
-                    console.log("cancelled");
-                } else {
-                    console.error(err)
-                }
-            }
-        }
-        getData()
-        return () => {
-            source.cancel();
-        };
-    }, [offset, perPage])
-
-    // react virtual
-    // const rowVirtualizer = useVirtual({
-    //     size: data.length,
-    //     parentRef,
-    //     estimateSize: React.useCallback(() => 220, [])
-    // });
-
-    const handlePageClick = (e) => {
+    const pagination = (e) => {
         const selectedPage = e.selected;
         setOffset(selectedPage + 1)
-    };
+        getData()
+    }
 
-    const handleSetSearch = (value) => {
+
+    const getData = useCallback(async(s) => {
+        const CancelToken = axios.CancelToken;
+        const source = CancelToken.source();
+        console.log(offset)
+        try {      
+            axios.get(`/api?page=${offset}`, { cancelToken: source.token })
+            .then(res => {
+                const data = res.data;
+
+                // Add Pages
+                const startIndex = (offset - 1) * 100;
+                const endIndex = offset * 100;
+                const dataResult = data.slice(startIndex, endIndex);
+
+                // const sliceData = data.slice(offset, offset + perPage)
+                setData(dataResult)
+                setPageCount(Math.ceil(data.length / perPage))
+
+                console.log(dataResult)
+            });
+        } catch (err) {
+            if (axios.isCancel(err)) {
+                console.log("cancelled");
+            } else {
+                console.error(err)
+            }
+        }
+    }, [offset, perPage])
+
+    useEffect(() => {
+        getData()
+    }, [getData])
+
+    const comparePriceSearch = (value) => {
         if (value !== '') {
             if (typeof(Storage) !== "undefined") {
                 sessionStorage.removeItem('searchResult');
@@ -98,12 +96,8 @@ const Homepage = ({ history }) => {
 
     //TODO:
 
-    // add a little fire icon next to a item discounted $5 or more
-
     // make it so when the api updates at 12pm every day, redis also caches it.
     // cahcing system is really needed. When trying to paginate with 300 obj it doesn't load
-
-    
 
     return (
         <>
@@ -116,12 +110,12 @@ const Homepage = ({ history }) => {
             {/* <Col xs={0} sm={0} md={0} lg={0} xl={2} xxl={4} style={{borderRight: '2px solid #f0f0f0'}}> 
                <SiderNav /> 
             </Col> */}
-            <Col xs={24} sm={24} md={24} lg={24} xl={22} xxl={20} justiy="center" align="center">
+            <Col justiy="center" align="center">
             {data ?
                 <Row justiy="center" align="center" style={{marginLeft: '20px'}}>
                     {data.map((item, index) => {        
                         return (
-                            <Row style={{textAlign: 'center', padding: '0 10px'}} key={index} gutter={16}>
+                            <Row style={{textAlign: 'center', padding: '0 10px'}} key={index} gutter={0}>
                                 <Col style={{width: '400px', height: '460px'}}> 
                                     <Card style={{ borderTop: '2px solid #f0f0f0', borderBottom: '0px', borderRight: '0px', borderLeft: '0px'}}>
                                         {/* Product Image */}
@@ -154,22 +148,28 @@ const Homepage = ({ history }) => {
 
                                         {/* Product title */}
                                         <a target="_blank" rel="noopener noreferrer" href={item.url}>
-                                            <Row style={{marginTop: "15px", marginBottom: '6px'}}>
-                                                <Paragraph ellipsis={{ rows: 2 }} style={{textAlign: 'left', fontSize: '16px', marginBottom: 0}}>
+                                            <Row className="hompageProductTitle" style={{marginTop: "15px", marginBottom: '6px'}}>
+                                                <Paragraph ellipsis={{ rows: 1 }} style={{textAlign: 'left', fontSize: '16px', marginBottom: 0}}>
                                                     {item.title}
                                                 </Paragraph>
                                             </Row>
                                         </a>
 
                                         {/* Product reviews */}
-                                        <Row>
-                                            <Rate disabled allowHalf defaultValue={item.reviews.rating} style={{fontSize: '14px'}} />
+                                        {/* getting rating error bc I need
+                                        to handle for empty value */}
+                                        <Row className="hompageProductReviews">
+                                            {item.reviews.rating !== '' ? 
+                                                <Rate disabled allowHalf defaultValue={parseInt(item.reviews.rating)} style={{fontSize: '14px'}} />
+                                                :
+                                                <Rate disabled allowHalf defaultValue={0} style={{fontSize: '14px'}} />
+                                            }
                                         </Row>
 
                                         {/* Product price */}
-                                        <Row> 
+                                        <Row className="hompageProductPrice"> 
                                             <Text style={{marginTop: '6px', marginBottom: 0, fontSize: '25px'}}>
-                                                ${item.price.current_price}
+                                                ${item.price.current_price ? item.price.current_price : '0.00'}
                                             </Text>
                                             {item.price.savings_percent ? 
                                             <Row>
@@ -184,23 +184,21 @@ const Homepage = ({ history }) => {
                                         </Row>
 
                                         {/* Compare Prices */}        
-                                        <Row>
-                                            {/* the problem is that this function is sending the whole response
-                                                object, not just the title of the clicked on button.
-                                            */}
-                                            <Link onClick={(() => handleSetSearch(item.title))} target="_blank" style={{color: '#000000d9'}}>
+                                        <Row className="hompageProductCompare">
+                                            <Link onClick={(() => comparePriceSearch(item.title))} target="_blank" style={{color: '#000000d9'}}>
                                                 Compare prices on this product
                                             </Link>
                                         </Row>
 
                                         {/* Add to cart */}
-                                        <Row style={{margin:'15px 0'}} >
+                                        <Row style={{margin:'15px 0'}} className="hompageProductCart">
                                             <Button 
+                                                className="productButton"
                                                 type="primary" 
                                                 size='medium' 
                                                 style={{height: '45px', fontSize: '14px'}}
                                             >
-                                                <ShoppingCartOutlined style={{ fontSize: '19px', color: '#fff' }}/> Add to cart
+                                                <ShoppingOutlined style={{ fontSize: '17px', color: '#fff' }}/> Buy Now
                                             </Button>
                                         </Row>   
                                     </Card>
@@ -209,25 +207,28 @@ const Homepage = ({ history }) => {
                         )
                     })}
                 </Row>
-                : <SkeletonLoader /> 
+                : 
+                <SkeletonLoader /> 
             }
                 {data ? 
-                    <Row justiy="center" align="center" style={{margin: '2rem 0'}}>
-                        <ReactPaginate
-                            previousLabel={<CaretLeftOutlined />}
-                            nextLabel={<CaretRightOutlined /> }
-                            breakLabel={"..."}
-                            breakClassName={"break-me"}
-                            pageCount={pageCount}
-                            marginPagesDisplayed={2}
-                            pageRangeDisplayed={5}
-                            onPageChange={handlePageClick}
-                            containerClassName={"pagination"}
-                            subContainerClassName={"pages pagination"}
-                            activeClassName={"active"}
-                            onClick={window.scrollTo(0, 0)}
-                        />
-                    </Row> 
+                    <>
+                        <Row justiy="center" align="center" style={{margin: '2rem 0'}}>
+                            <ReactPaginate
+                                previousLabel={<><CaretLeftOutlined /> Previous</>}
+                                nextLabel={<><CaretRightOutlined /> Next</>}
+                                breakLabel={"..."}
+                                breakClassName={"break-me"}
+                                pageCount={pageCount}
+                                // marginPagesDisplayed={2}
+                                // pageRangeDisplayed={5}
+                                onPageChange={pagination}
+                                containerClassName={"pagination"}
+                                subContainerClassName={"pages pagination"}
+                                activeClassName={"active"}
+                                onClick={window.scrollTo(0, 0)}
+                            />
+                        </Row> 
+                    </>
                 : null} 
                 </Col>
             </Row>

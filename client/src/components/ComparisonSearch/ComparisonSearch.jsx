@@ -39,7 +39,7 @@ const ComparisonSearch = ({ history  }) => {
             }
         } else {
             return
-        }
+        }  
     };
 
     return (

@@ -13,11 +13,14 @@ const router = express.Router();
 // the problem is that /api is fetching from database and is not checking if there is a cache
 // the problem with the cahcing is that we need indivial cache for each endpoint
 
+// potential problem. When I stop app redis gets stoped. So if a users
+// app crashes will the cache get destoryed causing long loading times?
+
 var update_id = 'key1142';
 
 const set = (key, value) => {
   // set 43200 (12hrs) as cache time
-  redisClient.setex(key, 20, JSON.stringify(value));
+  redisClient.setex(key, 60, JSON.stringify(value));
 };
 
 const get = (req, res, next) => {
@@ -74,47 +77,51 @@ router.get('/api', get, async (req, res) => {
   }
 });
 
-router.get('/api/bestProduct', get, async (req, res) => {
+router.get('/api/bestProduct', async (req, res) => {
   const { q } = req.query;
 
   // Client validation
   if (q === '' || q.length < 3 || q.length > 150) {
     return res.sendStatus(400);
-  }
+  } else {
+    try {
+      // Fetch Data
+      const data = await Data.find();
 
-  try {
-    // Fetch Data
-    const data = await Data.find();
-    const amazon = data[0].api.result;
-    const sephora = data[1].api.result;
-    const result = Object.assign(sephora, amazon);
+      // Assign Data
+      const amazon = data[0].api.result;
+      const sephora = data[1].api.result;
+      const result = Object.assign(sephora, amazon);
 
-    // Querys
-    const query = req.query.q;
+      // Querys
+      const query = req.query.q;
+      console.log(query);
 
-    // Filter
-    const filterdResults = result.filter(({ title }) =>
-      title.toLowerCase().includes(query.toLowerCase())
-    );
+      // Filter
+      const filterdResults = result.filter(({ title }) =>
+        title.toLowerCase().includes(query.toLowerCase())
+      );
 
-    // Result Validation
-    if (!Array.isArray(filterdResults) || !filterdResults.length) {
-      return res.sendStatus(400);
+      // Result Validation
+      if (!Array.isArray(filterdResults) || !filterdResults.length) {
+        return res.sendStatus(400);
+      } else {
+        // Sort results
+        const sortedResults = filterdResults.sort(
+          (a, b) =>
+            // Special expression is replacing '$'
+            // a.price.current_price.replace(/\$/g, '') -
+            // b.price.current_price.replace(/\$/g, '')
+            a.price.current_price - b.price.current_price
+        );
+
+        // Send data to front end
+        res.status(200).send(sortedResults);
+      }
+    } catch (err) {
+      console.error(err);
+      return res.sendStatus(500); // Server error
     }
-
-    // Sort results
-    const sortedResults = filterdResults.sort(
-      (a, b) =>
-        // Special expression is replacing '$'
-        parseFloat(a.price.current_price.replace(/\$/g, '')) -
-        parseFloat(b.price.current_price.replace(/\$/g, ''))
-    );
-
-    // Send data to front end
-    res.status(200).send(sortedResults);
-  } catch (err) {
-    console.error(err);
-    return res.sendStatus(500); // Server error
   }
 });
 

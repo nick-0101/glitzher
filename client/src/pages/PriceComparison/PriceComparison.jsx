@@ -19,25 +19,28 @@ const { Text, Title, Link, Paragraph } = Typography;
 
 const PriceComparison = () => {
     const ctx = useContext(AppContext);
-    const [data, setData] = useState('')
+    const [comparisonData, setComparisonData] = useState('')
     const [tableData, setTableData] = useState('')
 
     // Errors
     const [error, setError] = useState('')
-    
-    // Url 
-    const searchValue = sessionStorage.getItem("searchResult");
-    const url = `/api/bestProduct?q=${searchValue}`;
 
     // Fetch data
     useEffect(() => { 
-        const source = Axios.CancelToken.source()
+        const CancelToken = Axios.CancelToken;
+        const source = CancelToken.source();
+        
+        // Url 
+        const searchValue = sessionStorage.getItem("searchResult");
+        console.log(searchValue, "price comparsion jsx")
 
         const getProductData = async() => {
             try {      
-                Axios.get(url, { cancelToken: source.token })
+                Axios.get(`/api/bestProduct?q=${searchValue}`, 
+                { cancelToken: source.token })
                 .then(res => {
                     const data = res.data;
+                    setComparisonData(data)
 
                     // Set & format table data
                     const tabledData = data.map((item, index) => ({
@@ -50,18 +53,8 @@ const PriceComparison = () => {
                     }))
                     
                     setTableData(tabledData)
-                    setData(data)
                     console.log(data)             
-                })
-                .catch(err => {
-                    // if (err.response.status === 400) {
-                    //     return setError(`Sorry, we couldn't find: ${searchValue || ctx.searchValue}`)
-                    // } else {
-                    //     return setError(`Error: Oops, there's been a problem on our end. Please try again later.`)
-                    // }
-                    console.log(err)
-                    return setError(`Error: Oops, there's been a problem on our end. Please try again later.`)
-                })
+                });
             } catch (err) {
                 if (Axios.isCancel(err)) {
                 } else {
@@ -74,7 +67,7 @@ const PriceComparison = () => {
             source.cancel();
         };
 
-    }, [ctx.searchValue, searchValue, url]);
+    }, [ctx.searchValue]);
 
     const columns = [
         // Merchant
@@ -160,7 +153,7 @@ const PriceComparison = () => {
             </Row> 
             : 
             <>
-                {data ?
+                {comparisonData ?
                     <>
                     <Divider style={{marginTop: 0}} /> 
                         <Row className="productWrapper">
@@ -169,20 +162,20 @@ const PriceComparison = () => {
                                 ellipsis={{ rows: 1, expandable: false }}
                                 style={{marginBottom: 0}}
                                 >
-                                    {data[0].title}
+                                    {comparisonData[0].title}
                             </Paragraph>
                             <Divider />
                             {/* Product image */}
                             <Col flex="0 0 40%" className="column productImage">
-                                {data[0].thumbnail || data[0].subThumbnail ?
+                                {comparisonData[0].thumbnail || comparisonData[0].subThumbnail ?
                                     <> 
-                                    {data[0].thumbnail ?
-                                        <a target="_blank" rel="noopener noreferrer" href={data[0].url}>
-                                            <img src={data[0].thumbnail} className="productThumbnail" alt={data[0].title} />     
+                                    {comparisonData[0].thumbnail ?
+                                        <a target="_blank" rel="noopener noreferrer" href={comparisonData[0].url}>
+                                            <img src={comparisonData[0].thumbnail} className="productThumbnail" alt={comparisonData[0].title} />     
                                         </a>
                                         :
-                                        <a target="_blank" rel="noopener noreferrer" href={data[0].url}>
-                                            <img src={data[0].subThumbnail} className="productThumbnail" alt={data[0].title} />
+                                        <a target="_blank" rel="noopener noreferrer" href={comparisonData[0].url}>
+                                            <img src={comparisonData[0].subThumbnail} className="productThumbnail" alt={comparisonData[0].title} />
                                         </a>
                                     }
                                     </>
@@ -200,18 +193,18 @@ const PriceComparison = () => {
                                 <Row className="column productPrice">
                                     <Col>
                                         {/* Best price title */}
-                                        {data[0].brand ? 
+                                        {comparisonData[0].brand ? 
                                             <Text>
-                                                The best price by <Link>{data[0].brand}</Link>
+                                                The best price by <Link>{comparisonData[0].brand}</Link>
                                             </Text>     
                                         :   <Text>
                                                 This is the best price we found.
                                             </Text>
                                         }
                                         {/* Price */}
-                                        {data[0].price.current_price ? 
+                                        {comparisonData[0].price.current_price ? 
                                             <Title level={3} style={{margin:0}}>
-                                                {'$' + data[0].price.current_price}    
+                                                {'$' + comparisonData[0].price.current_price}    
                                             </Title> 
                                             :
                                             <Title level={3} style={{margin:0}}>
@@ -224,21 +217,21 @@ const PriceComparison = () => {
                                 {/* Product reviews */}
                                 <Row className="column productReviews">
                                     {/* Rating Number */}
-                                    {data[0].rating ? 
-                                        <Title level={4} style={{marginRight: '10px', marginBottom: 0}}>{data[0].reviews.rating} / 5</Title>
+                                    {comparisonData[0].rating ? 
+                                        <Title level={4} style={{marginRight: '10px', marginBottom: 0}}>{comparisonData[0].reviews.rating} / 5</Title>
                                         :  
                                         null
                                     }
                                     {/* Star Rating */}
-                                    {data[0].total_reviews ?
-                                        <Rate disabled allowHalf defaultValue={parseFloat(data[0].reviews.rating)} style={{fontSize: '16px'}} />
+                                    {comparisonData[0].total_reviews ?
+                                        <Rate disabled allowHalf defaultValue={parseFloat(comparisonData[0].reviews.rating)} style={{fontSize: '16px'}} />
                                         :
                                         <Rate disabled allowHalf defaultValue={0} style={{fontSize: '16px'}} />
                                     }
                                     {/* Total Reviews */}
-                                    {data[0].total_reviews ? 
-                                        <Link target="_blank" rel="noopener noreferrer" href={data[0].url + '/#customerReviews'} style={{margin: "6px 0 0 13px"}}>
-                                            {parseFloat(data[0].reviews.total_reviews) + ' reviews'}
+                                    {comparisonData[0].total_reviews ? 
+                                        <Link target="_blank" rel="noopener noreferrer" href={comparisonData[0].url + '/#customerReviews'} style={{margin: "6px 0 0 13px"}}>
+                                            {parseFloat(comparisonData[0].reviews.total_reviews) + ' reviews'}
                                         </Link>
                                         :
                                         null
@@ -254,7 +247,7 @@ const PriceComparison = () => {
                                         </Link>
                                     </Row>
                                     <Row justify="left">
-                                        <Link target="_blank" rel="noopener noreferrer" href={data[0].url} className="productButtonWrapper">
+                                        <Link target="_blank" rel="noopener noreferrer" href={comparisonData[0].url} className="productButtonWrapper">
                                             <Button className="productButton" type="primary" size='medium' icon={<ShoppingOutlined/>}  style={{height: '45px', fontSize: '16px'}}>
                                                 Buy Now
                                             </Button>
