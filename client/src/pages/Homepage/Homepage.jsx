@@ -4,7 +4,16 @@ import { withRouter } from "react-router-dom";
 import { AppContext } from "../../components/Context/Context";
 
 // AntD
-import { Card, Col, Row, Typography, Rate, Button, Image } from 'antd';
+import { 
+    Card, 
+    Col, 
+    Row, 
+    Typography, 
+    Rate, 
+    Button, 
+    Image,
+    Select  
+} from 'antd';
 import { ShoppingOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
 
 // Extra
@@ -18,41 +27,35 @@ import PriceComparison from '../../components/ComparisonSearch/ComparisonSearch'
 import './Homepage.css'
 
 const { Paragraph, Text, Link, Title } = Typography;
+const { Option } = Select;
 
 const Homepage = ({ history }) => {
-    const [offset, setOffset] = useState(1);
-    const [data, setData] = useState('');
-    const [perPage] = useState(10);
+    const [page, setPageNumber] = useState(1);
+    const [perPage, setPerPage] = useState(100);
     const [pageCount, setPageCount] = useState(0)
+    const [data, setData] = useState('')
     const { setSearch } = useContext(AppContext);
-
-
-    const pagination = (e) => {
-        const selectedPage = e.selected;
-        setOffset(selectedPage + 1)
-        getData()
-    }
 
 
     const getData = useCallback(async(s) => {
         const CancelToken = axios.CancelToken;
         const source = CancelToken.source();
-        console.log(offset)
+        console.log(page)
         try {      
-            axios.get(`/api?page=${offset}`, { cancelToken: source.token })
+            axios.get(`/api?page=${page}`, { cancelToken: source.token })
             .then(res => {
                 const data = res.data;
 
                 // Add Pages
-                const startIndex = (offset - 1) * 100;
-                const endIndex = offset * 100;
+                const startIndex = (page - 1) * perPage;
+                const endIndex = page * perPage;
                 const dataResult = data.slice(startIndex, endIndex);
 
-                // const sliceData = data.slice(offset, offset + perPage)
+                // Set Data
                 setData(dataResult)
                 setPageCount(Math.ceil(data.length / perPage))
 
-                console.log(dataResult)
+                console.log(dataResult, data.length)
             });
         } catch (err) {
             if (axios.isCancel(err)) {
@@ -61,11 +64,17 @@ const Homepage = ({ history }) => {
                 console.error(err)
             }
         }
-    }, [offset, perPage])
+    }, [page, perPage])
 
     useEffect(() => {
         getData()
     }, [getData])
+
+    const handlePagination = (e) => {
+        const selectedPage = e.selected;
+        setPageNumber(selectedPage + 1)
+        getData()
+    }
 
     const comparePriceSearch = (value) => {
         if (value !== '') {
@@ -93,11 +102,15 @@ const Homepage = ({ history }) => {
             return
         }
     };
+    
+    const handleItemsPerPage = (value) => {
+        setPerPage(Number(value))
+        getData()
+    }
 
     //TODO:
 
-    // make it so when the api updates at 12pm every day, redis also caches it.
-    // cahcing system is really needed. When trying to paginate with 300 obj it doesn't load
+    // make it so when the api updates at 12pm every day, redis also caches it
 
     return (
         <>
@@ -212,21 +225,35 @@ const Homepage = ({ history }) => {
             }
                 {data ? 
                     <>
-                        <Row justiy="center" align="center" style={{margin: '2rem 0'}}>
+                        <Row justify="center" align="center" style={{margin: '2rem 0'}}>
+                            {/* Paginate */}
                             <ReactPaginate
                                 previousLabel={<><CaretLeftOutlined /> Previous</>}
                                 nextLabel={<><CaretRightOutlined /> Next</>}
                                 breakLabel={"..."}
                                 breakClassName={"break-me"}
                                 pageCount={pageCount}
-                                // marginPagesDisplayed={2}
-                                // pageRangeDisplayed={5}
-                                onPageChange={pagination}
+                                onPageChange={handlePagination}
                                 containerClassName={"pagination"}
                                 subContainerClassName={"pages pagination"}
                                 activeClassName={"active"}
                                 onClick={window.scrollTo(0, 0)}
                             />
+                            {/* Items Per Page */}
+                            <Row justify="right" align="right" style={{margin: 'auto 0'}}>
+                                <Row style={{margin: 'auto 15px'}}>
+                                    <Text>Items per page:</Text>
+                                </Row>
+                                <Select 
+                                    defaultValue="100" 
+                                    style={{ width: 80 }} 
+                                    onChange={handleItemsPerPage}
+                                    >
+                                    <Option value="100">100</Option>
+                                    <Option value="200">200</Option>
+                                    <Option value="300">300</Option>
+                                </Select>
+                            </Row>
                         </Row> 
                     </>
                 : null} 
