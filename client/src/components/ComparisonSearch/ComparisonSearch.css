@@ -1,23 +1,23 @@
 /* Input + button border radius */
 .ant-input-search .ant-input-group .ant-input-affix-wrapper:not(:last-child) {
-  border-top-left-radius: 32px;
-  border-bottom-left-radius: 32px;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
 }
 
 .ant-input-search
   > .ant-input-group
   > .ant-input-group-addon:last-child
   .ant-input-search-button {
-  border-radius: 0 32px 32px 0;
+  border-radius: 0 4px 4px 0;
 }
 
 /* Button and prefix spacing*/
 .ant-input-affix-wrapper-lg {
-  padding: 11px 11px;
+  padding: 16.5px 15px;
 }
 
 .ant-input-search-large .ant-input-search-button {
-  height: 50px;
+  height: 60px;
 }
 
 .ant-btn-lg {
@@ -27,4 +27,45 @@
 .ant-input-prefix {
   margin: 4px;
   margin-right: 7px;
+}
+
+/* Search Bar */
+.searchBarTitle {
+  font-size: 39px;
+}
+
+.mobileSearchCol {
+  display: none;
+  margin: 40px;
+}
+
+.searchCol {
+  display: block;
+  margin: 40px;
+}
+
+.searchBar {
+  margin-top: 2%;
+  color: #7c838f;
+}
+
+.frontpage-section {
+  background-image: url('./images/frontpage-background.png');
+  background-size: repeat;
+  background-position: top;
+  min-height: 100%;
+  height: 100%;
+}
+
+@media screen and (max-width: 900px) {
+  .searchBarTitle {
+    font-size: 30px;
+    font-family: 600;
+  }
+  .mobileSearchCol {
+    display: block;
+  }
+  .searchCol {
+    display: none;
+  }
 }

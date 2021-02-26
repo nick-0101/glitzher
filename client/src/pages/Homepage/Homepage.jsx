@@ -19,10 +19,11 @@ import { ShoppingOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-de
 // Extra
 import axios from 'axios';
 import ReactPaginate from 'react-paginate';
+import LazyLoad from 'react-lazyload';
 
 // Components 
 import SkeletonLoader from '../../components/SkeletonLoaders/SkeletonLoader';
-import PriceComparison from '../../components/ComparisonSearch/ComparisonSearch';
+import SearchBar from '../../components/ComparisonSearch/ComparisonSearch';
 
 import './Homepage.css'
 
@@ -31,16 +32,15 @@ const { Option } = Select;
 
 const Homepage = ({ history }) => {
     const [page, setPageNumber] = useState(1);
-    const [perPage, setPerPage] = useState(100);
+    const [perPage, setPerPage] = useState(50);
     const [pageCount, setPageCount] = useState(0)
     const [data, setData] = useState('')
     const { setSearch } = useContext(AppContext);
 
 
-    const getData = useCallback(async(s) => {
+    const getData = useCallback(async() => {
         const CancelToken = axios.CancelToken;
         const source = CancelToken.source();
-        console.log(page)
         try {      
             axios.get(`/api?page=${page}`, { cancelToken: source.token })
             .then(res => {
@@ -54,7 +54,7 @@ const Homepage = ({ history }) => {
                 // Set Data
                 setData(dataResult)
                 setPageCount(Math.ceil(data.length / perPage))
-
+                
                 console.log(dataResult, data.length)
             });
         } catch (err) {
@@ -73,6 +73,11 @@ const Homepage = ({ history }) => {
     const handlePagination = (e) => {
         const selectedPage = e.selected;
         setPageNumber(selectedPage + 1)
+        getData()
+    }
+
+    const handleItemsPerPage = (value) => {
+        setPerPage(Number(value))
         getData()
     }
 
@@ -102,20 +107,11 @@ const Homepage = ({ history }) => {
             return
         }
     };
-    
-    const handleItemsPerPage = (value) => {
-        setPerPage(Number(value))
-        getData()
-    }
-
-    //TODO:
-
-    // make it so when the api updates at 12pm every day, redis also caches it
 
     return (
         <>
         {/* Section 1 */}
-        <PriceComparison />
+        <SearchBar />
 
         {/* Section 2 */}
         <Title level={3} style={{textAlign: 'center', marginBottom: '4%'}}>View todays top discounts</Title>
@@ -135,19 +131,23 @@ const Homepage = ({ history }) => {
                                         {item.thumbnail || item.subThumbnail ?
                                             <> 
                                             {item.thumbnail ?
-                                                <a target="_blank" rel="noopener noreferrer" href={item.url}>
-                                                    <img src={item.thumbnail} 
-                                                        alt={item.title} 
-                                                        style={{width: '200px', height: '200px', objectFit: 'scale-down'}}
-                                                    />
-                                                </a>
+                                                <LazyLoad height={200} offset={400}>
+                                                    <a target="_blank" rel="noopener noreferrer" href={item.url}>
+                                                        <img src={item.thumbnail} 
+                                                            alt={item.title} 
+                                                            style={{width: '200px', height: '200px', objectFit: 'scale-down'}}
+                                                        />
+                                                    </a>
+                                                </LazyLoad>
                                                 :
-                                                <a target="_blank" rel="noopener noreferrer" href={item.url}>
-                                                    <img src={item.subThumbnail} 
-                                                        alt={item.title} 
-                                                        style={{width: '200px', height: '200px', objectFit: 'scale-down'}}
-                                                    />
-                                                </a>
+                                                <LazyLoad height={200} offset={400}>
+                                                    <a target="_blank" rel="noopener noreferrer" href={item.url}>
+                                                        <img src={item.subThumbnail} 
+                                                            alt={item.title} 
+                                                            style={{width: '200px', height: '200px', objectFit: 'scale-down'}}
+                                                        />
+                                                    </a>
+                                                </LazyLoad>
                                             }
                                             </>
                                             : 
@@ -173,7 +173,7 @@ const Homepage = ({ history }) => {
                                         to handle for empty value */}
                                         <Row className="hompageProductReviews">
                                             {item.reviews.rating !== '' ? 
-                                                <Rate disabled allowHalf defaultValue={parseInt(item.reviews.rating)} style={{fontSize: '14px'}} />
+                                                <Rate disabled allowHalf defaultValue={item.reviews.rating} style={{fontSize: '14px'}} />
                                                 :
                                                 <Rate disabled allowHalf defaultValue={0} style={{fontSize: '14px'}} />
                                             }
@@ -204,16 +204,18 @@ const Homepage = ({ history }) => {
                                         </Row>
 
                                         {/* Add to cart */}
-                                        <Row style={{margin:'15px 0'}} className="hompageProductCart">
-                                            <Button 
-                                                className="productButton"
-                                                type="primary" 
-                                                size='medium' 
-                                                style={{height: '45px', fontSize: '14px'}}
-                                            >
-                                                <ShoppingOutlined style={{ fontSize: '17px', color: '#fff' }}/> Buy Now
-                                            </Button>
-                                        </Row>   
+                                        <a target="_blank" rel="noopener noreferrer" href={item.url}>
+                                            <Row style={{margin:'15px 0'}} className="hompageProductCart">
+                                                <Button 
+                                                    className="productButton"
+                                                    type="primary" 
+                                                    size='medium' 
+                                                    style={{height: '45px', fontSize: '14px', borderRadius: '8px'}}
+                                                >
+                                                    <ShoppingOutlined style={{ fontSize: '17px', color: '#fff' }}/> Buy Now
+                                                </Button>
+                                            </Row>   
+                                        </a>
                                     </Card>
                                 </Col>
                             </Row>
@@ -227,31 +229,48 @@ const Homepage = ({ history }) => {
                     <>
                         <Row justify="center" align="center" style={{margin: '2rem 0'}}>
                             {/* Paginate */}
-                            <ReactPaginate
-                                previousLabel={<><CaretLeftOutlined /> Previous</>}
-                                nextLabel={<><CaretRightOutlined /> Next</>}
-                                breakLabel={"..."}
-                                breakClassName={"break-me"}
-                                pageCount={pageCount}
-                                onPageChange={handlePagination}
-                                containerClassName={"pagination"}
-                                subContainerClassName={"pages pagination"}
-                                activeClassName={"active"}
-                                onClick={window.scrollTo(0, 0)}
-                            />
+                            <Row className="desktopPagination"> 
+                                <ReactPaginate
+                                    previousLabel={<><CaretLeftOutlined /> Previous</>}
+                                    nextLabel={<><CaretRightOutlined /> Next</>}
+                                    breakLabel={"..."}
+                                    breakClassName={"break-me"}
+                                    pageCount={pageCount}
+                                    onPageChange={handlePagination}
+                                    containerClassName={"pagination"}
+                                    subContainerClassName={"pages pagination"}
+                                    activeClassName={"active"}
+                                    onClick={window.scrollTo(0, 0)}
+                                />
+                            </Row>
+                            {/* Mobile Paginate */}
+                            <Row className="mobilePagination">
+                                <ReactPaginate
+                                    previousLabel={<><CaretLeftOutlined /></>}
+                                    nextLabel={<><CaretRightOutlined /></>}
+                                    breakLabel={"..."}
+                                    breakClassName={"break-me"}
+                                    pageCount={pageCount}
+                                    onPageChange={handlePagination}
+                                    containerClassName={"pagination"}
+                                    subContainerClassName={"pages pagination"}
+                                    activeClassName={"active"}
+                                    onClick={window.scrollTo(0, 0)}
+                                />
+                            </Row>
                             {/* Items Per Page */}
                             <Row justify="right" align="right" style={{margin: 'auto 0'}}>
                                 <Row style={{margin: 'auto 15px'}}>
                                     <Text>Items per page:</Text>
                                 </Row>
                                 <Select 
-                                    defaultValue="100" 
+                                    defaultValue="50" 
                                     style={{ width: 80 }} 
                                     onChange={handleItemsPerPage}
                                     >
+                                    <Option value="50">50</Option>
                                     <Option value="100">100</Option>
                                     <Option value="200">200</Option>
-                                    <Option value="300">300</Option>
                                 </Select>
                             </Row>
                         </Row> 

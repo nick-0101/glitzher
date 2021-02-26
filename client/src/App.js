@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { NavBar, Error } from './components';
 import { Layout } from 'antd';
+import './App.css';
 
 // Pages
 import { Homepage, PriceComparison } from './pages';

@@ -3,26 +3,24 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const colors = require('colors');
-// const cookieParser = require('cookie-parser');
-const connectDB = require('./config/db');
-// const { cookie } = require('./middleware/Cookie');
+const responseTime = require('response-time');
 dotenv.config({ path: './config/env.config' });
 
+// Database
+const connectDB = require('./config/db');
 connectDB();
 
-// const Sentry = require('@sentry/node');
-// const Tracing = require('@sentry/tracing');
-
 const app = express();
+
+// Repsonse Time
+if (process.env.NODE_ENV === 'development') {
+  app.use(responseTime());
+}
 
 // Morgan
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
-
-// Cookies
-// app.use(cookieParser());
-// app.use(cookie);
 
 // Middleware
 app.use(bodyParser.json());

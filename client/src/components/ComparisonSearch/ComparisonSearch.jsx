@@ -11,7 +11,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import './ComparisonSearch.css'
 
 const { Search } = Input;
-const { Title } = Typography;
+const { Text } = Typography;
 
 const ComparisonSearch = ({ history  }) => {
     const { setSearch } = useContext(AppContext);
@@ -44,10 +44,18 @@ const ComparisonSearch = ({ history  }) => {
 
     return (
     <>
-        <Row justify="center" align="middle" style={{height: '200px',margin: '5% 0 5% 0', textAlign: 'center'}}>
-            <Col span={12}>
-                <Title style={{marginBottom: '5%'}}>Compare makeup prices across major brands.</Title>
-                <Search onSearch={handleSetSearch} placeholder="Enter a product title" size="large" prefix={<SearchOutlined />} enterButton/>
+        <Row className="frontpage-section" justify="center" align="middle" style={{height: '400px', padding: '5% 0 5% 0', textAlign: 'center'}}>
+            <Col span={12} className="searchCol">
+                <Text strong className="searchBarTitle">
+                    Compare makeup prices across major brands.
+                </Text>
+                <Search className="searchBar" onSearch={handleSetSearch} placeholder="Enter a product title" size="large" prefix={<SearchOutlined />} enterButton/>
+            </Col>
+            <Col span={22} className="mobileSearchCol">
+                <Text strong className="searchBarTitle">
+                    Compare makeup prices across major brands.
+                </Text>
+                <Search className="searchBar" onSearch={handleSetSearch} placeholder="Enter a product title" size="large" prefix={<SearchOutlined />} enterButton/>
             </Col>
         </Row>
         <Divider style={{padding: '0 16% 5% 16%'}}>Or</Divider>

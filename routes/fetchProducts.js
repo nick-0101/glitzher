@@ -30,6 +30,7 @@ async function getProducts(req, res) {
           throw err; // display proper error
         }
         console.log('Updated');
+        res.sendStatus(200);
       });
     } else {
       return;

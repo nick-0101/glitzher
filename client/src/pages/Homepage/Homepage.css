@@ -43,6 +43,21 @@
   border-radius: unset;
 }
 
+/* Other Styles */
+.hompageProductCompare {
+  margin: 0.5rem 0;
+}
+
+.mobilePagination {
+  display: none;
+  margin: 0 auto;
+}
+
+.desktopPagination {
+  display: block;
+  margin: 0 auto;
+}
+
 /* Media Queries */
 @media screen and (max-width: 1284px) {
   .hompageProductTitle,
@@ -54,5 +69,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .mobilePagination {
+    display: block;
+  }
+
+  .desktopPagination {
+    display: none;
   }
 }

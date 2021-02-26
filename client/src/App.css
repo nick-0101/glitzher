@@ -1,0 +1,13 @@
+/* @font-face {
+  font-family: TruenoBold;
+  src: url('./fonts/header.otf') format('opentype');
+}
+
+@font-face {
+  font-family: TruenoNormal;
+  src: url('./fonts/normal.otf') format('opentype');
+} */
+
+body {
+  font-family: 'Lato', sans-serif;
+}

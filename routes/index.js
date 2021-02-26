@@ -1,10 +1,7 @@
 const express = require('express');
-const _ = require('underscore');
 const Data = require('../models/Data');
 const redis = require('redis');
-
-const PORT_REDIS = process.env.PORT || 6379;
-const redisClient = redis.createClient(PORT_REDIS);
+const { promisify } = require('util');
 
 const router = express.Router();
 
@@ -16,30 +13,25 @@ const router = express.Router();
 // potential problem. When I stop app redis gets stoped. So if a users
 // app crashes will the cache get destoryed causing long loading times?
 
+const PORT_REDIS = process.env.PORT || 6379;
+const redisClient = redis.createClient(PORT_REDIS);
+
+const GET_ASYNC = promisify(redisClient.get).bind(redisClient);
+const SET_ASYNC = promisify(redisClient.set).bind(redisClient);
+
 var update_id = 'key1142';
 
-const set = (key, value) => {
-  // set 43200 (12hrs) as cache time
-  redisClient.setex(key, 60, JSON.stringify(value));
-};
-
-const get = (req, res, next) => {
-  let key = update_id;
-
-  redisClient.get(key, (error, data) => {
-    if (error) res.status(400).send(err);
-    if (data !== null) res.status(200).send(JSON.parse(data));
-    else next();
-  });
-};
-
-router.get('/test', (req, res) => {
-  res.sendStatus(200).json('Hello');
-});
-
 // Routes
-router.get('/api', get, async (req, res) => {
+router.get('/api', async (req, res) => {
   try {
+    // Get Cache
+    const reply = await GET_ASYNC('products');
+    if (reply) {
+      console.log('used cached data');
+      res.status(200).send(JSON.parse(reply));
+      return;
+    }
+
     // Fetch Data
     const data = await Data.find();
 
@@ -47,11 +39,11 @@ router.get('/api', get, async (req, res) => {
     const amazon = data[0].api.result;
     const sephora = data[1].api.result;
     const result = Object.assign(sephora, amazon);
-    const dataCount = Object.keys(result).length;
+    const dataCount = amazon.length + sephora.length;
 
     // Querys
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || dataCount;
+    const limit = parseInt(req.query.limit) || dataCount; // dataCount
     const discounted = req.query.discounted || true;
 
     // Add Pages
@@ -59,15 +51,22 @@ router.get('/api', get, async (req, res) => {
     const endIndex = page * limit;
     const dataResult = result.slice(startIndex, endIndex);
 
-    // Cache
-    set(update_id, dataResult);
-
     // Filter api
     if (discounted === 'true') {
       // Filter results for discount
       const filterDiscounted = dataResult.filter((x) => x.price.discounted);
+
+      // Send Data
       res.status(200).json(filterDiscounted);
     } else {
+      // Cache
+      const saveResult = await SET_ASYNC(
+        'products',
+        JSON.stringify(dataResult),
+        'EX',
+        60
+      );
+
       // Send data to client
       res.status(200).json(dataResult);
     }
@@ -85,9 +84,18 @@ router.get('/api/bestProduct', async (req, res) => {
     return res.sendStatus(400);
   } else {
     try {
-      // Fetch Data
+      // Get Cache
+      // const reply = await GET_ASYNC('products');
+      // if (reply) {
+      //   console.log('used cached data');
+      //   // res.status(200).send(JSON.parse(reply));
+      //   const data = JSON.parse(reply);
+      //   return;
+      // } else {
+      //   // Fetch Data
+      //   const data = await Data.find();
+      // }
       const data = await Data.find();
-
       // Assign Data
       const amazon = data[0].api.result;
       const sephora = data[1].api.result;
