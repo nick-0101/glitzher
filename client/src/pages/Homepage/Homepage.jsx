@@ -44,8 +44,11 @@ const Homepage = ({ history }) => {
         try {      
             axios.get(`/api?page=${page}`, { cancelToken: source.token })
             .then(res => {
-                const data = res.data;
+                console.log(res.data)
 
+                const data = Object.assign(res.data.tester.result, res.data.products.result)
+                // const data = res.data
+                
                 // Add Pages
                 const startIndex = (page - 1) * perPage;
                 const endIndex = page * perPage;
@@ -55,7 +58,6 @@ const Homepage = ({ history }) => {
                 setData(dataResult)
                 setPageCount(Math.ceil(data.length / perPage))
                 
-                console.log(dataResult, data.length)
             });
         } catch (err) {
             if (axios.isCancel(err)) {

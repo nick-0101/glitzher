@@ -1,13 +1,21 @@
 const express = require('express'),
   ipfilter = require('express-ipfilter').IpFilter;
 const amazonScraper = require('amazon-buddy');
-const fetch = require('node-fetch');
+const redis = require('redis');
 const schedule = require('node-schedule');
 const Data = require('../models/Data');
+const { promisify } = require('util');
 
 const router = express.Router();
 
 const ips = ['::1'];
+
+const RedisClient = redis.createClient({
+  host: process.env.HOSTNAME,
+  port: process.env.REDISPORT,
+  password: process.env.PASSWORD,
+});
+const SET_ASYNC = promisify(RedisClient.set).bind(RedisClient);
 
 async function getProducts(req, res) {
   try {
@@ -25,11 +33,17 @@ async function getProducts(req, res) {
     const _id = '60108f05160579104738afa3';
 
     if (Object.keys(products).length > 0) {
-      await Data.updateOne({ _id }, { $set: { api: products } }, (err) => {
-        if (err) {
-          throw err; // display proper error
-        }
-        console.log('Updated');
+      // await Data.updateOne({ _id }, { $set: { api: products } }, (err) => {
+      //   if (err) {
+      //     throw err; // display proper error
+      //   }
+      //   console.log('Updated');
+      //   res.status(200);
+      // });
+
+      RedisClient.set('tester', JSON.stringify(products), (err, data) => {
+        if (err) throw err;
+        console.log('updated!');
         res.sendStatus(200);
       });
     } else {
@@ -37,7 +51,7 @@ async function getProducts(req, res) {
     }
   } catch (err) {
     console.error(err);
-    res.status(500);
+    res.sendStatus(500);
   }
 }
 

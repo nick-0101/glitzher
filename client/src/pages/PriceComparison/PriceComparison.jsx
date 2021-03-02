@@ -40,6 +40,7 @@ const PriceComparison = () => {
                 { cancelToken: source.token })
                 .then(res => {
                     const data = res.data;
+                    console.log(data)
                     setComparisonData(data)
 
                     // Set & format table data
