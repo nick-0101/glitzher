@@ -1,10 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
+const helmet = require('helmet');
+dotenv.config({ path: './config/env.config' });
+
+// Dev
 const morgan = require('morgan');
 const colors = require('colors');
 const responseTime = require('response-time');
-dotenv.config({ path: './config/env.config' });
 
 // Database
 const connectDB = require('./config/db');
@@ -25,6 +28,9 @@ if (process.env.NODE_ENV === 'development') {
 // Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Helmet
+app.use(helmet());
 
 // Routes
 app.use('/', require('./routes/index'));

@@ -1,34 +1,36 @@
 const express = require('express');
-const Data = require('../models/Data');
+const rateLimit = require('express-rate-limit');
 const redis = require('redis');
 const { promisify } = require('util');
 const async = require('async');
+
 const router = express.Router();
 
 // Todo
 // use affiliatejs to make all links affiliate links.
 // the problem is that /api is fetching from database and is not checking if there is a cache
 
-// const PORT_REDIS = process.env.PORT || 6379;
-// const RedisClient = redis.createClient(PORT_REDIS);
+// Rate Limiting
+const searchApi = rateLimit({
+  windowMs: 1 * 60 * 1000, // 10 win window
+  max: 10, // start blocking after 10 requests
+  // send a status code with message and display err in react
+  message:
+    'Too many many requests from this IP, please try again after an hour',
+});
 
+// Redis
 const RedisClient = redis.createClient({
   host: process.env.HOSTNAME,
   port: process.env.REDISPORT,
   password: process.env.PASSWORD,
 });
 
-// const GET_ASYNC = promisify(RedisClient.get).bind(RedisClient);
+const GET_ASYNC = promisify(RedisClient.get).bind(RedisClient);
 
 // Routes
 router.get('/api', async (req, res) => {
   try {
-    // RedisClient.mget('tester', 'products', function (err, data) {
-    //   res.send(JSON.parse(data));
-    // });
-
-    // current problem is to solve the fact that the images are slowing down the load by a lot
-    // (view network tab). Also find a way to block reqsuts from the image and find a way to do redis search.
     var result = {};
     async.each(
       ['products', 'tester'],
@@ -42,42 +44,9 @@ router.get('/api', async (req, res) => {
         res.send(result);
       }
     );
-
-    // Fetch Data
-    // const data = await Data.find();
-    // // Assign Data
-    // const amazon = data[0].api.result;
-    // const sephora = data[1].api.result;
-    // const result = Object.assign(sephora, amazon);
-    // const dataCount = amazon.length + sephora.length;
-    // // Querys
-    // const page = parseInt(req.query.page) || 1;
-    // const limit = parseInt(req.query.limit) || dataCount; // dataCount
-    // const discounted = req.query.discounted || true;
-    // // Add Pages
-    // const startIndex = (page - 1) * limit;
-    // const endIndex = page * limit;
-    // const dataResult = result.slice(startIndex, endIndex);
-    // // Filter api
-    // if (discounted === 'true') {
-    //   // Filter results for discount
-    //   const filterDiscounted = dataResult.filter((x) => x.price.discounted);
-    //   // Send Data
-    //   res.status(200).json(filterDiscounted);
-    // } else {
-    //   // Cache
-    //   // const saveResult = await SET_ASYNC(
-    //   //   'products',
-    //   //   JSON.stringify(dataResult),
-    //   //   'EX',
-    //   //   60
-    //   // );
-    //   // Send data to client
-    //   res.status(200).json(dataResult);
-    // }
   } catch (err) {
     console.error(err);
-    return res.sendStatus(500);
+    res.sendStatus(500);
   }
 });
 
@@ -86,60 +55,49 @@ router.get('/api/bestProduct', async (req, res) => {
 
   // Client validation
   if (q === '' || q.length < 3 || q.length > 150) {
-    return res.sendStatus(400);
+    console.log('invalid string');
+    return res.sendStatus(422);
   } else {
     try {
-      // Search from cache
-      // const reply = await GET_ASYNC('products');
-      // if (reply) {
-      //   console.log('used cached data');
-      //   const result = JSON.parse(reply);
-      //   const filterdResults = result.filter(({ title }) =>
-      //     title.toLowerCase().includes(req.query.q.toLowerCase())
-      //   );
-      //   // Result Validation
-      //   if (!Array.isArray(filterdResults) || !filterdResults.length) {
-      //     return res.sendStatus(400);
-      //   } else {
-      //     // Sort results
-      //     const sortedResults = filterdResults.sort(
-      //       (a, b) =>
-      //         // Special expression is replacing '$'
-      //         a.price.current_price - b.price.current_price
-      //     );
-      //     // Send data to front end
-      //     res.status(200).send(sortedResults);
-      //   }
-      //   return;
-      // }
-      // Search from db
-      // const data = await Data.find();
-      // const amazon = data[0].api.result;
-      // const sephora = data[1].api.result;
-      // const result = Object.assign(sephora, amazon);
-      // // Querys
-      // const query = req.query.q;
-      // console.log(query);
-      // // Filter
-      // const filterdResults = result.filter(({ title }) =>
-      //   title.toLowerCase().includes(query.toLowerCase())
-      // );
-      // // Result Validation
-      // if (!Array.isArray(filterdResults) || !filterdResults.length) {
-      //   return res.sendStatus(400);
-      // } else {
-      //   // Sort results
-      //   const sortedResults = filterdResults.sort(
-      //     (a, b) =>
-      //       // Special expression is replacing '$'
-      //       a.price.current_price - b.price.current_price
-      //   );
-      //   // Send data to front end
-      //   res.status(200).send(sortedResults);
-      // }
+      // Fetch redis data
+      const sephora = await GET_ASYNC('products');
+      const amazon = await GET_ASYNC('tester');
+
+      // Parse data
+      const parse1 = JSON.parse(sephora);
+      const parse2 = JSON.parse(amazon);
+
+      // Chain data
+      const test1 = parse1.result;
+      const test2 = parse2.result;
+      const result = Object.assign(test1, test2);
+
+      // Filter
+      const filterdResults = result.filter(({ title }) =>
+        title.toLowerCase().includes(req.query.q.toLowerCase())
+      );
+
+      // Result Validation
+      if (!Array.isArray(filterdResults) || !filterdResults.length) {
+        console.log('result not found');
+        res.status(404).send({
+          title: 'No result found',
+          desc:
+            "We've searched more than 10,000+ products. We did not find any products to compare.",
+        });
+      } else {
+        // Sort results
+        const sortedResults = filterdResults.sort(
+          (a, b) =>
+            // Special expression is replacing '$'
+            a.price.current_price - b.price.current_price
+        );
+        // Send data to front end
+        res.status(200).send(sortedResults);
+      }
     } catch (err) {
       console.error(err);
-      return res.sendStatus(500); // Server error
+      res.sendStatus(500); // Server error
     }
   }
 });

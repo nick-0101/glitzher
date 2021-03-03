@@ -33,14 +33,6 @@ async function getProducts(req, res) {
     const _id = '60108f05160579104738afa3';
 
     if (Object.keys(products).length > 0) {
-      // await Data.updateOne({ _id }, { $set: { api: products } }, (err) => {
-      //   if (err) {
-      //     throw err; // display proper error
-      //   }
-      //   console.log('Updated');
-      //   res.status(200);
-      // });
-
       RedisClient.set('tester', JSON.stringify(products), (err, data) => {
         if (err) throw err;
         console.log('updated!');
@@ -56,7 +48,7 @@ async function getProducts(req, res) {
 }
 
 // Update api everyday at 12am
-schedule.scheduleJob('00 07 12 * * 0-7', () => {
+schedule.scheduleJob('00 00 12 * * 0-7', () => {
   getProducts();
   console.log('Scheduled update completed at ' + new Date());
 });
