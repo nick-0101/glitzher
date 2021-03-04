@@ -31,22 +31,35 @@ const GET_ASYNC = promisify(RedisClient.get).bind(RedisClient);
 // Routes
 router.get('/api', async (req, res) => {
   try {
-    var result = {};
-    async.each(
-      ['products', 'tester'],
-      function (key, callback) {
-        RedisClient.get(key, function (err, res) {
-          result[key] = JSON.parse(res);
-          callback(err);
-        });
-      },
-      function () {
-        res.send(result);
+    // Fetch redis data
+    const sephora = await GET_ASYNC('products');
+    const amazon = await GET_ASYNC('tester');
+
+    // Parse data
+    const parse1 = JSON.parse(sephora);
+    const parse2 = JSON.parse(amazon);
+
+    // Chain data
+    const test1 = parse1.result;
+    const test2 = parse2.result;
+    const result = Object.assign(test1, test2);
+
+    // Randomize - Fisher Yates Algorithm
+    shuffleFisherYates(result);
+    function shuffleFisherYates(array) {
+      let i = array.length;
+      while (i--) {
+        const ri = Math.floor(Math.random() * (i + 1));
+        [array[i], array[ri]] = [array[ri], array[i]];
       }
-    );
+      res.send(array);
+    }
   } catch (err) {
     console.error(err);
-    res.sendStatus(500);
+    res.status(500).send({
+      title: "Oops. There's been a problem on our end",
+      desc: 'Please try again later. We will look into this immediately.',
+    }); // Server error
   }
 });
 
@@ -56,7 +69,10 @@ router.get('/api/bestProduct', async (req, res) => {
   // Client validation
   if (q === '' || q.length < 3 || q.length > 150) {
     console.log('invalid string');
-    return res.sendStatus(422);
+    res.status(422).send({
+      title: 'Invalid query',
+      desc: 'Please try again.',
+    });
   } else {
     try {
       // Fetch redis data
@@ -72,6 +88,8 @@ router.get('/api/bestProduct', async (req, res) => {
       const test2 = parse2.result;
       const result = Object.assign(test1, test2);
 
+      // split search query into keywords and search db like that
+
       // Filter
       const filterdResults = result.filter(({ title }) =>
         title.toLowerCase().includes(req.query.q.toLowerCase())
@@ -82,8 +100,7 @@ router.get('/api/bestProduct', async (req, res) => {
         console.log('result not found');
         res.status(404).send({
           title: 'No result found',
-          desc:
-            "We've searched more than 10,000+ products. We did not find any products to compare.",
+          desc: "We couldn't find any products related to your query.",
         });
       } else {
         // Sort results
@@ -97,7 +114,10 @@ router.get('/api/bestProduct', async (req, res) => {
       }
     } catch (err) {
       console.error(err);
-      res.sendStatus(500); // Server error
+      res.status(500).send({
+        title: "Oops. There's been a problem on our end",
+        desc: 'Please try again later. We will look into this immediately.',
+      }); // Server error
     }
   }
 });

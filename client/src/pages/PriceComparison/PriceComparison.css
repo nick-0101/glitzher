@@ -30,11 +30,6 @@
   margin-bottom: 0rem;
 }
 
-.errorTitle {
-  font-size: 30px;
-  font-weight: 600;
-}
-
 /* Table */
 .table-striped-rows .ant-table-tbody > tr:first-child > td {
   border: 2px solid #ffa39e;
@@ -60,7 +55,7 @@
   text-overflow: ellipsis;
 }
 
-.testerr {
+.shopbuttonResponsive {
   display: none;
 }
 
@@ -139,14 +134,10 @@
   .table-details {
     width: 100px;
   }
-  .errorTitle {
-    font-size: 24px;
-    font-weight: 600;
-  }
 }
 
 @media screen and (max-width: 767px) {
-  .testerr {
+  .shopbuttonResponsive {
     display: block;
   }
 }

@@ -46,8 +46,8 @@ const Homepage = ({ history }) => {
             .then(res => {
                 console.log(res.data)
 
-                const data = Object.assign(res.data.tester.result, res.data.products.result)
-                // const data = res.data
+                // const data = Object.assign(res.data.tester.result, res.data.products.result)
+                const data = res.data
                 
                 // Add Pages
                 const startIndex = (page - 1) * perPage;
@@ -171,8 +171,6 @@ const Homepage = ({ history }) => {
                                         </a>
 
                                         {/* Product reviews */}
-                                        {/* getting rating error bc I need
-                                        to handle for empty value */}
                                         <Row className="hompageProductReviews">
                                             {item.reviews.rating !== '' ? 
                                                 <Rate disabled allowHalf defaultValue={item.reviews.rating} style={{fontSize: '14px'}} />
