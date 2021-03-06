@@ -32,7 +32,7 @@ const { Option } = Select;
 
 const Homepage = ({ history }) => {
     const [page, setPageNumber] = useState(1);
-    const [perPage, setPerPage] = useState(50);
+    const [perPage, setPerPage] = useState(50); 
     const [pageCount, setPageCount] = useState(0)
     const [data, setData] = useState('')
     const { setSearch } = useContext(AppContext);
@@ -121,13 +121,13 @@ const Homepage = ({ history }) => {
             {/* <Col xs={0} sm={0} md={0} lg={0} xl={2} xxl={4} style={{borderRight: '2px solid #f0f0f0'}}> 
                <SiderNav /> 
             </Col> */}
-            <Col justiy="center" align="center">
+            <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24} justiy="center" align="center">
             {data ?
-                <Row justiy="center" align="center" style={{marginLeft: '20px'}}>
+                <Row justiy="center" align="center">
                     {data.map((item, index) => {        
                         return (
                             <Row style={{textAlign: 'center', padding: '0 10px'}} key={index} gutter={0}>
-                                <Col style={{width: '400px', height: '460px'}}> 
+                                <Col className="productColWrapper"> 
                                     <Card style={{ borderTop: '2px solid #f0f0f0', borderBottom: '0px', borderRight: '0px', borderLeft: '0px'}}>
                                         {/* Product Image */}
                                         {item.thumbnail || item.subThumbnail ?
@@ -210,7 +210,6 @@ const Homepage = ({ history }) => {
                                                     className="productButton"
                                                     type="primary" 
                                                     size='medium' 
-                                                    style={{height: '45px', fontSize: '14px', borderRadius: '8px'}}
                                                 >
                                                     <ShoppingOutlined style={{ fontSize: '17px', color: '#fff' }}/> Buy Now
                                                 </Button>
@@ -246,8 +245,8 @@ const Homepage = ({ history }) => {
                             {/* Mobile Paginate */}
                             <Row className="mobilePagination">
                                 <ReactPaginate
-                                    previousLabel={<><CaretLeftOutlined /></>}
-                                    nextLabel={<><CaretRightOutlined /></>}
+                                    previousLabel={<><CaretLeftOutlined /> Prev</>}
+                                    nextLabel={<><CaretRightOutlined /> Next</>}
                                     breakLabel={"..."}
                                     breakClassName={"break-me"}
                                     pageCount={pageCount}
@@ -260,7 +259,7 @@ const Homepage = ({ history }) => {
                             </Row>
                             {/* Items Per Page */}
                             <Row justify="right" align="right" style={{margin: 'auto 0'}}>
-                                <Row style={{margin: 'auto 15px'}}>
+                                <Row style={{margin: 'auto 15px'}} className="itemsperText">
                                     <Text>Items per page:</Text>
                                 </Row>
                                 <Select 

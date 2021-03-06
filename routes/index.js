@@ -88,23 +88,22 @@ router.get('/api/bestProduct', async (req, res) => {
       const test2 = parse2.result;
       const result = Object.assign(test1, test2);
 
-      // split search query into keywords and search db like that
-
       // Filter
-      const filterdResults = result.filter(({ title }) =>
-        title.toLowerCase().includes(req.query.q.toLowerCase())
+      const filterResults = result.filter(
+        (item) =>
+          item.title.toLowerCase().includes(req.query.q.toLowerCase()) &&
+          item.price.current_price !== 0
       );
 
       // Result Validation
-      if (!Array.isArray(filterdResults) || !filterdResults.length) {
-        console.log('result not found');
+      if (!Array.isArray(filterResults) || !filterResults.length) {
         res.status(404).send({
           title: 'No result found',
           desc: "We couldn't find any products related to your query.",
         });
       } else {
         // Sort results
-        const sortedResults = filterdResults.sort(
+        const sortedResults = filterResults.sort(
           (a, b) =>
             // Special expression is replacing '$'
             a.price.current_price - b.price.current_price

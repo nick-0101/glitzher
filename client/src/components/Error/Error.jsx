@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Typography, Image, Button } from 'antd';
+import { Row, Col, Typography, Button } from 'antd';
 import { ArrowRightOutlined } from '@ant-design/icons';
 
 
@@ -14,7 +14,7 @@ const Error = () => {
                 </Paragraph>
                 <Title 
                     level={4}
-                    style={{marginBottom: '5%', marginTop: 0, textAlign:'center'}}
+                    style={{marginBottom: '5%', margin:'0 5% 5% 5%', textAlign:'center'}}
                 >
                     We're sorry, we couldn't find the page you were looking for :(
                 </Title>

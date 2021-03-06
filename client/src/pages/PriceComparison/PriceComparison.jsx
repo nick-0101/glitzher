@@ -39,7 +39,7 @@ const PriceComparison = () => {
         { cancelToken: source.token })
         .then(res => {
             console.log(res)
-
+            
             const data = res.data;
             setComparisonData(data)
 

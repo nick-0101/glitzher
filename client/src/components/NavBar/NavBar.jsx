@@ -1,7 +1,13 @@
 import React from 'react';
-import '../../App.css';
+
+// Antd
 import { Layout, Menu } from 'antd';
 import { ShoppingCartOutlined } from '@ant-design/icons';
+
+// Css
+import '../../App.css';
+import './Navbar.css';
+
 
 const { Header } = Layout;
 
@@ -13,8 +19,8 @@ const NavBar = () => {
           <div className='logo' />
           Price Flame 
           <Menu
-            // mode='horizontal'
-            style={{ float: 'right'}}
+            mode='horizontal'
+            style={{ float: 'right'}} // margin: '0 20px', padding: '20px'
             theme='light'
           >
             <Menu.Item key='1'>
