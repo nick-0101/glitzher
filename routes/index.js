@@ -3,6 +3,7 @@ const rateLimit = require('express-rate-limit');
 const redis = require('redis');
 const { promisify } = require('util');
 const async = require('async');
+const algoliasearch = require('algoliasearch');
 
 const router = express.Router();
 
@@ -27,6 +28,13 @@ const RedisClient = redis.createClient({
 });
 
 const GET_ASYNC = promisify(RedisClient.get).bind(RedisClient);
+
+// Alogolia
+const AlgoliaClient = algoliasearch(
+  process.env.ALGOLIA_APP_KEY,
+  process.env.ALGOLIA_ADMIN_KEY
+);
+const index = AlgoliaClient.initIndex('productionProducts');
 
 // Routes
 router.get('/api', async (req, res) => {
@@ -76,17 +84,17 @@ router.get('/api/bestProduct', async (req, res) => {
   } else {
     try {
       // Fetch redis data
-      const sephora = await GET_ASYNC('products');
-      const amazon = await GET_ASYNC('tester');
+      // const sephora = await GET_ASYNC('products');
+      const amazon = await GET_ASYNC('frontPage');
 
       // Parse data
-      const parse1 = JSON.parse(sephora);
+      // const parse1 = JSON.parse(sephora);
       const parse2 = JSON.parse(amazon);
 
       // Chain data
-      const test1 = parse1.result;
-      const test2 = parse2.result;
-      const result = Object.assign(test1, test2);
+      // const test1 = parse1.result; //change bame
+      const data2 = parse2.result;
+      const result = data2;
 
       // Filter
       const filterResults = result.filter(
@@ -121,4 +129,26 @@ router.get('/api/bestProduct', async (req, res) => {
   }
 });
 
+router.get('/algolia/search', async (req, res) => {
+  const { q } = req.query;
+
+  index
+    .search(q, {
+      distinct: true,
+    })
+    .then(({ hits }) => {
+      const filterResults = hits.filter(
+        (item) => item.price.current_price !== 0
+      );
+      const sortedResults = filterResults.sort(
+        (a, b) =>
+          // Special expression is replacing '$'
+          a.price.current_price - b.price.current_price
+      );
+      res.send(sortedResults);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
 module.exports = router;

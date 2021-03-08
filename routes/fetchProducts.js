@@ -5,17 +5,38 @@ const redis = require('redis');
 const schedule = require('node-schedule');
 const Data = require('../models/Data');
 const { promisify } = require('util');
+const algoliasearch = require('algoliasearch');
 
 const router = express.Router();
-
 const ips = ['::1'];
 
+// Redis
 const RedisClient = redis.createClient({
   host: process.env.HOSTNAME,
   port: process.env.REDISPORT,
   password: process.env.PASSWORD,
 });
-const SET_ASYNC = promisify(RedisClient.set).bind(RedisClient);
+
+const GET_ASYNC = promisify(RedisClient.get).bind(RedisClient);
+
+// Alogolia
+const AlgoliaClient = algoliasearch(
+  process.env.ALGOLIA_APP_KEY,
+  process.env.ALGOLIA_ADMIN_KEY
+);
+const index = AlgoliaClient.initIndex('productionProducts');
+
+router.get('/algolia/setProducts', async (req, res) => {
+  const amazon = await GET_ASYNC('tester');
+  const parse1 = JSON.parse(amazon);
+  const result = parse1.result;
+
+  index
+    .saveObjects(result, { autoGenerateObjectIDIfNotExist: true })
+    .then(({ objectIDs }) => {
+      res.send(objectIDs);
+    });
+});
 
 async function getProducts(req, res) {
   try {
@@ -30,7 +51,6 @@ async function getProducts(req, res) {
     });
 
     // Update db
-    const _id = '60108f05160579104738afa3';
 
     if (Object.keys(products).length > 0) {
       RedisClient.set('tester', JSON.stringify(products), (err, data) => {
