@@ -35,7 +35,7 @@ const PriceComparison = () => {
 
         const searchValue = sessionStorage.getItem("searchResult");
 
-        axios.get(`/algolia/search?q=${searchValue}`, 
+        axios.get(`/api/bestProduct?q=${searchValue}`, 
         { cancelToken: source.token })
         .then(res => {
             console.log(res)

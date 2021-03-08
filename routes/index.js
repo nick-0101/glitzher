@@ -41,16 +41,16 @@ router.get('/api', async (req, res) => {
   try {
     // Fetch redis data
     const sephora = await GET_ASYNC('products');
-    const amazon = await GET_ASYNC('tester');
+    const amazon = await GET_ASYNC('frontPage');
 
     // Parse data
     const parse1 = JSON.parse(sephora);
     const parse2 = JSON.parse(amazon);
 
     // Chain data
-    const test1 = parse1.result;
-    const test2 = parse2.result;
-    const result = Object.assign(test1, test2);
+    const data1 = parse1.result;
+    const data2 = parse2.result;
+    const result = [...data2, ...data1];
 
     // Randomize - Fisher Yates Algorithm
     shuffleFisherYates(result);
@@ -84,17 +84,17 @@ router.get('/api/bestProduct', async (req, res) => {
   } else {
     try {
       // Fetch redis data
-      // const sephora = await GET_ASYNC('products');
-      const amazon = await GET_ASYNC('frontPage');
+      const sephora = await GET_ASYNC('frontPage');
+      const amazon = await GET_ASYNC('products');
 
       // Parse data
-      // const parse1 = JSON.parse(sephora);
+      const parse1 = JSON.parse(sephora);
       const parse2 = JSON.parse(amazon);
 
       // Chain data
-      // const test1 = parse1.result; //change bame
+      const data1 = parse1.result;
       const data2 = parse2.result;
-      const result = data2;
+      const result = Object.assign(data1, data2);
 
       // Filter
       const filterResults = result.filter(

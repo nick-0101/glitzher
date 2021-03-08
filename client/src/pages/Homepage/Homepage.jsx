@@ -44,7 +44,7 @@ const Homepage = ({ history }) => {
         try {      
             axios.get(`/api?page=${page}`, { cancelToken: source.token })
             .then(res => {
-                console.log(res.data)
+                console.log(res)
 
                 // const data = Object.assign(res.data.tester.result, res.data.products.result)
                 const data = res.data
