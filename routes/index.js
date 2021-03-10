@@ -97,10 +97,15 @@ router.get('/api/bestProduct', async (req, res) => {
       const result = Object.assign(data1, data2);
 
       // Filter
+      const query = req.query.q.toLowerCase();
       const filterResults = result.filter(
         (item) =>
-          item.title.toLowerCase().includes(req.query.q.toLowerCase()) &&
-          item.price.current_price !== 0
+          query
+            .toLowerCase()
+            .split(' ')
+            .every((keyword) => item.title.toLowerCase().includes(keyword)) &&
+          item.price.current_price !== 0 &&
+          item.price.current_price !== ''
       );
 
       // Result Validation
@@ -129,26 +134,4 @@ router.get('/api/bestProduct', async (req, res) => {
   }
 });
 
-router.get('/algolia/search', async (req, res) => {
-  const { q } = req.query;
-
-  index
-    .search(q, {
-      distinct: true,
-    })
-    .then(({ hits }) => {
-      const filterResults = hits.filter(
-        (item) => item.price.current_price !== 0
-      );
-      const sortedResults = filterResults.sort(
-        (a, b) =>
-          // Special expression is replacing '$'
-          a.price.current_price - b.price.current_price
-      );
-      res.send(sortedResults);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
 module.exports = router;
