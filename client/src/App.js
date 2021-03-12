@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { NavBar, Error } from './components';
+import { NavBar, Error, SubNav } from './components';
 import { Layout } from 'antd';
 import './App.css';
 
@@ -18,6 +18,7 @@ function App() {
     <Layout style={{ height: 'auto' }}>
       <BrowserRouter history={history}>
         <NavBar />
+        <SubNav />
         <Layout>
           <Content style={{ background: '#fff' }}>
             <Switch>
