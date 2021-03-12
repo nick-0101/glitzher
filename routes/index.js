@@ -1,24 +1,15 @@
 const express = require('express');
-const rateLimit = require('express-rate-limit');
 const redis = require('redis');
 const { promisify } = require('util');
-const async = require('async');
-const algoliasearch = require('algoliasearch');
+
+// Rate Limiters
+const RateLimit = require('express-rate-limit');
+const RedisStore = require('rate-limit-redis');
 
 const router = express.Router();
 
 // Todo
 // use affiliatejs to make all links affiliate links.
-// the problem is that /api is fetching from database and is not checking if there is a cache
-
-// Rate Limiting
-const searchApi = rateLimit({
-  windowMs: 1 * 60 * 1000, // 10 win window
-  max: 10, // start blocking after 10 requests
-  // send a status code with message and display err in react
-  message:
-    'Too many many requests from this IP, please try again after an hour',
-});
 
 // Redis
 const RedisClient = redis.createClient({
@@ -27,14 +18,24 @@ const RedisClient = redis.createClient({
   password: process.env.PASSWORD,
 });
 
-const GET_ASYNC = promisify(RedisClient.get).bind(RedisClient);
+// Rate Limiting
+const redisLimiter = new RateLimit({
+  store: new RedisStore({
+    client: RedisClient,
+  }),
+  max: 100, // limit each IP to 100 requests per windowMs
+  delayMs: 0, // disable delaying - full speed until the max limit is reached
+});
+const searchApi = RateLimit({
+  windowMs: 1 * 60 * 1000, // 10 win window
+  max: 20,
+  message:
+    'Too many many requests from this IP, please try again after an hour',
+});
 
-// Alogolia
-const AlgoliaClient = algoliasearch(
-  process.env.ALGOLIA_APP_KEY,
-  process.env.ALGOLIA_ADMIN_KEY
-);
-const index = AlgoliaClient.initIndex('productionProducts');
+router.use(redisLimiter);
+
+const GET_ASYNC = promisify(RedisClient.get).bind(RedisClient);
 
 // Routes
 router.get('/api', async (req, res) => {
@@ -71,7 +72,7 @@ router.get('/api', async (req, res) => {
   }
 });
 
-router.get('/api/bestProduct', async (req, res) => {
+router.get('/api/bestProduct', searchApi, async (req, res) => {
   const { q } = req.query;
 
   // Client validation

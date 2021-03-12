@@ -49,13 +49,29 @@ const ComparisonSearch = ({ history  }) => {
                 <Text strong className="searchBarTitle">
                     Compare makeup price's across major brands.
                 </Text>
-                <Search className="searchBar" onSearch={handleSetSearch} placeholder="Enter a product title" size="large" prefix={<SearchOutlined />} enterButton/>
+                <Search 
+                    className="searchBar" 
+                    onSearch={handleSetSearch} 
+                    placeholder="Enter a product title" 
+                    size="large" 
+                    prefix={<SearchOutlined />} 
+                    enterButton
+                    style={{borderRadius: '8px'}}
+                />
             </Col>
             <Col span={22} className="mobileSearchCol">
                 <Text strong className="searchBarTitle">
                     Compare makeup price's across major brands.
                 </Text>
-                <Search className="searchBar" onSearch={handleSetSearch} placeholder="Enter a product title" size="large" prefix={<SearchOutlined />} enterButton/>
+                <Search 
+                    className="searchBar" 
+                    onSearch={handleSetSearch}
+                    placeholder="Enter a product title" 
+                    size="large"
+                    prefix={<SearchOutlined />} 
+                    enterButton
+                    style={{borderRadius: '8px'}}
+                />
             </Col>
         </Row>
         <Divider style={{padding: '0 16% 5% 16%'}}>Or</Divider>

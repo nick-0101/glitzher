@@ -16,7 +16,7 @@ import {
 } from 'antd';
 import { ShoppingOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
 
-// Extra
+// Application Packages
 import axios from 'axios';
 import ReactPaginate from 'react-paginate';
 import LazyLoad from 'react-lazyload';
