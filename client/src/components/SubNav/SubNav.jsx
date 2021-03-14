@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { AppContext } from "../Context/Context";
+import { withRouter } from "react-router-dom";
 
 // Antd
 import { Layout, Input  } from 'antd';
@@ -10,7 +12,37 @@ import './SubNav.css'
 const { Header } = Layout;
 const { Search } = Input;
 
-const SubNav = () => {
+const SubNav = ({ history  }) => {
+    const { setSearch } = useContext(AppContext);
+
+    const handleSetSearch = (value) => {
+        if (value !== '') {
+            if (typeof(Storage) !== "undefined") {
+                sessionStorage.removeItem('searchResult');
+                sessionStorage.setItem("searchResult", value);
+
+                // Complete search
+                history.push({
+                    pathname: '/search',
+                    search: `?q=${sessionStorage.getItem("searchResult")}`
+                })
+                window.location.reload()  
+            } else {
+                console.log('No session storage support')
+
+                // Complete search with context
+                setSearch(value)
+                history.push({
+                    pathname: '/search',
+                    search: `?q=${setSearch}`
+                })
+                window.location.reload()  
+            }
+        } else {
+            return
+        }
+    };
+
     return (    
     <>
         <Layout theme='light'>
@@ -19,6 +51,7 @@ const SubNav = () => {
                     <div className="subNav-logo">Logo</div> 
                     <Search 
                         className="subSearchBar" 
+                        onSearch={handleSetSearch} 
                         placeholder="Enter a product title" 
                         size="small" 
                         prefix={<SearchOutlined />} 
@@ -32,4 +65,4 @@ const SubNav = () => {
     )
 }
 
-export default SubNav
+export default withRouter(SubNav);

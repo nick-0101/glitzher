@@ -33,7 +33,6 @@ const ComparisonSearch = ({ history  }) => {
                 // Complete search with context
                 setSearch(value);
                 history.push({
-                    pathname: '/search',
                     search: `?q=${setSearch}`
                 })
             }

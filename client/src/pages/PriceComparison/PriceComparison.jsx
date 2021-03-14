@@ -14,7 +14,7 @@ import ReactPaginate from 'react-paginate';
 
 // Components
 import SkeletonLoader from '../../components/SkeletonLoaders/ComparisonSkeleton';
-// import SubNav from '../../components/SubNav/SubNav'
+import SubNav from '../../components/SubNav/SubNav'
 
 // Css
 import './PriceComparison.css'
@@ -45,10 +45,9 @@ const PriceComparison = () => {
 
         axios.get(`/api/bestProduct?q=${searchValue}`, 
         { cancelToken: source.token })
-        .then(res => {
-            console.log(res)
-            
+        .then(res => {            
             const data = res.data;
+
             // Add Pages
             const startIndex = (page - 1) * perPage;
             const endIndex = page * perPage;
@@ -56,7 +55,6 @@ const PriceComparison = () => {
 
             // Set Data
             setComparisonData(dataResult)
-
             setPageCount(Math.ceil(data.length / perPage))
 
             // Set & format table data
@@ -69,8 +67,7 @@ const PriceComparison = () => {
                 shopButton: item.url
             }))
             
-            setTableData(tabledData)
-            console.log(data)             
+            setTableData(tabledData)        
         }).catch((err) => {
             if (axios.isCancel(err)) {
                 console.log("CATCH = ", err.response);
@@ -193,6 +190,7 @@ const PriceComparison = () => {
             <>
                 {comparisonData ?
                     <>
+                    {/* <SubNav /> */}
                     <Divider style={{marginTop: 0}} /> 
                         <Row className="productWrapper">
                             <Paragraph 
