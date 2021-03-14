@@ -14,6 +14,7 @@ import ReactPaginate from 'react-paginate';
 
 // Components
 import SkeletonLoader from '../../components/SkeletonLoaders/ComparisonSkeleton';
+// import SubNav from '../../components/SubNav/SubNav'
 
 // Css
 import './PriceComparison.css'
@@ -290,10 +291,10 @@ const PriceComparison = () => {
                                             </Button>
                                         </Link>
                                     </Row>
-                                    <Row>
-                                        <Text style={{marginTop:'10px'}}>Not what you were looking for?</Text>
-                                        <Tooltip placement="topLeft" title="Make sure you search is descriptive and contains keywords (ie. brand, product name, etc).">
-                                            <InfoCircleOutlined style={{fontSize: '13px', margin: '15px 0 0 7px'}}/>
+                                    <Row justify="left">
+                                        <Tooltip className="productTip" placement="bottom" title="Make sure you search is descriptive and contains keywords (ie. brand, product name, etc).">
+                                            <Text style={{marginTop:'10px'}}>Not what you were looking for?</Text>
+                                            {/* <InfoCircleOutlined style={{fontSize: '13px', margin: '15px 0 0 7px'}}/> */}
                                         </Tooltip>
                                     </Row>
                                 </Col>

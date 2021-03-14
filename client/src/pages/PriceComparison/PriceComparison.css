@@ -59,7 +59,8 @@
   display: none;
 }
 
-@media screen and (max-width: 1284px) {
+@media screen and (max-width: 1359px) {
+  /*//1280 */
   .column {
     flex: 100% !important; /* !important so that it overrides the inline style because by default it has higher priority */
   }
@@ -101,11 +102,15 @@
   }
 
   .productButtonWrapper,
-  .productButton {
+  .productButton,
+  .productTip {
     width: 100%;
   }
   .productButtonWrapper {
     margin: 0 30%;
+  }
+  .productTip {
+    text-align: center;
   }
   /* //Buying buttons */
 
@@ -133,6 +138,9 @@
   }
   .table-details {
     width: 100px;
+  }
+  .productTip {
+    display: none;
   }
 }
 
