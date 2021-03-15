@@ -1,5 +1,6 @@
 // Required
 import React, { useContext } from 'react';
+
 import { AppContext } from "../Context/Context";
 import { withRouter } from "react-router-dom";
 
@@ -74,6 +75,13 @@ const ComparisonSearch = ({ history  }) => {
             </Col>
         </Row>
         <Divider style={{padding: '0 16% 5% 16%'}}>Or</Divider>
+         {/* <InstantSearch
+            indexName="productionProducts"
+            searchClient={searchClient}
+        >
+            <SearchBox />
+            <Hits />
+        </InstantSearch> */}
     </>
     );
 }

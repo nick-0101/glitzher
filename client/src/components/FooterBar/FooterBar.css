@@ -1,0 +1,22 @@
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  background-color: #ea0215;
+  font-size: 14px;
+}
+
+.footer span {
+  color: #fff;
+}
+
+.ant-layout-footer {
+  padding: 15px 50px;
+}
+
+.breaker {
+  margin: 0 10px;
+  color: #fff;
+}

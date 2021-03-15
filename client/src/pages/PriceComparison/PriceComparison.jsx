@@ -14,7 +14,7 @@ import ReactPaginate from 'react-paginate';
 
 // Components
 import SkeletonLoader from '../../components/SkeletonLoaders/ComparisonSkeleton';
-import SubNav from '../../components/SubNav/SubNav'
+// import SubNav from '../../components/SubNav/SubNav'
 
 // Css
 import './PriceComparison.css'
@@ -43,7 +43,8 @@ const PriceComparison = () => {
 
         const searchValue = sessionStorage.getItem("searchResult");
 
-        axios.get(`/api/bestProduct?q=${searchValue}`, 
+        // /api/bestProduct?q=${searchValue}
+        axios.get(`/algolia/search?q=${searchValue}`, 
         { cancelToken: source.token })
         .then(res => {            
             const data = res.data;
@@ -319,7 +320,7 @@ const PriceComparison = () => {
                             {/* Paginate */}
                             <Row className="desktopPagination"> 
                                 <ReactPaginate
-                                    previousLabel={<><CaretLeftOutlined /> Previous</>}
+                                    previousLabel={<><CaretLeftOutlined /> Prev</>}
                                     nextLabel={<><CaretRightOutlined /> Next</>}
                                     breakLabel={"..."}
                                     breakClassName={"break-me"}

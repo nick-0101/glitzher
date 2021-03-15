@@ -1,6 +1,7 @@
 const express = require('express');
 const redis = require('redis');
 const { promisify } = require('util');
+const algoliasearch = require('algoliasearch');
 
 // Rate Limiters
 const RateLimit = require('express-rate-limit');
@@ -10,6 +11,13 @@ const router = express.Router();
 
 // Todo
 // use affiliatejs to make all links affiliate links.
+
+// Algolia
+const AlgoliaClient = algoliasearch(
+  process.env.ALGOLIA_APP_KEY,
+  process.env.ALGOLIA_ADMIN_KEY
+);
+const index = AlgoliaClient.initIndex('productionProducts');
 
 // Redis
 const RedisClient = redis.createClient({
@@ -61,7 +69,13 @@ router.get('/api', async (req, res) => {
         const ri = Math.floor(Math.random() * (i + 1));
         [array[i], array[ri]] = [array[ri], array[i]];
       }
-      res.send(array);
+
+      const filterResults = array.filter(
+        (item) =>
+          item.price.current_price !== 0 && item.price.current_price !== ''
+      );
+
+      res.send(filterResults);
     }
   } catch (err) {
     console.error(err);
@@ -133,6 +147,29 @@ router.get('/api/bestProduct', searchApi, async (req, res) => {
       }); // Server error
     }
   }
+});
+
+router.get('/algolia/search', async (req, res) => {
+  const { q } = req.query;
+
+  index
+    .search(q, {
+      distinct: true,
+    })
+    .then(({ hits }) => {
+      const filterResults = hits.filter(
+        (item) => item.price.current_price !== 0
+      );
+      const sortedResults = filterResults.sort(
+        (a, b) =>
+          // Special expression is replacing '$'
+          a.price.current_price - b.price.current_price
+      );
+      res.send(sortedResults);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 module.exports = router;

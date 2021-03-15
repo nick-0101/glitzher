@@ -1,5 +1,6 @@
 // App
 import React, { useState, useEffect, useContext, useCallback } from 'react';
+
 import { withRouter } from "react-router-dom";
 import { AppContext } from "../../components/Context/Context";
 
@@ -27,8 +28,23 @@ import SearchBar from '../../components/ComparisonSearch/ComparisonSearch';
 
 import './Homepage.css'
 
+// Algolia 
+import algoliasearch from 'algoliasearch/lite';
+import { InstantSearch, Hits, SearchBox } from 'react-instantsearch-dom';
+
+const searchClient = algoliasearch('GRXWQQHS2I', 'babd585148a07355c43a354cc0aece0f');
+
 const { Paragraph, Text, Link, Title } = Typography;
 const { Option } = Select;
+ //https://www.algolia.com/doc/api-reference/widgets/hits/react/
+ //https://www.algolia.com/doc/api-reference/widgets/search-box/react/
+const Hit = ({ hit }) => {
+    return (
+        <Col> 
+            <Row>{hit.title}</Row>
+        </Col>
+    )
+};
 
 const Homepage = ({ history }) => {
     const [page, setPageNumber] = useState(1);
@@ -46,7 +62,7 @@ const Homepage = ({ history }) => {
             .then(res => {
                 // Response
                 const data = res.data
-                
+                console.log(data)
                 // Add Pages
                 const startIndex = (page - 1) * perPage;
                 const endIndex = page * perPage;
@@ -120,6 +136,10 @@ const Homepage = ({ history }) => {
                <SiderNav /> 
             </Col> */}
             <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24} justiy="center" align="center">
+            <InstantSearch indexName="productionProducts" searchClient={searchClient}>
+                <SearchBox showLoadingIndicator />
+                <Hits hitComponent={Hit}/>
+            </InstantSearch>
             {data ?
                 <Row justiy="center" align="center">
                     {data.map((item, index) => {        
@@ -180,7 +200,7 @@ const Homepage = ({ history }) => {
                                         {/* Product price */}
                                         <Row className="hompageProductPrice"> 
                                             <Text style={{marginTop: '6px', marginBottom: 0, fontSize: '25px'}}>
-                                                ${item.price.current_price ? item.price.current_price : '0.00'}
+                                                {item.price.current_price ? '$' + item.price.current_price : 'Unavailable'}
                                             </Text>
                                             {item.price.savings_percent ? 
                                             <Row>
@@ -228,7 +248,7 @@ const Homepage = ({ history }) => {
                             {/* Paginate */}
                             <Row className="desktopPagination"> 
                                 <ReactPaginate
-                                    previousLabel={<><CaretLeftOutlined /> Previous</>}
+                                    previousLabel={<><CaretLeftOutlined /> Prev</>}
                                     nextLabel={<><CaretRightOutlined /> Next</>}
                                     breakLabel={"..."}
                                     breakClassName={"break-me"}
@@ -278,5 +298,6 @@ const Homepage = ({ history }) => {
         </>   
     )
 }
+
 
 export default withRouter(Homepage);

@@ -28,7 +28,9 @@ function App() {
                 exact
                 render={(props) => (
                   <>
-                    <NavBar /> <Homepage />
+                    <NavBar />
+                    <Homepage />
+                    <FooterBar />
                   </>
                 )}
               />
@@ -38,6 +40,7 @@ function App() {
                   <>
                     <SubNav />
                     <PriceComparison />
+                    <FooterBar />
                   </>
                 )}
               />
@@ -47,13 +50,13 @@ function App() {
                   <>
                     <NavBar />
                     <Error />
+                    <FooterBar />
                   </>
                 )}
               />
             </Switch>
           </Content>
         </Layout>
-        <FooterBar />
       </BrowserRouter>
     </Layout>
   );
