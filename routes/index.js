@@ -152,24 +152,42 @@ router.get('/api/bestProduct', searchApi, async (req, res) => {
 router.get('/algolia/search', async (req, res) => {
   const { q } = req.query;
 
-  index
-    .search(q, {
-      distinct: true,
-    })
-    .then(({ hits }) => {
-      const filterResults = hits.filter(
-        (item) => item.price.current_price !== 0
-      );
-      const sortedResults = filterResults.sort(
-        (a, b) =>
-          // Special expression is replacing '$'
-          a.price.current_price - b.price.current_price
-      );
-      res.send(sortedResults);
-    })
-    .catch((err) => {
-      console.log(err);
+  // Validate query
+  if (q === '' || q.length < 3 || q.length > 150) {
+    console.log('invalid string');
+    res.status(422).send({
+      title: 'Invalid query',
+      desc: 'Please try again.',
     });
+  } else {
+    index
+      .search(q)
+      .then(({ hits }) => {
+        // Sort results
+        const filterResults = hits.filter(
+          (item) => item.price.current_price !== 0
+        );
+        const sortedResults = filterResults.sort(
+          (a, b) =>
+            // Special expression is replacing '$'
+            a.price.current_price - b.price.current_price
+        );
+
+        // Validation
+        if (!Array.isArray(sortedResults) || !sortedResults.length) {
+          res.status(404).send({
+            title: 'No result found',
+            desc: "We couldn't find any products related to your query.",
+          });
+        } else {
+          // Send Results
+          res.send(sortedResults);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 });
 
 module.exports = router;

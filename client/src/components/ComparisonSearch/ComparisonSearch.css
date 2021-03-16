@@ -1,5 +1,4 @@
 /* Input + button border radius */
-
 .ant-input-search
   > .ant-input-group
   > .ant-input-group-addon:last-child
@@ -44,7 +43,7 @@
 
 /* Search Bar */
 .searchBarTitle {
-  font-size: 39px;
+  font-size: 42px;
 }
 
 .mobileSearchCol {
@@ -62,19 +61,27 @@
   color: #8c96a6;
   box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
 }
-/* 
+
 .frontpage-section {
   background-image: url('./images/frontpage-background.png');
-  background-size: repeat;
   background-position: top;
   min-height: 100%;
   height: 100%;
-} */
+
+  height: 450px;
+  text-align: center;
+
+  margin: 0 auto 5%;
+  max-width: 1080px;
+}
 
 @media screen and (max-width: 900px) {
   .searchBarTitle {
-    font-size: 30px;
+    font-size: 36px;
     font-family: 600;
+  }
+  .frontpage-section {
+    margin: 0 auto 10%;
   }
   .mobileSearchCol {
     display: block;
@@ -82,4 +89,109 @@
   .searchCol {
     display: none;
   }
+}
+
+
+/**
+ * Algolia Searchbox
+ */
+.ais-SearchBox-form {
+  background-color: #fff;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 0.975rem;
+  height: 3.5rem;
+  line-height: 1.25rem;
+  position: relative;
+  width: 100%; 
+  margin-top: 1rem;
+}
+
+.ais-SearchBox-form::before {
+  background: transparent url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%238c8c8c%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Ccircle%20cx%3D%2211%22%20cy%3D%2211%22%20r%3D%228%22%3E%3C%2Fcircle%3E%3Cline%20x1%3D%2221%22%20y1%3D%2221%22%20x2%3D%2216.65%22%20y2%3D%2216.65%22%3E%3C%2Fline%3E%3C%2Fsvg%3E") repeat scroll 0% 0%;
+  content: '';
+  height: 1rem;
+  left: 1rem;
+  margin-top: -0.5rem;
+  position: absolute;
+  top: 50%;
+  width: 1rem; 
+}
+
+.ais-SearchBox-input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: #fff;
+  border: 1px solid #d6d6e7;
+  border-radius: 3px;
+  -webkit-box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
+  caret-color: #9e0018;
+  color: #273244;
+  -webkit-box-flex: 1;
+  -ms-flex: 1 1 0%;
+  flex: 1 1 0%;
+  font: inherit;
+  max-width: 100%;
+  padding-left: 2.5rem; 
+}
+
+.ais-SearchBox-input:not(:placeholder-shown) {
+  box-shadow: none;
+}
+
+.ais-SearchBox-input:focus {
+  border-color: #f72a34;
+  box-shadow: none;
+  outline: currentcolor none medium; 
+}
+
+.ais-SearchBox-submit, .ais-SearchBox-reset {
+  display:none;
+}
+
+/**
+ * Algolia Results
+ */
+.ais-Hits-item,
+.ais-InfiniteHits-item {
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background: #fff;
+  -webkit-box-shadow: 0 0 0 1px rgba(35, 38, 59, 0.05), 0 1px 3px 0 rgba(35, 38, 59, 0.15);
+  box-shadow: 0 0 0 1px rgba(35, 38, 59, 0.05), 0 1px 3px 0 rgba(35, 38, 59, 0.15);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.25rem;
+  padding: 1rem; 
+}
+
+.ais-Hits-item:first-of-type,
+.ais-InfiniteHits-item:first-of-type {
+  border-radius: 3px 3px 0 0; }
+
+.ais-Hits-item:last-of-type,
+.ais-InfiniteHits-item:last-of-type {
+  border-radius: 0 0 3px 3px; 
+}
+
+.ais-Hits-item:only-of-type,
+.ais-InfiniteHits-item:only-of-type {
+  border-radius: 3px; }
+
+.ais-InfiniteHits-loadMore,
+.ais-InfiniteHits-loadPrevious {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin: 1rem auto; 
+}
+.ais-Hits-list {
+  padding: 0;
 }

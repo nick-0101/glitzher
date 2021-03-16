@@ -290,13 +290,5 @@ const Homepage = ({ history }) => {
     )
 }
 
-// const Hit = ({ hit }) => {
-//     return (
-//         <Col> 
-//             <Row>{hit.title}</Row>
-//         </Col>
-//     )
-// };
-
 
 export default withRouter(Homepage);

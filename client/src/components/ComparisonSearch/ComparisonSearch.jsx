@@ -1,21 +1,20 @@
 // Required
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 
 import { AppContext } from "../Context/Context";
 import { withRouter } from "react-router-dom";
 
 // Ant D 
-import { Input, Row, Col, Typography, Divider } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import { Row, Col, Typography } from 'antd';
 
 // Css
 import './ComparisonSearch.css'
-import 'instantsearch.css/themes/satellite.css';
+// import 'instantsearch.css/themes/satellite.css';
 
 // Algolia 
 import algoliasearch from 'algoliasearch/lite';
-import { InstantSearch, Hits, SearchBox, Configure } from 'react-instantsearch-dom';
-
+import { InstantSearch, Hits, SearchBox, Configure, connectStateResults } from 'react-instantsearch-dom';
+//#23263b
 const algoliaClient = algoliasearch('GRXWQQHS2I', 'babd585148a07355c43a354cc0aece0f');
 
 const searchClient = {
@@ -35,48 +34,48 @@ const searchClient = {
   },
 };
 
-const { Search } = Input;
 const { Text } = Typography;
 
 const ComparisonSearch = ({ history }) => {
     const { setSearch } = useContext(AppContext);
-    const [isEmpty, setIsEmpty] = useState(true)
 
-    const handleSetSearch = (value) => {
-    //     if (value !== '') {
-    //         if (typeof(Storage) !== "undefined") {
-    //             sessionStorage.removeItem('searchResult');
-    //             sessionStorage.setItem("searchResult", value);
+    const handleSetSearch = () => {
+        const value = document.querySelector('.ais-SearchBox-input').value;
+        console.log(value)
+        if (value !== '') {
+            if (typeof(Storage) !== "undefined") {
+                sessionStorage.removeItem('searchResult');
+                sessionStorage.setItem("searchResult", value);
 
-    //             // Complete search
-    //             history.push({  
-    //                 pathname: '/search',
-    //                 search: `?q=${sessionStorage.getItem("searchResult")}`
-    //             })
-    //         } else {
-    //             console.log('No session storage support')
+                // Complete search
+                history.push({  
+                    pathname: '/search',
+                    search: `?q=${sessionStorage.getItem("searchResult")}`
+                })
+            } else {
+                console.log('No session storage support')
                 
-    //             // Complete search with context
-    //             setSearch(value);
-    //             history.push({
-    //                 search: `?q=${setSearch}`
-    //             })
-    //         }
-    //     } else {
-    //         return
-    //     }  
+                // Complete search with context
+                setSearch(value);
+                history.push({
+                    search: `?q=${setSearch}`
+                })
+            }
+        } else {
+            return
+        }  
     };
 
     return (
     <>
-        <Row className="frontpage-section" justify="center" align="middle" style={{height: '400px', padding: '5% 0 5% 0', textAlign: 'center'}}>
+        <Row className="frontpage-section" justify="center" align="middle">
             <Col span={12} className="searchCol">
-                <Text strong className="searchBarTitle">
+                <Text  strong className="searchBarTitle">
                     Compare makeup price's across major brands.
                 </Text>
                 <InstantSearch indexName="productionProducts" searchClient={searchClient}>
                     <Configure 
-                        hitsPerPage={8} 
+                        hitsPerPage={4} 
                         distinct
                     />
                     <SearchBox 
@@ -85,23 +84,12 @@ const ComparisonSearch = ({ history }) => {
                             resetTitle: 'Clear your search query.',
                             placeholder: 'Enter a product title...',
                         }}
-                        onSubmit={event => {
-                            event.preventDefault();
-                            console.log(event.currentTarget);
-                        }}
-                        showLoadingIndicator 
+                        onSubmit={handleSetSearch}
                     />
-                    {isEmpty ? null : <Hits hitComponent={Hit}/>}
+                    <Results>
+                        <Hits hitComponent={Hit}/>
+                    </Results>
                 </InstantSearch>
-                {/* <Search 
-                    className="searchBar" 
-                    onSearch={handleSetSearch} 
-                    placeholder="Enter a product title" 
-                    size="large" 
-                    prefix={<SearchOutlined />} 
-                    enterButton
-                    style={{borderRadius: '8px'}}
-                /> */}
             </Col>
             <Col span={22} className="mobileSearchCol">
                 <Text strong className="searchBarTitle">
@@ -109,45 +97,56 @@ const ComparisonSearch = ({ history }) => {
                 </Text>
                 <InstantSearch indexName="productionProducts" searchClient={searchClient}>
                     <Configure 
-                        hitsPerPage={8} 
+                        hitsPerPage={4} 
                         distinct
                     />
                     <SearchBox 
-                        onSubmit={event => {
-                            event.preventDefault();
-                            console.log(event.currentTarget);
-                        }}
+                        onSubmit={handleSetSearch}
                         translations={{
                             submitTitle: 'Submit your search.',
                             resetTitle: 'Clear your search query.',
                             placeholder: 'Enter a product title...',
                         }}
-                        showLoadingIndicator 
                     />
                     <Hits hitComponent={Hit}/>
                 </InstantSearch>
-                {/* <Search 
-                    className="searchBar" 
-                    onSearch={handleSetSearch}
-                    placeholder="Enter a product title" 
-                    size="large"
-                    prefix={<SearchOutlined />} 
-                    enterButton
-                    style={{borderRadius: '8px'}}
-                /> */}
             </Col>
         </Row>
-        <Divider style={{padding: '0 16% 5% 16%'}}>Or</Divider>
+        {/* <Divider style={{padding: '0 16% 5% 16%'}}>Or</Divider> */}
     </>
     );
 }
 
+// TODO: search when click on a hit. Connect subnav to Algolia
+
 const Hit = ({ hit }) => {
     return (
         <Col> 
-            <Row>{hit.title}</Row>
+            <Row>
+                {/* get title and onclikc execute search function */}
+                <Text ellipsis={true}>{hit.title}</Text>
+            </Row>
         </Col>
     )
 };
+
+const Results = connectStateResults(({ searchState, searchResults, children }) =>
+    searchResults && searchResults.nbHits !== 0 ? (
+      children
+    ) : (
+        <>
+            {searchState.query ? 
+                <div className="ais-Hits"> 
+                    <ul className="ais-Hits-list">
+                        <li className="ais-Hits-item">
+                            <Text ellipsis={true}>No results found for: {searchState.query}</Text>
+                        </li>
+                    </ul>
+                </div> 
+            : null}
+        </>
+    )
+);
+
 
 export default withRouter(ComparisonSearch);
