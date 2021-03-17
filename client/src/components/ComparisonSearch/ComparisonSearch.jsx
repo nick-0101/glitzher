@@ -9,11 +9,11 @@ import { Row, Col, Typography } from 'antd';
 
 // Css
 import './ComparisonSearch.css'
-// import 'instantsearch.css/themes/satellite.css';
 
 // Algolia 
 import algoliasearch from 'algoliasearch/lite';
-import { InstantSearch, Hits, SearchBox, Configure, connectStateResults } from 'react-instantsearch-dom';
+import { InstantSearch, SearchBox, Configure, connectStateResults, connectHits } from 'react-instantsearch-dom';
+
 //#23263b
 const algoliaClient = algoliasearch('GRXWQQHS2I', 'babd585148a07355c43a354cc0aece0f');
 
@@ -41,7 +41,7 @@ const ComparisonSearch = ({ history }) => {
 
     const handleSetSearch = () => {
         const value = document.querySelector('.ais-SearchBox-input').value;
-        console.log(value)
+
         if (value !== '') {
             if (typeof(Storage) !== "undefined") {
                 sessionStorage.removeItem('searchResult');
@@ -66,6 +66,33 @@ const ComparisonSearch = ({ history }) => {
         }  
     };
 
+    const handleResultSearch = (suggestionValue) => {
+        const value = suggestionValue
+
+        if (value !== '') {
+            if (typeof(Storage) !== "undefined") {
+                sessionStorage.removeItem('searchResult');
+                sessionStorage.setItem("searchResult", value);
+
+                // Complete search
+                history.push({  
+                    pathname: '/search',
+                    search: `?q=${sessionStorage.getItem("searchResult")}`
+                })
+            } else {
+                console.log('No session storage support')
+                
+                // Complete search with context
+                setSearch(value);
+                history.push({
+                    search: `?q=${setSearch}`
+                })
+            }
+        } else {
+            return
+        }  
+    }
+
     return (
     <>
         <Row className="frontpage-section" justify="center" align="middle">
@@ -87,7 +114,7 @@ const ComparisonSearch = ({ history }) => {
                         onSubmit={handleSetSearch}
                     />
                     <Results>
-                        <Hits hitComponent={Hit}/>
+                        <CustomHits history={history} handleResultSearch={handleResultSearch}/>
                     </Results>
                 </InstantSearch>
             </Col>
@@ -108,27 +135,31 @@ const ComparisonSearch = ({ history }) => {
                             placeholder: 'Enter a product title...',
                         }}
                     />
-                    <Hits hitComponent={Hit}/>
+                    <Results>
+                        <CustomHits handleResultSearch={handleResultSearch}/>
+                    </Results>
                 </InstantSearch>
             </Col>
         </Row>
-        {/* <Divider style={{padding: '0 16% 5% 16%'}}>Or</Divider> */}
     </>
     );
 }
 
-// TODO: search when click on a hit. Connect subnav to Algolia
-
-const Hit = ({ hit }) => {
+const CustomHits = connectHits(({hits, handleResultSearch}) => {
     return (
-        <Col> 
-            <Row>
-                {/* get title and onclikc execute search function */}
-                <Text ellipsis={true}>{hit.title}</Text>
-            </Row>
-        </Col>
+        <Col className="ais-Hits"> 
+            {hits.map(hit => (
+                <Row 
+                    className="ais-Hits-item" 
+                    onClick={() => handleResultSearch(hit.title)} 
+                    key={hit.objectID}
+                >
+                    <Text ellipsis={true}>{hit.title}</Text>
+                </Row>
+            ))}
+        </Col> 
     )
-};
+});
 
 const Results = connectStateResults(({ searchState, searchResults, children }) =>
     searchResults && searchResults.nbHits !== 0 ? (
@@ -147,6 +178,5 @@ const Results = connectStateResults(({ searchState, searchResults, children }) =
         </>
     )
 );
-
 
 export default withRouter(ComparisonSearch);

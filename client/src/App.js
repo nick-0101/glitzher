@@ -13,9 +13,6 @@ const history = createBrowserHistory();
 
 const { Content } = Layout;
 
-let urlElements = window.location.href.split('/');
-
-console.log(urlElements);
 function App() {
   return (
     <Layout style={{ height: 'auto' }}>

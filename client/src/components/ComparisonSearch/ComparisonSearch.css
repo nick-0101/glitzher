@@ -183,7 +183,8 @@
 
 .ais-Hits-item:only-of-type,
 .ais-InfiniteHits-item:only-of-type {
-  border-radius: 3px; }
+  border-radius: 3px; 
+}
 
 .ais-InfiniteHits-loadMore,
 .ais-InfiniteHits-loadPrevious {
