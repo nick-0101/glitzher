@@ -3,66 +3,179 @@ import { AppContext } from "../Context/Context";
 import { withRouter } from "react-router-dom";
 
 // Antd
-import { Layout, Input  } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import { Layout, Col, Row, Typography } from 'antd';
 
 // Css
 import './SubNav.css'
 
-const { Header } = Layout;
-const { Search } = Input;
+// Algolia 
+import algoliasearch from 'algoliasearch/lite';
+import { InstantSearch, Configure, connectStateResults, connectHits, connectSearchBox } from 'react-instantsearch-dom';
 
-const SubNav = ({ history  }) => {
+const algoliaClient = algoliasearch('GRXWQQHS2I', 'babd585148a07355c43a354cc0aece0f');
+
+const searchClient = {
+  search(requests) {
+    if (requests.every(({ params }) => !params.query)) {
+      return Promise.resolve({
+        results: requests.map(() => ({
+          hits: [],
+          nbHits: 0,
+          nbPages: 0,
+          processingTimeMS: 0,
+        })),
+      });
+    }
+
+    return algoliaClient.search(requests);
+  },
+};
+
+
+const { Header } = Layout;
+const { Text } = Typography;
+
+const SubNav = ({ history }) => {
     const { setSearch } = useContext(AppContext);
 
-    const handleSetSearch = (value) => {
+    const handleSetSearch = (e, searchValue) => {
+        const value = searchValue;
+
+        if(e.keyCode === 13){
+            e.preventDefault(); 
+
+            if (value !== '') {
+                if (typeof(Storage) !== "undefined") {
+                    sessionStorage.removeItem('searchResult');
+                    sessionStorage.setItem("searchResult", value);
+
+                    // Complete search
+                    history.push({  
+                        pathname: '/search',
+                        search: `?q=${sessionStorage.getItem("searchResult")}`
+                    })
+                } else {
+                    console.log('No session storage support')
+                    
+                    // Complete search with context
+                    setSearch(value);
+                    history.push({
+                        search: `?q=${setSearch}`
+                    })
+                }
+            } else {
+                return
+            }  
+        } 
+    };
+
+    const handleResultSearch = (suggestionValue) => {
+        const value = suggestionValue
+
         if (value !== '') {
             if (typeof(Storage) !== "undefined") {
                 sessionStorage.removeItem('searchResult');
                 sessionStorage.setItem("searchResult", value);
 
                 // Complete search
-                history.push({
+                history.push({  
                     pathname: '/search',
                     search: `?q=${sessionStorage.getItem("searchResult")}`
                 })
-                window.location.reload()  
             } else {
                 console.log('No session storage support')
-
+                
                 // Complete search with context
-                setSearch(value)
+                setSearch(value);
                 history.push({
-                    pathname: '/search',
                     search: `?q=${setSearch}`
                 })
-                window.location.reload()  
             }
         } else {
             return
-        }
-    };
+        }  
+    }
 
     return (    
     <>
         <Layout theme='light'>
             <Header theme='light' className="subMenuHeader" style={{ background: '#fff' }} >
-                <div className="subMenuWrapper">
+                <Row>
                     <div className="subNav-logo">Logo</div> 
-                    <Search 
-                        className="subSearchBar" 
-                        onSearch={handleSetSearch} 
-                        placeholder="Enter a product title" 
-                        size="small" 
-                        prefix={<SearchOutlined />} 
-                        enterButton
-                        style={{borderRadius: '8px'}}
+                </Row>
+                <InstantSearch indexName="productionProducts" searchClient={searchClient}>
+                    <Configure 
+                        hitsPerPage={4} 
+                        distinct
                     />
-                </div>
+                    <Col className="subSearchBar" style={{zIndex: 1}}>
+                        <CustomSearch handleSetSearch={handleSetSearch}  />
+                    
+                        <Results>
+                            <CustomHits history={history} handleResultSearch={handleResultSearch}/>
+                        </Results>
+                    </Col>
+                </InstantSearch>
             </Header>
         </Layout>
     </>
     )
 }
+// history is not pushing for some fucking reason
+
+const CustomSearch = connectSearchBox(({currentRefinement, refine, handleSetSearch}) => {
+    return (
+        <div className="ais-SearchBox">
+            <form className="ais-SearchBox-form">
+                <input
+                    type="search"
+                    placeholder="Enter a product title..."
+                    autoComplete="on"
+                    autoCorrect="on"
+                    spellCheck="true"
+                    required
+                    value={currentRefinement}
+                    onChange={e => refine(e.target.value)}
+                    onKeyDown={e => handleSetSearch(e, currentRefinement)}
+                    className="ais-SearchBox-input"
+                />
+            </form>
+        </div>
+    )
+});
+
+const CustomHits = connectHits(({hits, handleResultSearch}) => {
+    return (
+        <Col className="ais-Hits"> 
+            {hits.map(hit => (
+                <Row 
+                    className="ais-Hits-item" 
+                    onClick={() => handleResultSearch(hit.title)} 
+                    key={hit.objectID}
+                >
+                    <Text ellipsis={true}>{hit.title}</Text>
+                </Row>
+            ))}
+        </Col> 
+    )
+});
+
+const Results = connectStateResults(({ searchState, searchResults, children }) =>
+    searchResults && searchResults.nbHits !== 0 ? (
+      children
+    ) : (
+        <>
+            {searchState.query ? 
+                <div className="ais-Hits"> 
+                    <ul className="ais-Hits-list">
+                        <li className="ais-Hits-item">
+                            <Text ellipsis={true}>No results found for: {searchState.query}</Text>
+                        </li>
+                    </ul>
+                </div> 
+            : null}
+        </>
+    )
+);
 
 export default withRouter(SubNav);

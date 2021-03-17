@@ -12,7 +12,7 @@ import './ComparisonSearch.css'
 
 // Algolia 
 import algoliasearch from 'algoliasearch/lite';
-import { InstantSearch, SearchBox, Configure, connectStateResults, connectHits } from 'react-instantsearch-dom';
+import { InstantSearch, Configure, connectStateResults, connectHits, connectSearchBox } from 'react-instantsearch-dom';
 
 //#23263b
 const algoliaClient = algoliasearch('GRXWQQHS2I', 'babd585148a07355c43a354cc0aece0f');
@@ -39,31 +39,35 @@ const { Text } = Typography;
 const ComparisonSearch = ({ history }) => {
     const { setSearch } = useContext(AppContext);
 
-    const handleSetSearch = () => {
-        const value = document.querySelector('.ais-SearchBox-input').value;
+    const handleSetSearch = (e, searchValue) => {
+        const value = searchValue;
 
-        if (value !== '') {
-            if (typeof(Storage) !== "undefined") {
-                sessionStorage.removeItem('searchResult');
-                sessionStorage.setItem("searchResult", value);
+        if(e.keyCode === 13){
+            e.preventDefault(); 
 
-                // Complete search
-                history.push({  
-                    pathname: '/search',
-                    search: `?q=${sessionStorage.getItem("searchResult")}`
-                })
+            if (value !== '') {
+                if (typeof(Storage) !== "undefined") {
+                    sessionStorage.removeItem('searchResult');
+                    sessionStorage.setItem("searchResult", value);
+
+                    // Complete search
+                    history.push({  
+                        pathname: '/search',
+                        search: `?q=${sessionStorage.getItem("searchResult")}`
+                    })
+                } else {
+                    console.log('No session storage support')
+                    
+                    // Complete search with context
+                    setSearch(value);
+                    history.push({
+                        search: `?q=${setSearch}`
+                    })
+                }
             } else {
-                console.log('No session storage support')
-                
-                // Complete search with context
-                setSearch(value);
-                history.push({
-                    search: `?q=${setSearch}`
-                })
-            }
-        } else {
-            return
-        }  
+                return
+            }  
+        } 
     };
 
     const handleResultSearch = (suggestionValue) => {
@@ -93,26 +97,22 @@ const ComparisonSearch = ({ history }) => {
         }  
     }
 
+    // Prolem is that the event listener is getting a value, the problem is that it is reaidng the other 
+    // search bar which is empty causing query not to go 
     return (
     <>
         <Row className="frontpage-section" justify="center" align="middle">
             <Col span={12} className="searchCol">
-                <Text  strong className="searchBarTitle">
+                <Text strong className="searchBarTitle">
                     Compare makeup price's across major brands.
                 </Text>
+                <Row style={{marginBottom: '1rem'}}></Row>
                 <InstantSearch indexName="productionProducts" searchClient={searchClient}>
                     <Configure 
                         hitsPerPage={4} 
                         distinct
                     />
-                    <SearchBox 
-                        translations={{
-                            submitTitle: 'Submit your search.',
-                            resetTitle: 'Clear your search query.',
-                            placeholder: 'Enter a product title...',
-                        }}
-                        onSubmit={handleSetSearch}
-                    />
+                    <CustomSearch handleSetSearch={handleSetSearch}  />
                     <Results>
                         <CustomHits history={history} handleResultSearch={handleResultSearch}/>
                     </Results>
@@ -127,16 +127,9 @@ const ComparisonSearch = ({ history }) => {
                         hitsPerPage={4} 
                         distinct
                     />
-                    <SearchBox 
-                        onSubmit={handleSetSearch}
-                        translations={{
-                            submitTitle: 'Submit your search.',
-                            resetTitle: 'Clear your search query.',
-                            placeholder: 'Enter a product title...',
-                        }}
-                    />
+                    <CustomSearch handleSetSearch={handleSetSearch}  />
                     <Results>
-                        <CustomHits handleResultSearch={handleResultSearch}/>
+                        <CustomHits history={history} handleResultSearch={handleResultSearch}/>
                     </Results>
                 </InstantSearch>
             </Col>
@@ -144,6 +137,28 @@ const ComparisonSearch = ({ history }) => {
     </>
     );
 }
+
+const CustomSearch = connectSearchBox(({currentRefinement, refine, handleSetSearch}) => {
+    return (
+        <div className="ais-SearchBox">
+            <form className="ais-SearchBox-form">
+                <input
+                    type="search"
+                    placeholder="Enter a product title..."
+                    autoComplete="on"
+                    autoCorrect="on"
+                    spellCheck="true"
+                    required
+                    value={currentRefinement}
+                    onChange={e => refine(e.target.value)}
+                    // onClick={() => handleSetSearch('123')}
+                    onKeyDown={e => handleSetSearch(e, currentRefinement)}
+                    className="ais-SearchBox-input"
+                />
+            </form>
+        </div>
+    )
+});
 
 const CustomHits = connectHits(({hits, handleResultSearch}) => {
     return (
