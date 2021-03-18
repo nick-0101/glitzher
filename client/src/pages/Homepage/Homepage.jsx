@@ -127,10 +127,6 @@ const Homepage = ({ history }) => {
                <SiderNav /> 
             </Col> */}
             <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24} justiy="center" align="center">
-            {/* <InstantSearch indexName="productionProducts" searchClient={searchClient}>
-                <SearchBox showLoadingIndicator />
-                <Hits hitComponent={Hit}/>
-            </InstantSearch> */}
             {data ?
                 <Row justiy="center" align="center">
                     {data.map((item, index) => {        

@@ -14,7 +14,6 @@ import ReactPaginate from 'react-paginate';
 
 // Components
 import SkeletonLoader from '../../components/SkeletonLoaders/ComparisonSkeleton';
-// import SubNav from '../../components/SubNav/SubNav'
 
 // Css
 import './PriceComparison.css'
@@ -24,7 +23,7 @@ import noFound from './images/search_not_found.webp';
 
 const { Text, Title, Link, Paragraph } = Typography;
 
-const PriceComparison = () => {
+const PriceComparison = ({ history }) => {
     const [comparisonData, setComparisonData] = useState(null)
     const [tableData, setTableData] = useState(null)
 
@@ -191,7 +190,6 @@ const PriceComparison = () => {
             <>
                 {comparisonData ?
                     <>
-                    {/* <SubNav /> */}
                     <Divider style={{marginTop: 0}} /> 
                         <Row className="productWrapper">
                             <Paragraph 

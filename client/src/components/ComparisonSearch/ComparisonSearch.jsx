@@ -151,7 +151,6 @@ const CustomSearch = connectSearchBox(({currentRefinement, refine, handleSetSear
                     required
                     value={currentRefinement}
                     onChange={e => refine(e.target.value)}
-                    // onClick={() => handleSetSearch('123')}
                     onKeyDown={e => handleSetSearch(e, currentRefinement)}
                     className="ais-SearchBox-input"
                 />

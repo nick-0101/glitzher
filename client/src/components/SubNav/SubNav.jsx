@@ -1,9 +1,11 @@
+// Required
 import React, { useContext } from 'react';
+
 import { AppContext } from "../Context/Context";
 import { withRouter } from "react-router-dom";
 
-// Antd
-import { Layout, Col, Row, Typography } from 'antd';
+// Ant D 
+import { Row, Col, Typography, Layout } from 'antd';
 
 // Css
 import './SubNav.css'
@@ -12,6 +14,7 @@ import './SubNav.css'
 import algoliasearch from 'algoliasearch/lite';
 import { InstantSearch, Configure, connectStateResults, connectHits, connectSearchBox } from 'react-instantsearch-dom';
 
+//#23263b
 const algoliaClient = algoliasearch('GRXWQQHS2I', 'babd585148a07355c43a354cc0aece0f');
 
 const searchClient = {
@@ -31,9 +34,8 @@ const searchClient = {
   },
 };
 
-
-const { Header } = Layout;
 const { Text } = Typography;
+const { Header } = Layout;
 
 const SubNav = ({ history }) => {
     const { setSearch } = useContext(AppContext);
@@ -54,6 +56,7 @@ const SubNav = ({ history }) => {
                         pathname: '/search',
                         search: `?q=${sessionStorage.getItem("searchResult")}`
                     })
+                    window.location.reload()
                 } else {
                     console.log('No session storage support')
                     
@@ -78,10 +81,7 @@ const SubNav = ({ history }) => {
                 sessionStorage.setItem("searchResult", value);
 
                 // Complete search
-                history.push({  
-                    pathname: '/search',
-                    search: `?q=${sessionStorage.getItem("searchResult")}`
-                })
+                history.push(`?q=${sessionStorage.getItem("searchResult")}`)
             } else {
                 console.log('No session storage support')
                 
@@ -96,15 +96,17 @@ const SubNav = ({ history }) => {
         }  
     }
 
-    return (    
+    // Prolem is that the event listener is getting a value, the problem is that it is reaidng the other 
+    // search bar which is empty causing query not to go 
+    return (
     <>
-        <Layout theme='light'>
-            <Header theme='light' className="subMenuHeader" style={{ background: '#fff' }} >
-                <Row>
-                    <div className="subNav-logo">Logo</div> 
-                </Row>
-                <InstantSearch indexName="productionProducts" searchClient={searchClient}>
-                    <Configure 
+         <Layout theme='light'>
+             <Header theme='light' className="subMenuHeader" style={{ background: '#fff' }} >
+                 <Row>
+                     <div className="subNav-logo">Logo</div> 
+                 </Row>
+                 <InstantSearch indexName="productionProducts" searchClient={searchClient}>
+                     <Configure 
                         hitsPerPage={4} 
                         distinct
                     />
@@ -112,16 +114,16 @@ const SubNav = ({ history }) => {
                         <CustomSearch handleSetSearch={handleSetSearch}  />
                     
                         <Results>
-                            <CustomHits history={history} handleResultSearch={handleResultSearch}/>
+                            <CustomHits handleResultSearch={handleResultSearch}/>
                         </Results>
                     </Col>
                 </InstantSearch>
             </Header>
-        </Layout>
+         </Layout>
+
     </>
-    )
+    );
 }
-// history is not pushing for some fucking reason
 
 const CustomSearch = connectSearchBox(({currentRefinement, refine, handleSetSearch}) => {
     return (
@@ -179,3 +181,5 @@ const Results = connectStateResults(({ searchState, searchResults, children }) =
 );
 
 export default withRouter(SubNav);
+
+
