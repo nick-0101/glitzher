@@ -96,8 +96,6 @@ const SubNav = ({ history }) => {
         }  
     }
 
-    // Prolem is that the event listener is getting a value, the problem is that it is reaidng the other 
-    // search bar which is empty causing query not to go 
     return (
     <>
          <Layout theme='light'>
