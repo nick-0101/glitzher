@@ -55,7 +55,7 @@ router.get('/algolia/setProducts', async (req, res) => {
     index
       .saveObjects(result, { autoGenerateObjectIDIfNotExist: true })
       .then(({ objectIDs }) => {
-        res.send(objectIDs);
+        res.sendStatus(200);
       });
   } catch (err) {
     console.error(err);
@@ -69,6 +69,6 @@ router.get('/algolia/setProducts', async (req, res) => {
 //   console.log('Scheduled update completed at ' + new Date());
 // });
 
-router.get('/updateapi', ipfilter(ips, { mode: 'allow' }), getProducts);
+// router.get('/updateapi', ipfilter(ips, { mode: 'allow' }), getProducts);
 
 module.exports = router;

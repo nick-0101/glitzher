@@ -12,7 +12,7 @@ import './ComparisonSearch.css'
 
 // Algolia 
 import algoliasearch from 'algoliasearch/lite';
-import { InstantSearch, Configure, connectStateResults, connectHits, connectSearchBox } from 'react-instantsearch-dom';
+import { InstantSearch, Configure, Index, connectStateResults, connectHits, connectSearchBox } from 'react-instantsearch-dom';
 
 //#23263b
 const algoliaClient = algoliasearch('GRXWQQHS2I', 'babd585148a07355c43a354cc0aece0f');
@@ -108,6 +108,25 @@ const ComparisonSearch = ({ history }) => {
                 </Text>
                 <Row style={{marginBottom: '1rem'}}></Row>
                 <InstantSearch indexName="productionProducts" searchClient={searchClient}>
+                    <CustomSearch handleSetSearch={handleSetSearch}  />
+                    {/* ---------*/}
+                    {/* <Index indexName="productionProducts">
+                        <Configure 
+                            hitsPerPage={2} 
+                            distinct
+                        />
+                        <CustomHits history={history} handleResultSearch={handleResultSearch}/>
+                    </Index>
+
+                    <Index indexName="sephora">
+                        <Configure 
+                            hitsPerPage={2} 
+                            distinct
+                        />
+                        <CustomHits history={history} handleResultSearch={handleResultSearch}/>
+                    </Index> */}
+                    {/* ---------*/}
+
                     <Configure 
                         hitsPerPage={4} 
                         distinct

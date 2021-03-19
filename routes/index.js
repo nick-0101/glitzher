@@ -43,7 +43,7 @@ const searchApi = RateLimit({
 
 router.use(redisLimiter);
 
-// const GET_ASYNC = promisify(RedisClient.get).bind(RedisClient);
+const GET_ASYNC = promisify(RedisClient.get).bind(RedisClient);
 
 // Routes
 router.get('/api', async (req, res) => {
