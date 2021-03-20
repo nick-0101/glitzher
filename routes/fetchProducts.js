@@ -25,36 +25,40 @@ const AlgoliaClient = algoliasearch(
   process.env.ALGOLIA_APP_KEY,
   process.env.ALGOLIA_ADMIN_KEY
 );
-const index = AlgoliaClient.initIndex('productionProducts');
+const index = AlgoliaClient.initIndex('amazonProducts');
 
 router.get('/algolia/setProducts', async (req, res) => {
   try {
     // Collect 50 products from CA
     const products = await amazonScraper.products({
-      keyword: 'makeup',
+      keyword: 'cheek makeup',
       number: 100,
-      country: 'CA',
+      country: 'US',
       randomUa: true,
     });
 
     // Update db
 
-    if (Object.keys(products).length > 0) {
-      RedisClient.set('faceMakeup1', JSON.stringify(products), (err, data) => {
-        if (err) throw err;
-        console.log('updated!');
-      });
-    } else {
-      return;
-    }
+    // if (Object.keys(products).length > 0) {
+    //   RedisClient.set('faceMakeup1', JSON.stringify(products), (err, data) => {
+    //     if (err) throw err;
+    //     console.log('updated!');
+    //   });
+    // } else {
+    //   return;
+    // }
     // Set Algolia Data
-    const amazon = await GET_ASYNC('faceMakeup1');
-    const parse1 = JSON.parse(amazon);
-    const result = parse1.result;
+    // const amazon = await GET_ASYNC('amazonProducts');
+    // const parse1 = JSON.parse(amazon);
+    // const result = parse1.result;
+
+    // const parse = JSON.parse(products);
+    const result = products.result;
 
     index
       .saveObjects(result, { autoGenerateObjectIDIfNotExist: true })
-      .then(({ objectIDs }) => {
+      .then(() => {
+        console.log('results saved!');
         res.sendStatus(200);
       });
   } catch (err) {
