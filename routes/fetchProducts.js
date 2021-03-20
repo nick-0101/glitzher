@@ -38,21 +38,6 @@ router.get('/algolia/setProducts', async (req, res) => {
     });
 
     // Update db
-
-    // if (Object.keys(products).length > 0) {
-    //   RedisClient.set('faceMakeup1', JSON.stringify(products), (err, data) => {
-    //     if (err) throw err;
-    //     console.log('updated!');
-    //   });
-    // } else {
-    //   return;
-    // }
-    // Set Algolia Data
-    // const amazon = await GET_ASYNC('amazonProducts');
-    // const parse1 = JSON.parse(amazon);
-    // const result = parse1.result;
-
-    // const parse = JSON.parse(products);
     const result = products.result;
 
     index
