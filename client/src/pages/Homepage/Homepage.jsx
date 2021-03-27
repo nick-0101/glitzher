@@ -1,6 +1,5 @@
 // App
 import React, { useState, useEffect, useContext, useCallback } from 'react';
-
 import { withRouter } from "react-router-dom";
 import { AppContext } from "../../components/Context/Context";
 
@@ -27,12 +26,6 @@ import SkeletonLoader from '../../components/SkeletonLoaders/SkeletonLoader';
 import SearchBar from '../../components/ComparisonSearch/ComparisonSearch';
 
 import './Homepage.css'
-
-// // Algolia 
-// import algoliasearch from 'algoliasearch/lite';
-// import { InstantSearch, Hits, SearchBox } from 'react-instantsearch-dom';
-
-// const searchClient = algoliasearch('GRXWQQHS2I', 'babd585148a07355c43a354cc0aece0f');
 
 const { Paragraph, Text, Link, Title } = Typography;
 const { Option } = Select;

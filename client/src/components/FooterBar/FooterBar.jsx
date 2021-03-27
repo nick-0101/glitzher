@@ -22,7 +22,7 @@ const FooterBar = () => {
                 </Link>
                 <Row className="breaker">|</Row>
                 <Link href="#" title="Copyright">
-                    <Text>Copyright 2021 Glamurbot.com</Text>
+                    <Text>Copyright ©{new Date().getFullYear()} Glamurbot | All Rights Reserved</Text>
                 </Link>
             </Footer>
         </>

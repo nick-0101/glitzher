@@ -63,6 +63,7 @@
 }
 
 .productButton {
+  width: 40%;
   height: 50px;
   font-size: 14px;
   border-radius: 8px;

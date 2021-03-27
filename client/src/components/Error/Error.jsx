@@ -7,9 +7,9 @@ const { Title, Link, Paragraph } = Typography;
 
 const Error = () => {
     return (
-        <Row justify="center" align="center">
+        <Row justify="center" align="center"> 
             <Col>
-                <Paragraph style={{marginBottom: 0, fontWeight: 600, fontSize: 100, textAlign:'center'}}>
+                <Paragraph style={{marginBottom: 0, fontWeight: 600, fontSize: 150, textAlign:'center'}}>
                     404
                 </Paragraph>
                 <Title 

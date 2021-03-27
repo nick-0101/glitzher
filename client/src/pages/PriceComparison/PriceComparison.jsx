@@ -168,7 +168,7 @@ const PriceComparison = ({ history }) => {
                     <Row justify="center">
                         <Title
                             level={2} 
-                            style={{marginBottom: '5%', textAlign:'center'}}>
+                            style={{marginBottom: '4%', textAlign:'center'}}>
                                 {errorTitle}
                         </Title>
                     </Row>

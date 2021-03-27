@@ -18,41 +18,43 @@ function App() {
     <Layout style={{ height: 'auto' }}>
       <BrowserRouter history={history}>
         <Layout>
-          <Content style={{ background: '#fff' }}>
-            <Switch>
-              <Route
-                path='/'
-                exact
-                render={(props) => (
-                  <>
-                    <NavBar />
-                    <Homepage />
-                    <FooterBar />
-                  </>
-                )}
-              />
-              <Route
-                path='/search'
-                render={(props) => (
-                  <>
-                    <SubNav />
-                    <PriceComparison />
-                    <FooterBar />
-                  </>
-                )}
-              />
-              <Route
-                path='*'
-                render={(props) => (
-                  <>
-                    <NavBar />
-                    <Error />
-                    <FooterBar />
-                  </>
-                )}
-              />
-            </Switch>
-          </Content>
+          <div className='page-container'>
+            <div className='content-wrap'>
+              <Content style={{ background: '#fff' }}>
+                <Switch>
+                  <Route
+                    path='/'
+                    exact
+                    render={() => (
+                      <>
+                        <NavBar />
+                        <Homepage />
+                      </>
+                    )}
+                  />
+                  <Route
+                    path='/search'
+                    render={() => (
+                      <>
+                        <SubNav />
+                        <PriceComparison />
+                      </>
+                    )}
+                  />
+                  <Route
+                    path='*'
+                    render={() => (
+                      <>
+                        <NavBar />
+                        <Error />
+                      </>
+                    )}
+                  />
+                </Switch>
+              </Content>
+            </div>
+            <FooterBar />
+          </div>
         </Layout>
       </BrowserRouter>
     </Layout>
