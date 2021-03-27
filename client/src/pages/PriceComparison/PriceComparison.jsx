@@ -43,7 +43,7 @@ const PriceComparison = ({ history }) => {
         const searchValue = sessionStorage.getItem("searchResult");
 
         // /api/bestProduct?q=${searchValue}
-        axios.get(`/algolia/search?q=${searchValue}`, 
+        axios.get(`/api/search?q=${searchValue}`, 
         { cancelToken: source.token })
         .then(res => {            
             const data = res.data;
