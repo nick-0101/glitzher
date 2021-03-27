@@ -25,15 +25,15 @@ const AlgoliaClient = algoliasearch(
   process.env.ALGOLIA_APP_KEY,
   process.env.ALGOLIA_ADMIN_KEY
 );
-const index = AlgoliaClient.initIndex('amazonProducts');
+const index = AlgoliaClient.initIndex('productionProducts');
 
 router.get('/algolia/setProducts', async (req, res) => {
   try {
     // Collect 50 products from CA
     const products = await amazonScraper.products({
-      keyword: 'cheek makeup',
+      keyword: 'face makeup',
       number: 100,
-      country: 'US',
+      country: 'CA',
       randomUa: true,
     });
 

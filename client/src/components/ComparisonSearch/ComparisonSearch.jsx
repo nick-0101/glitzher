@@ -107,49 +107,58 @@ const ComparisonSearch = ({ history }) => {
                     Compare tech price's across major brands.
                 </Text>
                 <Row style={{marginBottom: '1rem'}}></Row>
-                <InstantSearch indexName="productionProducts" searchClient={searchClient}>
-                    {/* <CustomSearch handleSetSearch={handleSetSearch}  /> */}
-                    {/* ---------*/}
-                    {/* <Index indexName="productionProducts">
-                        <Configure 
-                            hitsPerPage={2} 
-                            distinct
-                        />
-                        <CustomHits history={history} handleResultSearch={handleResultSearch}/>
+                <InstantSearch indexName="amazonProducts" searchClient={searchClient}>
+                    <CustomSearch handleSetSearch={handleSetSearch}  />
+
+                    <Index indexName="amazonProducts">
+                        <Configure hitsPerPage={2} />
+                        <Results>
+                            <CustomHits history={history} handleResultSearch={handleResultSearch}/>
+                        </Results>
                     </Index>
 
-                    <Index indexName="sephora">
-                        <Configure 
-                            hitsPerPage={2} 
-                            distinct
-                        />
-                        <CustomHits history={history} handleResultSearch={handleResultSearch}/>
-                    </Index> */}
-                    {/* ---------*/}
+                    <Index indexName="sephoraProducts">
+                        <Configure hitsPerPage={1} />
+                        <Results>
+                            <CustomHits history={history} handleResultSearch={handleResultSearch}/>
+                        </Results>
+                    </Index>
 
-                    <Configure 
-                        hitsPerPage={4} 
-                        distinct
-                    />
-                    <CustomSearch handleSetSearch={handleSetSearch}  />
-                    <Results>
-                        <CustomHits history={history} handleResultSearch={handleResultSearch}/>
-                    </Results>
+                    <Index indexName="shoppersdrugmartProducts">
+                        <Configure hitsPerPage={1} />
+                        <Results>
+                            <CustomHits history={history} handleResultSearch={handleResultSearch}/>
+                        </Results>
+                    </Index>
                 </InstantSearch>
             </Col>
             <Col span={22} className="mobileSearchCol">
                 <Text strong className="searchBarTitle">
                     Compare makeup price's across major brands.
                 </Text>
-                <InstantSearch indexName="productionProducts" searchClient={searchClient}>
-                    <Configure 
-                        hitsPerPage={4} 
-                        distinct
-                    />
+                <InstantSearch indexName="amazonProducts" searchClient={searchClient}>
                     <CustomSearch handleSetSearch={handleSetSearch}  />
-                    <Results>
-                        <CustomHits history={history} handleResultSearch={handleResultSearch}/>
-                    </Results>
+
+                    <Index indexName="amazonProducts">
+                        <Configure hitsPerPage={2} />
+                        <Results>
+                            <CustomHits history={history} handleResultSearch={handleResultSearch}/>
+                        </Results>
+                    </Index>
+
+                    <Index indexName="sephoraProducts">
+                        <Configure hitsPerPage={1} />
+                        <Results>
+                            <CustomHits history={history} handleResultSearch={handleResultSearch}/>
+                        </Results>
+                    </Index>
+
+                    <Index indexName="shoppersdrugmartProducts">
+                        <Configure hitsPerPage={1} />
+                        <Results>
+                            <CustomHits history={history} handleResultSearch={handleResultSearch}/>
+                        </Results>
+                    </Index>
                 </InstantSearch>
             </Col>
         </Row>
@@ -199,15 +208,7 @@ const Results = connectStateResults(({ searchState, searchResults, children }) =
       children
     ) : (
         <>
-            {searchState.query ? 
-                <div className="ais-Hits"> 
-                    <ul className="ais-Hits-list">
-                        <li className="ais-Hits-item">
-                            <Text ellipsis={true}>No results found for: {searchState.query}</Text>
-                        </li>
-                    </ul>
-                </div> 
-            : null}
+            {searchState.query ? null: null}
         </>
     )
 );
