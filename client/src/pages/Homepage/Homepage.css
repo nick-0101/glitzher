@@ -55,15 +55,15 @@
 
 /* Product Box */
 .productColWrapper {
-  width: 400px;
+  width: 350px;
   height: 460px;
 }
 .hompageProductCompare {
   margin: 0.5rem 0;
 }
 
-.productButton {
-  width: 40%;
+.homepageProductButton {
+  width: 100%;
   height: 50px;
   font-size: 14px;
   border-radius: 8px;
@@ -73,20 +73,15 @@
 
 /* Media Queries */
 @media screen and (max-width: 1284px) {
-  ul {
+  /* ul {
     padding-inline-start: 0;
-  }
-
-  .productColWrapper {
-    width: 400px;
-    height: auto;
-  }
+  } */
 
   .hompageProductTitle,
   .hompageProductReviews,
   .hompageProductPrice,
   .hompageProductCompare,
-  .hompageProductCart,
+  .hompageProductBuy,
   .homepageResponsivePagination {
     display: flex;
     justify-content: center;
@@ -95,10 +90,6 @@
 }
 
 @media screen and (max-width: 992px) {
-  .productColWrapper {
-    width: 350px;
-    height: auto;
-  }
   /* Pagination */
   .mobilePagination {
     display: block;

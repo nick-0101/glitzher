@@ -119,9 +119,9 @@ const Homepage = ({ history }) => {
             {/* <Col xs={0} sm={0} md={0} lg={0} xl={2} xxl={4} style={{borderRight: '2px solid #f0f0f0'}}> 
                <SiderNav /> 
             </Col> */}
-            <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24} justiy="center" align="center">
+            <Col justify="center" align="center">
             {data ?
-                <Row justiy="center" align="center">
+                <Row justify="center" align="center">
                     {data.map((item, index) => {        
                         return (
                             <Row style={{textAlign: 'center', padding: '0 10px'}} key={index} gutter={0}>
@@ -203,9 +203,9 @@ const Homepage = ({ history }) => {
 
                                         {/* Add to cart */}
                                         <a target="_blank" rel="noopener noreferrer" href={item.url}>
-                                            <Row style={{margin:'15px 0'}} className="hompageProductCart">
+                                            <Row style={{margin:'15px 0'}} className="hompageProductBuy">
                                                 <Button 
-                                                    className="productButton"
+                                                    className="homepageProductButton"
                                                     type="primary" 
                                                     size='medium' 
                                                 >

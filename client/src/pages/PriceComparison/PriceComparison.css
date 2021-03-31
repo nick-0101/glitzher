@@ -11,6 +11,10 @@
   width: 100%;
 }
 
+.productButton {
+  width: 40%;
+}
+
 /* //Buying buttons */
 .productThumbnail {
   width: 308px;

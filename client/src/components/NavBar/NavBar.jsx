@@ -2,7 +2,6 @@ import React from 'react';
 
 // Antd
 import { Layout, Menu } from 'antd';
-import { ShoppingCartOutlined } from '@ant-design/icons';
 
 // Css
 import '../../App.css';
@@ -23,9 +22,6 @@ const NavBar = () => {
             style={{ float: 'right'}} // margin: '0 20px', padding: '20px'
             theme='light'
           >
-            <Menu.Item key='1'>
-              <ShoppingCartOutlined style={{fontSize: '24px',  verticalAlign: 'middle', border:0}} />
-            </Menu.Item>
           </Menu>
         </Header>
       </Layout>

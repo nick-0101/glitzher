@@ -5,7 +5,7 @@ import { Layout } from 'antd';
 import './App.css';
 
 // Pages
-import { Homepage, PriceComparison } from './pages';
+import { Homepage, PriceComparison, Tos } from './pages';
 
 // History
 import { createBrowserHistory } from 'history';
@@ -38,6 +38,15 @@ function App() {
                       <>
                         <SubNav />
                         <PriceComparison />
+                      </>
+                    )}
+                  />
+                  <Route
+                    path='/tos'
+                    render={() => (
+                      <>
+                        <NavBar />
+                        <Tos />
                       </>
                     )}
                   />

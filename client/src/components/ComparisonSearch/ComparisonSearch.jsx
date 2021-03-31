@@ -118,14 +118,14 @@ const ComparisonSearch = ({ history }) => {
                     </Index>
 
                     <Index indexName="sephoraProducts">
-                        <Configure hitsPerPage={1} />
+                        <Configure hitsPerPage={2} />
                         <Results>
                             <CustomHits history={history} handleResultSearch={handleResultSearch}/>
                         </Results>
                     </Index>
 
                     <Index indexName="shoppersdrugmartProducts">
-                        <Configure hitsPerPage={1} />
+                        <Configure hitsPerPage={2} />
                         <Results>
                             <CustomHits history={history} handleResultSearch={handleResultSearch}/>
                         </Results>
@@ -140,21 +140,21 @@ const ComparisonSearch = ({ history }) => {
                     <CustomSearch handleSetSearch={handleSetSearch}  />
 
                     <Index indexName="amazonProducts">
-                        <Configure hitsPerPage={2} />
+                        <Configure hitsPerPage={1} />
                         <Results>
                             <CustomHits history={history} handleResultSearch={handleResultSearch}/>
                         </Results>
                     </Index>
 
                     <Index indexName="sephoraProducts">
-                        <Configure hitsPerPage={1} />
+                        <Configure hitsPerPage={2} />
                         <Results>
                             <CustomHits history={history} handleResultSearch={handleResultSearch}/>
                         </Results>
                     </Index>
 
                     <Index indexName="shoppersdrugmartProducts">
-                        <Configure hitsPerPage={1} />
+                        <Configure hitsPerPage={2} />
                         <Results>
                             <CustomHits history={history} handleResultSearch={handleResultSearch}/>
                         </Results>

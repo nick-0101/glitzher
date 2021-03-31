@@ -15,9 +15,13 @@ const router = express.Router();
 // Algolia
 const AlgoliaClient = algoliasearch(
   process.env.ALGOLIA_APP_KEY,
-  process.env.ALGOLIA_ADMIN_KEY
+  process.env.ALGOLIA_ADMIN_KEY,
+  {
+    headers: {
+      'X-Algolia-UserToken': '100',
+    },
+  }
 );
-// const index = AlgoliaClient.initIndex('shoppersdrugmartProducts');
 
 // Redis
 const RedisClient = redis.createClient({
@@ -32,7 +36,6 @@ const redisLimiter = new RateLimit({
     client: RedisClient,
   }),
   max: 100, // limit each IP to 100 requests per windowMs
-  delayMs: 0, // disable delaying - full speed until the max limit is reached
 });
 const searchApi = RateLimit({
   windowMs: 1 * 60 * 1000, // 10 win window
@@ -86,7 +89,7 @@ router.get('/api', async (req, res) => {
   }
 });
 
-router.get('/api/search', async (req, res) => {
+router.get('/api/search', searchApi, async (req, res) => {
   const { q } = req.query;
 
   // Validate query
