@@ -13,7 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@sentry/node": "^6.1.0",
-    "@sentry/tracing": "^6.1.0",
+    "@sentry/tracing": "^6.2.5",
     "algoliasearch": "^4.8.5",
     "amazon-buddy": "^2.2.26",
     "async": "^3.2.0",
