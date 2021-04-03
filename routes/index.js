@@ -53,16 +53,17 @@ router.get('/api', async (req, res) => {
   try {
     // Fetch redis data
     const sephora = await GET_ASYNC('products');
-    const amazon = await GET_ASYNC('frontPage');
+    // const amazon = await GET_ASYNC('frontPage');
 
     // Parse data
     const parse1 = JSON.parse(sephora);
-    const parse2 = JSON.parse(amazon);
+    // const parse2 = JSON.parse(amazon);
 
     // Chain data
     const data1 = parse1.result;
-    const data2 = parse2.result;
-    const result = [...data2, ...data1];
+    // const data2 = parse2.result;
+    const result = [...data1];
+    // const result = [...data2, ...data1];
 
     // Randomize - Fisher Yates Algorithm
     shuffleFisherYates(result);
