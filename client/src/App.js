@@ -15,58 +15,53 @@ const { Content } = Layout;
 
 function App() {
   return (
-    <Layout style={{ height: 'auto' }}>
-      <BrowserRouter history={history}>
-        <Layout>
+    <BrowserRouter history={history}>
+      <Content style={{ background: '#fff' }}>
+        <Switch>
+          <Route
+            path='/'
+            exact
+            render={() => (
+              <>
+                <Homepage />
+              </>
+            )}
+          />
           <div className='page-container'>
             <div className='content-wrap'>
-              <Content style={{ background: '#fff' }}>
-                <Switch>
-                  <Route
-                    path='/'
-                    exact
-                    render={() => (
-                      <>
-                        <NavBar />
-                        <Homepage />
-                      </>
-                    )}
-                  />
-                  <Route
-                    path='/search'
-                    render={() => (
-                      <>
-                        <SubNav />
-                        <PriceComparison />
-                      </>
-                    )}
-                  />
-                  <Route
-                    path='/tos'
-                    render={() => (
-                      <>
-                        <NavBar />
-                        <Tos />
-                      </>
-                    )}
-                  />
-                  <Route
-                    path='*'
-                    render={() => (
-                      <>
-                        <NavBar />
-                        <Error />
-                      </>
-                    )}
-                  />
-                </Switch>
-              </Content>
+              <Route
+                path='/search'
+                render={() => (
+                  <>
+                    <SubNav />
+                    <PriceComparison />
+                  </>
+                )}
+              />
+              <Route
+                path='/tos'
+                render={() => (
+                  <>
+                    <NavBar />
+                    <Tos />
+                  </>
+                )}
+              />
+              <Route
+                path='*'
+                render={() => (
+                  <>
+                    <NavBar />
+                    <Error />
+                  </>
+                )}
+              />
             </div>
             <FooterBar />
           </div>
-        </Layout>
-      </BrowserRouter>
-    </Layout>
+        </Switch>
+      </Content>
+    </BrowserRouter>
   );
 }
 
