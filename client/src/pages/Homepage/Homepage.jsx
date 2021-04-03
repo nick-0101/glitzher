@@ -20,7 +20,7 @@ import { ShoppingOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-de
 import axios from 'axios';
 import ReactPaginate from 'react-paginate';
 import LazyLoad from 'react-lazyload';
-import { FixedSizeList as List } from 'react-window'
+import { FixedSizeGrid as Grid } from 'react-window'
 import { ReactWindowScroller } from 'react-window-scroller'
 
 
@@ -126,26 +126,26 @@ const Homepage = ({history}) => {
                             <Row justify="center" align="center">
                                 <ReactWindowScroller>
                                     {({ ref, outerRef, style, onScroll }) => (
-                                        <List
+                                        <Grid
                                             ref={ref}
                                             outerRef={outerRef}
                                             style={style}
                                             onScroll={onScroll}
-                                            height={window.innerHeight}
-                                            itemCount={data.length}
-                                            itemSize={300} 
+                                            // height={window.innerHeight}
+                                            // itemCount={data.length}
+                                            // itemSize={300} 
 
                                             itemData={data}
-                                            // columnCount={3}
-                                            // columnWidth={300}                          
-                                            // rowCount={data.length}
-                                            // rowHeight={460}
-                                            // width={window.innerWidth}
-                                            // height={window.innerHeight}
+                                            columnCount={3}
+                                            columnWidth={300}                          
+                                            rowCount={3}
+                                            rowHeight={460}
+                                            width={window.innerWidth}
+                                            height={window.innerHeight}
                                         >
-                                            {/* {ProductRow} */}
-                                            {Cell}
-                                        </List>
+                                            {ProductRow}
+                                            {/* {Cell} */}
+                                        </Grid>
                                     )}
                                 </ReactWindowScroller>
                             </Row>
@@ -208,19 +208,18 @@ const Homepage = ({history}) => {
         </>
     );
 }
-const Cell = ({ index, style, data }) => {
-    const product = data[index];
-    return (
-        <div style={style}>
-            {product.title}
-        </div>
-    )
-};
+// const Cell = ({ columnIndex, rowIndex, style, data }) => {
+//     const product = data[rowIndex][columnIndex];
+//     console.log(product);
+//     return (
+//         <div style={style}>
+//             Item {rowIndex},{columnIndex}
+//         </div>
+//     )
+// };
 
-const ProductRow = ({ index, style, data }) => {
-  const product = data[index];
-  // style is passed by the List component to give our Row the correct dimensions
-    console.log(data)
+const ProductRow = ({ columnIndex, rowIndex, index, style, data }) => {
+  const product = data[columnIndex];
   return (  
     <div style={style} key={index}>
         <Row style={{textAlign: 'center', padding: '0 20px', margin: '10px 0'}} key={index} gutter={0}>
