@@ -37,7 +37,7 @@ const searchClient = {
 const { Text } = Typography;
 
 const ComparisonSearch = ({ history }) => {
-    const { setSearch } = useContext(AppContext);
+    const { setSearch } = useContext(AppContext);    
 
     const handleSetSearch = (e, searchValue) => {
         const value = searchValue;
@@ -102,42 +102,13 @@ const ComparisonSearch = ({ history }) => {
     return (
     <>
         <Row className="frontpage-section" justify="center" align="middle">
-            <Col span={12} className="searchCol">
+            <Col className="searchCol">
                 <Text strong className="searchBarTitle">
                     Compare makeup price's across <span style={{color: '#FC0F42'}}>major brands.</span>
                 </Text>
                 <Row style={{marginBottom: '1rem'}}></Row>
                 <InstantSearch indexName="amazonProducts" searchClient={searchClient}>
-                    <CustomSearch handleSetSearch={handleSetSearch}  />
-
-                    <Index indexName="amazonProducts">
-                        <Configure hitsPerPage={2} />
-                        <Results>
-                            <CustomHits history={history} handleResultSearch={handleResultSearch}/>
-                        </Results>
-                    </Index>
-
-                    <Index indexName="sephoraProducts">
-                        <Configure hitsPerPage={2} />
-                        <Results>
-                            <CustomHits history={history} handleResultSearch={handleResultSearch}/>
-                        </Results>
-                    </Index>
-
-                    <Index indexName="shoppersdrugmartProducts">
-                        <Configure hitsPerPage={2} />
-                        <Results>
-                            <CustomHits history={history} handleResultSearch={handleResultSearch}/>
-                        </Results>
-                    </Index>
-                </InstantSearch>
-            </Col>
-            <Col span={22} className="mobileSearchCol">
-                <Text strong className="searchBarTitle">
-                    Compare makeup price's across major brands.
-                </Text>
-                <InstantSearch indexName="amazonProducts" searchClient={searchClient}>
-                    <CustomSearch handleSetSearch={handleSetSearch}  />
+                    <CustomSearch handleSetSearch={handleSetSearch} />
 
                     <Index indexName="amazonProducts">
                         <Configure hitsPerPage={1} />
@@ -178,7 +149,7 @@ const CustomSearch = connectSearchBox(({currentRefinement, refine, handleSetSear
                     spellCheck="true"
                     required
                     value={currentRefinement}
-                    onChange={e => refine(e.target.value)}
+                    onChange={e => {refine(e.target.value)}}
                     onKeyDown={e => handleSetSearch(e, currentRefinement)}
                     className="ais-SearchBox-input"
                 />
