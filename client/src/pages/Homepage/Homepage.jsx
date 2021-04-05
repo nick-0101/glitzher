@@ -1,5 +1,5 @@
 // App
-import React, { useState, useEffect, useContext, useCallback } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { withRouter } from "react-router-dom";
 import { AppContext } from "../../components/Context/Context";
 
@@ -67,7 +67,6 @@ const Homepage = ({ history }) => {
                 sessionStorage.removeItem('searchResult');
                 sessionStorage.setItem("searchResult", value);
 
-                console.log(value)
                 // Complete search  
                 history.push({
                     pathname: '/search',
@@ -152,11 +151,15 @@ const Homepage = ({ history }) => {
 
                                             {/* Product reviews */}
                                             <Row className="hompageProductReviews">
-                                                {item.reviews.rating !== '' ? 
-                                                    <Rate disabled allowHalf defaultValue={item.reviews.rating} style={{fontSize: '14px'}} />
-                                                    :
-                                                    <Rate disabled allowHalf defaultValue={0} style={{fontSize: '14px'}} />
-                                                }
+                                                <ul style={{padding: 0, margin: 0, listStyleType: 'none'}}>
+                                                    {item.reviews.rating !== '' ? 
+                                                        <li>
+                                                            <Rate disabled allowHalf defaultValue={item.reviews.rating} style={{fontSize: '14px'}} />
+                                                        </li>
+                                                        :
+                                                       <li> <Rate disabled allowHalf defaultValue={0} style={{fontSize: '14px'}} /></li>
+                                                    }
+                                                </ul>
                                             </Row>
 
                                             {/* Product price */}

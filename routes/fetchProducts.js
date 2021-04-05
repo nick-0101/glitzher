@@ -2,11 +2,9 @@ const express = require('express'),
   ipfilter = require('express-ipfilter').IpFilter;
 const amazonScraper = require('amazon-buddy');
 const redis = require('redis');
-const schedule = require('node-schedule');
 const Data = require('../models/Data');
 const { promisify } = require('util');
 const algoliasearch = require('algoliasearch');
-const { route } = require('.');
 
 const router = express.Router();
 const ips = ['::1'];

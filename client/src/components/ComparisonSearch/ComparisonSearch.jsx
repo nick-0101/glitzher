@@ -104,7 +104,7 @@ const ComparisonSearch = ({ history }) => {
         <Row className="frontpage-section" justify="center" align="middle">
             <Col span={12} className="searchCol">
                 <Text strong className="searchBarTitle">
-                    Compare makeup price's across major brands.
+                    Compare makeup price's across <span style={{color: '#FC0F42'}}>major brands.</span>
                 </Text>
                 <Row style={{marginBottom: '1rem'}}></Row>
                 <InstantSearch indexName="amazonProducts" searchClient={searchClient}>
