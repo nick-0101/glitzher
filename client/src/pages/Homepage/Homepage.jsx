@@ -94,13 +94,19 @@ const Homepage = ({ history }) => {
 
         {/* Section 2 */}
         <Title level={3} style={{textAlign: 'center', marginBottom: '4%'}}>View todays top discounts</Title>
-        <Row style={{textAlign: 'center', margin: '0 3%'}}>
+        <Row justify="center" align="center">
             <Col justify="center" align="center">
             {products ?
                 <InfiniteScroll
                     dataLength={products.length}
                     next={handlePagination}
                     hasMore={hasMore}
+                    loader={<Title level={3}>Loading...</Title>}
+                    endMessage={
+                        <Title level={4} style={{ textAlign: 'center', margin: '1rem 0' }}>
+                            You're all caught up!
+                        </Title>
+                    }
                 >
                     <Row justify="center" align="center">
                         {products.map((item, index) => {        

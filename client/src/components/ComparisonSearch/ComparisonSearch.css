@@ -46,14 +46,11 @@
   font-size: 42px;
 }
 
-.mobileSearchCol {
-  display: none;
-  margin: 40px;
-}
-
 .searchCol {
   display: block;
   margin: 40px;
+  flex: 0 0 50%;
+  max-width: 50%;
 }
 
 .searchBar {
@@ -75,7 +72,7 @@
   max-width: 1080px;
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 998px) {
   .searchBarTitle {
     font-size: 36px;
     font-family: 600;
@@ -83,11 +80,9 @@
   .frontpage-section {
     margin: 0 auto 10%;
   }
-  .mobileSearchCol {
-    display: block;
-  }
   .searchCol {
-    display: none;
+    flex: 0 0 91.66666667%;
+    max-width: 91.66666667%;
   }
 }
 
@@ -143,7 +138,7 @@
 }
 
 .ais-SearchBox-input:focus {
-  border-color: #f5222d;
+  border-color: #fc0f42;
   box-shadow: none;
   outline: currentcolor none medium;
 }
@@ -177,7 +172,7 @@
 }
 
 .ais-Hits-item:hover {
-  background-color: rgba(233, 233, 233, 0.316);
+  background-color: #f8f8f8;
 }
 
 .ais-Hits-item:first-of-type,

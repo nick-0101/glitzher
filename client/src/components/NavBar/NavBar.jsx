@@ -14,9 +14,9 @@ const NavBar = () => {
   return (
     <>
       <Layout theme='light'>
-        <Header theme='light' style={{ background: '#fff' }} >
+        <Header theme='light' style={{ background: '#fff' }}>
           <a href='/'>
-            <img className='logo' src={logo} height={100} width='auto' alt='Glamitz logo'/>
+            <img className='logo' src={logo} alt='Glamitz logo'/>
           </a>
           <Menu
             // mode='horizontal'
