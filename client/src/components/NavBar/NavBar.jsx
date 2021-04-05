@@ -6,7 +6,7 @@ import { Layout, Menu } from 'antd';
 // Css
 import '../../App.css';
 import './Navbar.css';
-
+import logo from './images/logo.webp' 
 
 const { Header } = Layout;
 
@@ -15,10 +15,11 @@ const NavBar = () => {
     <>
       <Layout theme='light'>
         <Header theme='light' style={{ background: '#fff' }} >
-          <div className='logo' />
-          Price Flame 
+          <a href='/'>
+            <img className='logo' src={logo} height={100} width='auto' alt='Glamitz logo'/>
+          </a>
           <Menu
-            mode='horizontal'
+            // mode='horizontal'
             style={{ float: 'right'}} // margin: '0 20px', padding: '20px'
             theme='light'
           >

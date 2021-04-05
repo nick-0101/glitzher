@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { NavBar, SubNav, FooterBar, Error } from './components';
 import { Layout } from 'antd';
 import './App.css';
@@ -15,20 +15,21 @@ const { Content } = Layout;
 
 function App() {
   return (
-    <BrowserRouter history={history}>
+    <Router history={history}>
       <Content style={{ background: '#fff' }}>
-        <Switch>
-          <Route
-            path='/'
-            exact
-            render={() => (
-              <>
-                <Homepage />
-              </>
-            )}
-          />
-          <div className='page-container'>
-            <div className='content-wrap'>
+        <div className='page-container'>
+          <div className='content-wrap'>
+            <Switch>
+              <Route
+                path='/'
+                exact
+                render={() => (
+                  <>
+                    <NavBar />
+                    <Homepage />
+                  </>
+                )}
+              />
               <Route
                 path='/search'
                 render={() => (
@@ -56,12 +57,12 @@ function App() {
                   </>
                 )}
               />
-            </div>
-            <FooterBar />
+            </Switch>
           </div>
-        </Switch>
+          <FooterBar />
+        </div>
       </Content>
-    </BrowserRouter>
+    </Router>
   );
 }
 

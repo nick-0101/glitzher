@@ -32,7 +32,6 @@
     "morgan": "^1.10.0",
     "nanoid": "^3.1.20",
     "node-fetch": "^2.6.1",
-    "node-schedule": "^2.0.0",
     "paginate-info": "^1.0.4",
     "rate-limit-redis": "^2.1.0",
     "react-autosuggest": "^10.1.0",

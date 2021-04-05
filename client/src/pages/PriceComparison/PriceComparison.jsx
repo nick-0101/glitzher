@@ -23,7 +23,7 @@ import noFound from './images/search_not_found.webp';
 
 const { Text, Title, Link, Paragraph } = Typography;
 
-const PriceComparison = ({ history }) => {
+const PriceComparison = () => {
     const [comparisonData, setComparisonData] = useState(null)
     const [tableData, setTableData] = useState(null)
 
@@ -69,13 +69,9 @@ const PriceComparison = ({ history }) => {
             
             setTableData(tabledData)        
         }).catch((err) => {
-            if (axios.isCancel(err)) {
-                console.log("CATCH = ", err.response);
-            } else {
-                console.log("CATCH = ", err.response);
-                setErrorTitle(err.response.data.title)
-                setErrorDesc(err.response.data.desc + ' Make sure your search is descriptive and contains no major spelling mistakes.')
-            }
+            if (axios.isCancel(err)) return 
+            setErrorTitle(err.response.data.title)
+            setErrorDesc(err.response.data.desc + ' Make sure your search is descriptive and contains no major spelling mistakes.')
         });
     }, [page, perPage])
 
@@ -84,7 +80,7 @@ const PriceComparison = ({ history }) => {
         setPageNumber(selectedPage + 1)
         searchProducts()
     }
-    // Fetch data
+
     useEffect(() => { 
         searchProducts()
     }, [searchProducts]);
