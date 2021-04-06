@@ -28,7 +28,7 @@
     "express-session": "^1.17.1",
     "helmet": "^4.4.1",
     "instantsearch.css": "^7.4.5",
-    "mongoose": "^5.11.11",
+    "mongoose": "^5.12.3",
     "morgan": "^1.10.0",
     "nanoid": "^3.1.20",
     "node-fetch": "^2.6.1",
