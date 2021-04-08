@@ -22,7 +22,7 @@ const FooterBar = () => {
                 </Link>
                 <Row className="breaker">|</Row>
                 <Link href="#" title="Copyright">
-                    <Text>Copyright ©{new Date().getFullYear()} Glamitz | All Rights Reserved</Text>
+                    <Text>Copyright ©{new Date().getFullYear()} Glitzher | All Rights Reserved</Text>
                 </Link>
             </Footer>
         </>

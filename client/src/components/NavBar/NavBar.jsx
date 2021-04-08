@@ -16,7 +16,7 @@ const NavBar = () => {
       <Layout theme='light'>
         <Header theme='light' style={{ background: '#fff' }}>
           <a href='/'>
-            <img className='logo' src={logo} alt='Glamitz logo'/>
+            <img className='logo' src={logo} width="auto" height="auto" alt='Glitzher logo'/>
           </a>
           <Menu
             // mode='horizontal'

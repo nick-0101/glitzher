@@ -1,17 +1,22 @@
 import React from 'react';
+// GOOGLE ANALYTICS
+// import ReactGA from 'react-ga';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { NavBar, SubNav, FooterBar, Error } from './components';
 import { Layout } from 'antd';
 import './App.css';
 
 // Pages
-import { Homepage, PriceComparison, Tos } from './pages';
+import { Homepage, PriceComparison, Tos, Privacy } from './pages';
 
 // History
 import { createBrowserHistory } from 'history';
 const history = createBrowserHistory();
 
 const { Content } = Layout;
+
+// ReactGA.initialize('G-54FX8L00DL');
+// ReactGA.pageview('/');
 
 function App() {
   return (
@@ -45,6 +50,15 @@ function App() {
                   <>
                     <NavBar />
                     <Tos />
+                  </>
+                )}
+              />
+              <Route
+                path='/polices/privacy'
+                render={() => (
+                  <>
+                    <NavBar />
+                    <Privacy />
                   </>
                 )}
               />
