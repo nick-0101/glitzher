@@ -2,7 +2,7 @@ const express = require('express');
 const redis = require('redis');
 const { promisify } = require('util');
 const algoliasearch = require('algoliasearch');
-
+const Data = require('../models/Data');
 // Rate Limiters
 const RateLimit = require('express-rate-limit');
 const RedisStore = require('rate-limit-redis');
@@ -35,10 +35,11 @@ const redisLimiter = new RateLimit({
   store: new RedisStore({
     client: RedisClient,
   }),
-  max: 100, // limit each IP to 100 requests per windowMs
+  max: 100,
 });
+
 const searchApi = RateLimit({
-  windowMs: 1 * 60 * 1000, // 10 win window
+  windowMs: 1 * 60 * 1000,
   max: 20,
   message:
     'Too many many requests from this IP, please try again after an hour',
@@ -47,18 +48,18 @@ const searchApi = RateLimit({
 router.use(redisLimiter);
 
 const GET_ASYNC = promisify(RedisClient.get).bind(RedisClient);
-
+const SET_ASYNC = promisify(RedisClient.set).bind(RedisClient);
 // Routes
-router.get('/api', async (req, res) => {
+router.get('/api/v1/homepage', redisLimiter, async (req, res) => {
   try {
     // Fetch redis data
-    const sephora = await GET_ASYNC('products');
+    const data = await GET_ASYNC('frontPage');
 
     // Parse data
-    const parse1 = JSON.parse(sephora);
+    const parse1 = JSON.parse(data);
 
     // Chain data
-    const data1 = parse1.result;
+    const data1 = parse1;
     const result = [...data1];
     const dataCount = Object.keys(result).length;
 
@@ -88,7 +89,6 @@ router.get('/api', async (req, res) => {
       res.send(filterResults);
     }
   } catch (err) {
-    console.error(err);
     res.status(500).send({
       title: "Oops. There's been a problem on our end",
       desc: 'Please try again later. We will look into this immediately.',
@@ -96,7 +96,7 @@ router.get('/api', async (req, res) => {
   }
 });
 
-router.get('/api/search', searchApi, async (req, res) => {
+router.get('/api/v1/search', searchApi, async (req, res) => {
   const { q } = req.query;
 
   // Validate query
@@ -112,21 +112,28 @@ router.get('/api/search', searchApi, async (req, res) => {
         indexName: 'amazonProducts',
         query: q,
         params: {
-          hitsPerPage: 5,
+          hitsPerPage: 1,
         },
       },
       {
         indexName: 'sephoraProducts',
         query: q,
         params: {
-          hitsPerPage: 5,
+          hitsPerPage: 1,
         },
       },
       {
         indexName: 'shoppersdrugmartProducts',
         query: q,
         params: {
-          hitsPerPage: 5,
+          hitsPerPage: 1,
+        },
+      },
+      {
+        indexName: 'wellProducts',
+        query: q,
+        params: {
+          hitsPerPage: 1,
         },
       },
     ];
@@ -159,7 +166,6 @@ router.get('/api/search', searchApi, async (req, res) => {
         }
       })
       .catch((err) => {
-        console.error(err);
         res.status(500).send({
           title: "Oops. There's been a problem on our end",
           desc: 'Please try again later. We will look into this immediately.',

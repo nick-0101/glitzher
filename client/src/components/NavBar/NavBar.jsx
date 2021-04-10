@@ -14,9 +14,9 @@ const NavBar = () => {
   return (
     <>
       <Layout theme='light'>
-        <Header theme='light' style={{ background: '#fff' }}>
+        <Header theme='light' style={{ background: '#fff', margin: '1rem 0' }}>
           <a href='/'>
-            <img className='logo' src={logo} width="auto" height="auto" alt='Glitzher logo'/>
+            <img className='logo' src={logo} width="150" height="80" alt='Glitzher logo'/>
           </a>
           <Menu
             // mode='horizontal'

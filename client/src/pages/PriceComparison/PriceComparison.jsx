@@ -42,8 +42,7 @@ const PriceComparison = () => {
 
         const searchValue = sessionStorage.getItem("searchResult");
 
-        // /api/bestProduct?q=${searchValue}
-        axios.get(`/api/search?q=${searchValue}`, 
+        axios.get(`/api/v1/search?q=${searchValue}`, 
         { cancelToken: source.token })
         .then(res => {            
             const data = res.data;
