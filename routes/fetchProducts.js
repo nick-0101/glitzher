@@ -1,7 +1,7 @@
 const express = require('express');
 const redis = require('redis');
 const amazonScraper = require('amazon-buddy');
-var cron = require('node-cron');
+const cron = require('node-cron');
 const algoliasearch = require('algoliasearch');
 
 const router = express.Router();
@@ -18,7 +18,7 @@ const AlgoliaClient = algoliasearch(
   process.env.ALGOLIA_APP_KEY,
   process.env.ALGOLIA_ADMIN_KEY
 );
-const index = AlgoliaClient.initIndex('productionProducts');
+const algoliaIndex = AlgoliaClient.initIndex('productionProducts');
 
 async function getProducts(req, res) {
   try {
@@ -43,15 +43,15 @@ async function getProducts(req, res) {
         });
         // Update db
         const result = products.result;
-        index
-          .saveObjects(result, { autoGenerateObjectIDIfNotExist: true })
-          .then(() => {
-            console.log('[', index, ']', result.length, 'sent to algolia');
-          });
+        // algoliaIndex
+        //   .saveObjects(result, { autoGenerateObjectIDIfNotExist: true })
+        //   .then(() => {
+        //     console.log('[', index, ']', result.length, 'saved to algolia');
+        //   });
 
         RedisClient.set('frontPage', JSON.stringify(result), (err) => {
           if (err) throw err;
-          console.log('[', index, ']', result.length, 'sent to redis');
+          console.log('[', index, ']', result.length, 'saved to redis');
         });
       }),
       res.sendStatus(200)
@@ -67,5 +67,7 @@ cron.schedule('0 0 * * *', () => {
   getProducts();
   console.log('Scheduled update completed at ' + new Date());
 });
+
+router.get('/updateapi', getProducts);
 
 module.exports = router;
