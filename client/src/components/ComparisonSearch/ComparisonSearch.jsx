@@ -96,15 +96,12 @@ const ComparisonSearch = ({ history }) => {
             return
         }  
     }
-
-    // Prolem is that the event listener is getting a value, the problem is that it is reaidng the other 
-    // search bar which is empty causing query not to go 
     return (
     <>
         <Row className="frontpage-section" justify="center" align="middle">
             <Col className="searchCol">
                 <Text strong className="searchBarTitle">
-                    Compare makeup price's across <span style={{color: '#FC0F42'}}>major brands.</span>
+                    Compare cosmetic price's across <span style={{color: '#FC0F42'}}>major brands.</span>
                 </Text>
                 <Row style={{marginBottom: '1rem'}}></Row>
                 <InstantSearch indexName="amazonProducts" searchClient={searchClient}>

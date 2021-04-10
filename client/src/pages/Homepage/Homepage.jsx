@@ -39,7 +39,7 @@ const Homepage = ({ history }) => {
         const CancelToken = axios.CancelToken;
         const source = CancelToken.source();
         
-        axios.get(`/api?page=${page}&limit=10`, { cancelToken: source.token })
+        axios.get(`/api/v1/homepage?page=${page}&limit=10`, { cancelToken: source.token })
         .then(res => {
             setProducts(prevProducts => {
                 return [...new Set([...prevProducts, ...res.data])]
@@ -94,7 +94,7 @@ const Homepage = ({ history }) => {
 
         {/* Section 2 */}
         <Title level={3} style={{textAlign: 'center', marginBottom: '4%'}}>View todays top discounts</Title>
-        <Row justify="center" align="center">
+        <Row justify="center" align="center" className="homepageContainer">
             <Col justify="center" align="center">
             {products ?
                 <InfiniteScroll

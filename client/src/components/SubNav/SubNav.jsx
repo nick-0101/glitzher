@@ -10,9 +10,12 @@ import { Row, Col, Typography, Layout } from 'antd';
 // Css
 import './SubNav.css'
 
+// Images 
+import logo from './images/logo.webp'
+
 // Algolia 
 import algoliasearch from 'algoliasearch/lite';
-import { InstantSearch, Configure, connectStateResults, connectHits, connectSearchBox } from 'react-instantsearch-dom';
+import { Index, InstantSearch, Configure, connectStateResults, connectHits, connectSearchBox } from 'react-instantsearch-dom';
 
 //#23263b
 const algoliaClient = algoliasearch('GRXWQQHS2I', 'babd585148a07355c43a354cc0aece0f');
@@ -101,19 +104,34 @@ const SubNav = ({ history }) => {
          <Layout theme='light'>
              <Header theme='light' className="subMenuHeader" style={{ background: '#fff' }} >
                  <Row>
-                     <div className="subNav-logo">Logo</div> 
+                     <a href='/'>
+                        <img className='logo' src={logo} width="140" height="70" alt='Glitzher logo'/>
+                    </a>
                  </Row>
-                 <InstantSearch indexName="productionProducts" searchClient={searchClient}>
-                     <Configure 
-                        hitsPerPage={4} 
-                        distinct
-                    />
-                    <Col className="subSearchBar" style={{zIndex: 1}}>
-                        <CustomSearch handleSetSearch={handleSetSearch}  />
-                    
-                        <Results>
-                            <CustomHits handleResultSearch={handleResultSearch}/>
-                        </Results>
+                <InstantSearch indexName="amazonProducts" searchClient={searchClient}>
+                    <Col className="subSearchBar" style={{zIndex: 1, marginTop: '0.3rem'}}>
+                        <CustomSearch handleSetSearch={handleSetSearch} />
+
+                        <Index indexName="amazonProducts">
+                            <Configure hitsPerPage={1} />
+                            <Results>
+                                <CustomHits history={history} handleResultSearch={handleResultSearch}/>
+                            </Results>
+                        </Index>
+
+                        <Index indexName="sephoraProducts">
+                            <Configure hitsPerPage={2} />
+                            <Results>
+                                <CustomHits history={history} handleResultSearch={handleResultSearch}/>
+                            </Results>
+                        </Index>
+
+                        <Index indexName="shoppersdrugmartProducts">
+                            <Configure hitsPerPage={2} />
+                            <Results>
+                                <CustomHits history={history} handleResultSearch={handleResultSearch}/>
+                            </Results>
+                        </Index>
                     </Col>
                 </InstantSearch>
             </Header>
@@ -135,7 +153,7 @@ const CustomSearch = connectSearchBox(({currentRefinement, refine, handleSetSear
                     spellCheck="true"
                     required
                     value={currentRefinement}
-                    onChange={e => refine(e.target.value)}
+                    onChange={e => {refine(e.target.value)}}
                     onKeyDown={e => handleSetSearch(e, currentRefinement)}
                     className="ais-SearchBox-input"
                 />
@@ -165,15 +183,7 @@ const Results = connectStateResults(({ searchState, searchResults, children }) =
       children
     ) : (
         <>
-            {searchState.query ? 
-                <div className="ais-Hits"> 
-                    <ul className="ais-Hits-list">
-                        <li className="ais-Hits-item">
-                            <Text ellipsis={true}>No results found for: {searchState.query}</Text>
-                        </li>
-                    </ul>
-                </div> 
-            : null}
+            {searchState.query ? null: null}
         </>
     )
 );
