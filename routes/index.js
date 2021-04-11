@@ -59,11 +59,8 @@ const SET_CACHE_ASYNC = promisify(RedisCacheClient.set).bind(RedisCacheClient);
 // Routes
 router.get('/api/v1/homepage', async (req, res) => {
   try {
-    // Get redis cache
     const reply = await GET_CACHE_ASYNC('cacheData');
     if (reply) {
-      console.log('using cached data');
-
       // Prep data
       const data = JSON.parse(reply);
       const dataCount = Object.keys(data).length;
@@ -87,7 +84,7 @@ router.get('/api/v1/homepage', async (req, res) => {
     }
     // ------------------------------------------------- //
 
-    // Get frontPage data
+    //  Get frontPage data
     const response = await GET_ASYNC('frontPage');
 
     // Expire
@@ -95,7 +92,12 @@ router.get('/api/v1/homepage', async (req, res) => {
     const expire = Math.floor((nd - Date.now()) / 1000);
 
     // Cache front page data
-    await SET_CACHE_ASYNC('cacheData', response, 'EX', expire);
+    const saveResult = await SET_CACHE_ASYNC(
+      'cacheData',
+      response,
+      'EX',
+      expire
+    );
 
     // Prep data
     const data1 = JSON.parse(response);

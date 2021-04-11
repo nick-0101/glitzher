@@ -3,7 +3,7 @@ const redis = require('redis');
 const amazonScraper = require('amazon-buddy');
 const cron = require('node-cron');
 const algoliasearch = require('algoliasearch');
-
+const Data = require('../models/Data');
 const router = express.Router();
 
 // Redis
@@ -31,31 +31,30 @@ async function getProducts(req, res) {
       'makeup sets',
       'face powder',
       'makeup blush',
-      'concealer makeup',
     ];
-    await Promise.all(
-      keywords.map(async (word, index) => {
-        const products = await amazonScraper.products({
-          keyword: word,
-          number: 100,
-          country: 'CA',
-          randomUa: true,
-        });
-        // Update db
-        const result = products.result;
-        // algoliaIndex
-        //   .saveObjects(result, { autoGenerateObjectIDIfNotExist: true })
-        //   .then(() => {
-        //     console.log('[', index, ']', result.length, 'saved to algolia');
-        //   });
 
-        RedisClient.set('frontPage', JSON.stringify(result), (err) => {
-          if (err) throw err;
-          console.log('[', index, ']', result.length, 'saved to redis');
-        });
-      }),
-      res.sendStatus(200)
-    );
+    // const promises = keywords.map(async (word, index) => {
+    //   const products = await amazonScraper.products({
+    //     keyword: word,
+    //     number: 100,
+    //     country: 'CA',
+    //     randomUa: true,
+    //     sponsored: false,
+    //   });
+    //   // Update db
+    //   const result = products.result;
+    //   // algoliaIndex
+    //   //   .saveObjects(result, { autoGenerateObjectIDIfNotExist: true })
+    //   //   .then(() => {
+    //   //     console.log('[', index, ']', result.length, 'saved to algolia');
+    //   //   });
+
+    //   RedisClient.set('frontPage', JSON.stringify(result), (err) => {
+    //     if (err) throw err;
+    //     console.log('[', index, ']', result.length, 'saved to redis');
+    //   });
+    // });
+    // Promise.all(promises).then(res.sendStatus(200));
   } catch (err) {
     console.error(err);
     res.sendStatus(500);
