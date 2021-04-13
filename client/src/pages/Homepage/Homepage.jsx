@@ -39,14 +39,12 @@ const Homepage = ({ history }) => {
         const CancelToken = axios.CancelToken;
         const source = CancelToken.source();
         
-        axios.get(`/api/v1/homepage?page=${page}&limit=10`, { cancelToken: source.token })
+        axios.get(`/api/homepage?page=${page}&limit=10`, { cancelToken: source.token })
         .then(res => {
             setProducts(prevProducts => {
                 return [...new Set([...prevProducts, ...res.data])]
             })     
             setHasMore(res.data.length > 0)
-
-            console.log(res.data)
         }).catch(e => {
             if (axios.isCancel(e)) return 
         })
@@ -58,7 +56,6 @@ const Homepage = ({ history }) => {
 
     const handlePagination = () => {
         setPage(page + 1)
-        console.log(page)
     }
 
     const comparePriceSearch = (value) => {
@@ -73,8 +70,6 @@ const Homepage = ({ history }) => {
                     search: `?q=${sessionStorage.getItem("searchResult")}`
                 })
             } else {
-                console.log('No session storage support')
-
                 // Complete search with context
                 setSearch(value)
                 history.push({
@@ -104,7 +99,7 @@ const Homepage = ({ history }) => {
                     loader={<Title level={3}>Loading...</Title>}
                     endMessage={
                         <Title level={4} style={{ textAlign: 'center', margin: '1rem 0' }}>
-                            You're all caught up!
+                            You're all caught up on the best discounts!
                         </Title>
                     }
                 >

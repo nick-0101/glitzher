@@ -42,7 +42,7 @@ const PriceComparison = () => {
 
         const searchValue = sessionStorage.getItem("searchResult");
 
-        axios.get(`/api/v1/search?q=${searchValue}`, 
+        axios.get(`/api/search?q=${searchValue}`, 
         { cancelToken: source.token })
         .then(res => {            
             const data = res.data;
@@ -307,7 +307,7 @@ const PriceComparison = () => {
                     :
                     <SkeletonLoader />
                 }
-                {comparisonData ? 
+                {comparisonData > 5 ? 
                     <>
                         <Row justify="center" align="center" style={{margin: '2rem 0'}}>
                             {/* Paginate */}

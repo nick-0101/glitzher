@@ -2,7 +2,6 @@ const express = require('express');
 const redis = require('redis');
 const { promisify } = require('util');
 const algoliasearch = require('algoliasearch');
-const axios = require('axios');
 // Rate Limiters
 const RateLimit = require('express-rate-limit');
 const RedisStore = require('rate-limit-redis');
@@ -57,7 +56,7 @@ const GET_CACHE_ASYNC = promisify(RedisCacheClient.get).bind(RedisCacheClient);
 const SET_CACHE_ASYNC = promisify(RedisCacheClient.set).bind(RedisCacheClient);
 
 // Routes
-router.get('/api/v1/homepage', async (req, res) => {
+router.get('/api/homepage', async (req, res) => {
   try {
     const reply = await GET_CACHE_ASYNC('cacheData');
     if (reply) {
@@ -120,7 +119,6 @@ router.get('/api/v1/homepage', async (req, res) => {
 
     res.send(filterResults1);
   } catch (err) {
-    console.log(err);
     res.status(500).send({
       title: "Oops. There's been a problem on our end",
       desc: 'Please try again later. We will look into this immediately.',
@@ -128,12 +126,11 @@ router.get('/api/v1/homepage', async (req, res) => {
   }
 });
 
-router.get('/api/v1/search', searchApi, async (req, res) => {
+router.get('/api/search', searchApi, async (req, res) => {
   const { q } = req.query;
 
   // Validate query
   if (q === '' || q.length < 3 || q.length > 150) {
-    console.log('invalid string');
     res.status(422).send({
       title: 'Invalid query',
       desc: 'Please try again.',
