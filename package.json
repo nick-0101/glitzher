@@ -1,10 +1,10 @@
 {
-  "name": "pricebattler",
+  "name": "glitzher",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "pm2 start server.js",
+    "start": "node server.js",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server \" \"npm run client \""
@@ -15,19 +15,12 @@
     "algoliasearch": "^4.8.5",
     "amazon-buddy": "^2.2.36",
     "async": "^3.2.0",
-    "axios": "^0.21.1",
-    "body-parser": "^1.19.0",
     "colors": "^1.4.0",
-    "connect-mongo": "^3.2.0",
-    "cookie-parser": "^1.4.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "express-ipfilter": "^1.1.2",
     "express-rate-limit": "^5.2.6",
-    "express-session": "^1.17.1",
     "helmet": "^4.4.1",
     "instantsearch.css": "^7.4.5",
-    "mongoose": "^5.11.11",
     "morgan": "^1.10.0",
     "nanoid": "^3.1.20",
     "node-cron": "^3.0.0",
@@ -35,8 +28,7 @@
     "paginate-info": "^1.0.4",
     "rate-limit-redis": "^2.1.0",
     "react-ga": "^3.3.0",
-    "redis": "^3.1.0",
-    "underscore": "^1.12.1"
+    "redis": "^3.1.0"
   },
   "devDependencies": {
     "concurrently": "^6.0.0",

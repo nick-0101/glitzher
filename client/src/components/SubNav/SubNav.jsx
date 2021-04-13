@@ -55,19 +55,13 @@ const SubNav = ({ history }) => {
                     sessionStorage.setItem("searchResult", value);
 
                     // Complete search
-                    history.push({  
-                        pathname: '/search',
-                        search: `?q=${sessionStorage.getItem("searchResult")}`
-                    })
-                    window.location.reload()
+                    window.location.replace(`/search?q=${sessionStorage.getItem("searchResult")}`);
                 } else {
                     console.log('No session storage support')
                     
                     // Complete search with context
                     setSearch(value);
-                    history.push({
-                        search: `?q=${setSearch}`
-                    })
+                    window.location.replace(`/search?q=${value}`);
                 }
             } else {
                 return
@@ -84,15 +78,13 @@ const SubNav = ({ history }) => {
                 sessionStorage.setItem("searchResult", value);
 
                 // Complete search
-                history.push(`?q=${sessionStorage.getItem("searchResult")}`)
+                window.location.replace(`/search?q=${sessionStorage.getItem("searchResult")}`);
             } else {
                 console.log('No session storage support')
                 
                 // Complete search with context
                 setSearch(value);
-                history.push({
-                    search: `?q=${setSearch}`
-                })
+                window.location.replace(`/search?q=${value}`)
             }
         } else {
             return
