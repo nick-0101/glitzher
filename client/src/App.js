@@ -1,24 +1,30 @@
-import React from 'react';
-// GOOGLE ANALYTICS
-// import ReactGA from 'react-ga';
+import React, { useEffect } from 'react';
+import ReactGA from 'react-ga';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { NavBar, SubNav, FooterBar, Error } from './components';
 import { Layout } from 'antd';
 import './App.css';
-
-// Pages
 import { Homepage, PriceComparison, Tos, Privacy } from './pages';
-
-// History
 import { createBrowserHistory } from 'history';
 const history = createBrowserHistory();
 
 const { Content } = Layout;
 
-// ReactGA.initialize('G-54FX8L00DL');
-// ReactGA.pageview('/');
+function usePageViews() {
+  let location = window.location;
+  useEffect(() => {
+    if (!window.GA_INITIALIZED) {
+      ReactGA.initialize('UA-194144958-1');
+      console.log('analytics init');
+      window.GA_INITIALIZED = true;
+    }
+    ReactGA.set({ page: location.pathname });
+    ReactGA.pageview(location.pathname);
+  }, [location]);
+}
 
 function App() {
+  usePageViews();
   return (
     <Router history={history}>
       <Content style={{ background: '#fff' }}>
