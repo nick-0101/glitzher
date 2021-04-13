@@ -159,6 +159,13 @@ router.get('/api/search', searchApi, async (req, res) => {
         },
       },
       {
+        indexName: 'walmartProducts',
+        query: q,
+        params: {
+          hitsPerPage: 1,
+        },
+      },
+      {
         indexName: 'wellProducts',
         query: q,
         params: {
