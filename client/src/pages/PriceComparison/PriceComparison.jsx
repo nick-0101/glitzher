@@ -1,11 +1,10 @@
 // App 
 import React, { useEffect, useState, useCallback } from 'react';
-// import { AppContext } from "../../components/Context/Context";
 import { withRouter } from "react-router-dom";
 
 // Ant Design 
 import { Col, Row, Typography, Divider, Button, Rate, Table, Image, Tooltip } from 'antd';
-import { ShoppingOutlined, ShoppingCartOutlined, ArrowRightOutlined, InfoCircleOutlined, CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons';
+import { ShoppingOutlined, ArrowRightOutlined, InfoCircleOutlined, CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons';
 
 // Application Packages 
 import axios from 'axios';
@@ -124,7 +123,7 @@ const PriceComparison = () => {
             responsive: ['md'],
             render: shopButton => 
             <Link target="_blank" rel="noopener noreferrer" href={shopButton} className="productButtonWrapper">
-                <Button type="primary" size='medium' style={{height: '45px', fontSize: '15px', paddingTop:'4.5px'}} icon={<ShoppingOutlined/>}>
+                <Button type="primary" size='medium' style={{height: '50px', borderRadius: '8px', paddingTop:'4.5px'}} icon={<ShoppingOutlined/>}>
                     Buy Now
                 </Button>
             </Link>
@@ -270,15 +269,8 @@ const PriceComparison = () => {
                                 <Divider />
                                 <Col>
                                     <Row justify="left">
-                                        <Link target="_blank" rel="noopener noreferrer" href='' className="productButtonWrapper">
-                                            <Button className="productButton" type="primary" size='medium' icon={<ShoppingCartOutlined/>}  style={{marginBottom: '10px', height: '45px', fontSize: '16px'}}>
-                                                Add to cart
-                                            </Button>
-                                        </Link>
-                                    </Row>
-                                    <Row justify="left">
                                         <Link target="_blank" rel="noopener noreferrer" href={comparisonData[0].url} className="productButtonWrapper">
-                                            <Button className="productButton" type="primary" size='medium' icon={<ShoppingOutlined/>}  style={{height: '45px', fontSize: '16px'}}>
+                                            <Button className="productButton" type="primary" size='medium' icon={<ShoppingOutlined/>}  style={{fontSize: '16px'}}>
                                                 Buy Now
                                             </Button>
                                         </Link>
@@ -286,7 +278,6 @@ const PriceComparison = () => {
                                     <Row justify="left">
                                         <Tooltip className="productTip" placement="bottom" title="Make sure you search is descriptive and contains keywords (ie. brand, product name, etc).">
                                             <Text style={{marginTop:'10px'}}>Not what you were looking for?</Text>
-                                            {/* <InfoCircleOutlined style={{fontSize: '13px', margin: '15px 0 0 7px'}}/> */}
                                         </Tooltip>
                                     </Row>
                                 </Col>
