@@ -11,7 +11,7 @@ import { Row, Col, Typography, Layout } from 'antd';
 import './SubNav.css'
 
 // Images 
-import logo from './images/logo.webp'
+import logo from './images/logo.png'
 
 // Algolia 
 import algoliasearch from 'algoliasearch/lite';
@@ -95,11 +95,11 @@ const SubNav = ({ history }) => {
     <>
          <Layout theme='light'>
              <Header theme='light' className="subMenuHeader" style={{ background: '#fff' }} >
-                 <Row>
-                     <a href='/'>
-                        <img className='logo' src={logo} width="140" height="70" alt='Glitzher logo'/>
-                    </a>
-                 </Row>
+                <Row>
+                    <a href='/'>
+                    <img className='subLogo' src={logo} alt='Glitzher logo'/>
+                </a>
+                </Row>
                 <InstantSearch indexName="amazonProducts" searchClient={searchClient}>
                     <Col className="subSearchBar" style={{zIndex: 1, marginTop: '0.3rem'}}>
                         <CustomSearch handleSetSearch={handleSetSearch} />

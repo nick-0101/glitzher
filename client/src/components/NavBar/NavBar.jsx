@@ -6,7 +6,7 @@ import { Layout, Menu } from 'antd';
 // Css
 import '../../App.css';
 import './Navbar.css';
-import logo from './images/logo.webp' 
+import logo from './images/logo.png' 
 
 const { Header } = Layout;
 
@@ -14,9 +14,9 @@ const NavBar = () => {
   return (
     <>
       <Layout theme='light'>
-        <Header theme='light' style={{ background: '#fff', margin: '1rem 0' }}>
+        <Header theme='light' className="navContainer" >
           <a href='/'>
-            <img className='logo' src={logo} width="150" height="80" alt='Glitzher logo'/>
+            <img className='logo' src={logo} alt='Glitzher logo' />
           </a>
           <Menu
             // mode='horizontal'

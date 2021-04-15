@@ -15,7 +15,6 @@ function usePageViews() {
   useEffect(() => {
     if (!window.GA_INITIALIZED) {
       ReactGA.initialize('UA-194144958-1');
-      console.log('analytics init');
       window.GA_INITIALIZED = true;
     }
     ReactGA.set({ page: location.pathname });
