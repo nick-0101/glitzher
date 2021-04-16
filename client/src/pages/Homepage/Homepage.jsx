@@ -88,7 +88,7 @@ const Homepage = ({ history }) => {
         <SearchBar />
 
         {/* Section 2 */}
-        <Title level={3} style={{textAlign: 'center', marginBottom: '4%'}}>View todays top discounts</Title>
+        <Title level={3} style={{textAlign: 'center', marginBottom: '4%'}}>Popular cosmetic items</Title>
         <Row justify="center" align="center" className="homepageContainer">
             <Col justify="center" align="center">
             {products ?
@@ -154,11 +154,9 @@ const Homepage = ({ history }) => {
                                             <Row className="hompageProductReviews">
                                                 <ul style={{padding: 0, margin: 0, listStyleType: 'none'}}>
                                                     {item.reviews.rating !== '' ? 
-                                                        <li>
-                                                            <Rate disabled allowHalf defaultValue={item.reviews.rating} style={{fontSize: '14px'}} />
-                                                        </li>
+                                                        <Rate disabled allowHalf defaultValue={item.reviews.rating} style={{fontSize: '14px'}} />
                                                         :
-                                                       <li> <Rate disabled allowHalf defaultValue={0} style={{fontSize: '14px'}} /></li>
+                                                       <Rate disabled allowHalf defaultValue={0} style={{fontSize: '14px'}} />
                                                     }
                                                 </ul>
                                             </Row>
