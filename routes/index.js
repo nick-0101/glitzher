@@ -172,6 +172,13 @@ router.get('/api/search', searchApi, async (req, res) => {
           hitsPerPage: 1,
         },
       },
+      {
+        indexName: 'thebayProducts',
+        query: q,
+        params: {
+          hitsPerPage: 1,
+        },
+      },
     ];
     AlgoliaClient.multipleQueries(queries)
       .then(({ results }) => {
