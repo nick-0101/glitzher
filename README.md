@@ -15,7 +15,7 @@ Built with
   
 - - - -  
     
-# Installation / 1#
+# Installation / 1
   1. `git clone https://github.com/phoenixbeats01/glitzher`
   2. `cd glitzher`
   3. `npm install` - Install's Express dependencies
