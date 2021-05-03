@@ -1,0 +1,29 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: mongoose
+    versions:
+    - 5.12.3
+  - dependency-name: amazon-buddy
+    versions:
+    - 2.2.36
+  - dependency-name: concurrently
+    versions:
+    - 6.0.1
+  - dependency-name: algoliasearch
+    versions:
+    - 4.8.6
+  - dependency-name: nanoid
+    versions:
+    - 3.1.22
+  - dependency-name: connect-mongo
+    versions:
+    - 4.4.1
+  - dependency-name: express-ipfilter
+    versions:
+    - 1.2.0
