@@ -1,14 +1,16 @@
 import React, { useEffect } from 'react';
 import ReactGA from 'react-ga';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { NavBar, SubNav, FooterBar, Error } from './components';
-import { Layout } from 'antd';
+// import { NavBar, SubNav, FooterBar, Error } from './components';
+import { NavBar, FooterBar, Error } from './components';
+
 import './App.css';
-import { Homepage, PriceComparison, Tos, Privacy } from './pages';
+// import { Homepage, PriceComparison, Tos, Privacy } from './pages';
+import { Tos, Privacy } from './pages';
 import { createBrowserHistory } from 'history';
 const history = createBrowserHistory();
 
-const { Content } = Layout;
+// const { Content } = Layout;
 
 function usePageViews() {
   let location = window.location;
@@ -26,11 +28,11 @@ function App() {
   usePageViews();
   return (
     <Router history={history}>
-      <Content style={{ background: '#fff' }}>
+      <div style={{ background: '#fff' }}>
         <div className='page-container'>
           <div className='content-wrap'>
             <Switch>
-              <Route
+              {/* <Route
                 path='/'
                 exact
                 render={() => (
@@ -48,7 +50,7 @@ function App() {
                     <PriceComparison />
                   </>
                 )}
-              />
+              /> */}
               <Route
                 path='/tos'
                 render={() => (
@@ -80,7 +82,7 @@ function App() {
           </div>
           <FooterBar />
         </div>
-      </Content>
+      </div>
     </Router>
   );
 }
