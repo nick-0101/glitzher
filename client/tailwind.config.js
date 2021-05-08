@@ -11,6 +11,7 @@ module.exports = {
       gray: colors.trueGray,
       white: colors.white,
       red: colors.red,
+      yellow: colors.yellow,
     },
     extend: {
       fontFamily: {
@@ -44,5 +45,6 @@ module.exports = {
         },
       });
     },
+    require('@tailwindcss/line-clamp'),
   ],
 };
