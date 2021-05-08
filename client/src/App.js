@@ -6,12 +6,9 @@ import { NavBar, FooterBar, Error } from './components';
 
 import './App.css';
 // import { Homepage, PriceComparison, Tos, Privacy } from './pages';
-import { Tos, Privacy } from './pages';
-import { createBrowserHistory } from 'history';
-const history = createBrowserHistory();
+import { Homepage, Tos, Privacy } from './pages';
 
-// const { Content } = Layout;
-
+/* Google Analytics */
 function usePageViews() {
   let location = window.location;
   useEffect(() => {
@@ -27,21 +24,17 @@ function usePageViews() {
 function App() {
   usePageViews();
   return (
-    <Router history={history}>
+    <Router>
       <div style={{ background: '#fff' }}>
         <div className='page-container'>
           <div className='content-wrap'>
             <Switch>
-              {/* <Route
-                path='/'
-                exact
-                render={() => (
-                  <>
-                    <NavBar />
-                    <Homepage />
-                  </>
-                )}
-              />
+              {/* Homepage */}
+              <Route exact path='/'>
+                <NavBar />
+                <Homepage />
+              </Route>
+              {/* 
               <Route
                 path='/search'
                 render={() => (
@@ -51,33 +44,24 @@ function App() {
                   </>
                 )}
               /> */}
-              <Route
-                path='/tos'
-                render={() => (
-                  <>
-                    <NavBar />
-                    <Tos />
-                  </>
-                )}
-              />
-              <Route
-                path='/polices/privacy'
-                render={() => (
-                  <>
-                    <NavBar />
-                    <Privacy />
-                  </>
-                )}
-              />
-              <Route
-                path='*'
-                render={() => (
-                  <>
-                    <NavBar />
-                    <Error />
-                  </>
-                )}
-              />
+
+              {/* Tos */}
+              <Route path='/tos'>
+                <NavBar />
+                <Tos />
+              </Route>
+
+              {/* Privacy Policy */}
+              <Route path='/polices/privacy'>
+                <NavBar />
+                <Privacy />
+              </Route>
+
+              {/* Error Page */}
+              <Route path='*'>
+                <NavBar />
+                <Error />
+              </Route>
             </Switch>
           </div>
           <FooterBar />

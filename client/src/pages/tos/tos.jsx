@@ -13,7 +13,7 @@ const tos = () => {
                 <p>Please read these terms and conditions carefully before using our service.</p>
             </div>
             
-            <div className="mb-10">
+            <div className="mb-10 border-t-2 border-gray-100">
                 <p className="text-4xl font-bold mt-5 mb-3">Interpretation and Definitions</p>
                 
                 <div className="ml-8">

@@ -64,7 +64,7 @@ const privacyPolicy = () => {
                         </li>
                     </ul>
                     <br />
-                    <section id="1">
+                    <section id="1" className="border-t-2 border-gray-100">
                         <p className="text-3xl font-bold mt-5 mb-3">1. WHAT INFORMATION DO WE COLLECT?</p>
                         <p>Information automatically collected</p>
                         <p>In Short:  Some information — such as your Internet Protocol (IP) address and/or browser and device characteristics — is collected automatically when you visit our Website.</p>
