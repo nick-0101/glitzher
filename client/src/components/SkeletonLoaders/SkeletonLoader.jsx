@@ -16,9 +16,7 @@ const SkeletonLoader = () => {
                             <div className="mt-2 text-2xl h-8 bg-gray-200 rounded w-2/4"></div>
                             <div className="mt-2 text-sm truncate h-5 bg-gray-200 rounded w-4/4"></div>
                             <div className="flex">
-                                <a href="/" className="h-10 bg-gray-200 rounded w-4/4 mt-2 w-screen text-center px-4 py-2 rounded-md">
-                                    
-                                </a>
+                                <div className="h-10 bg-gray-200 rounded w-4/4 mt-2 w-screen text-center px-4 py-2 rounded-md"></div>
                             </div>
                         </div>
                     </div>
