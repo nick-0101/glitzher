@@ -49,7 +49,7 @@ export default function Navbar() {
                 </a>
               </div>
               <div className="-mr-2 -my-2 md:hidden">
-                <Popover.Button className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                <Popover.Button className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-red-400">
                   <span className="sr-only">Open menu</span>
                   <MenuIcon className="h-6 w-6" aria-hidden="true" />
                 </Popover.Button>
@@ -61,7 +61,7 @@ export default function Navbar() {
                       <Popover.Button
                         className={classNames(
                           open ? 'text-gray-900' : 'text-gray-500',
-                          'group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+                          'group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-400'
                         )}
                       >
                         <span>Solutions</span>
@@ -96,7 +96,7 @@ export default function Navbar() {
                                   href={item.href}
                                   className="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50"
                                 >
-                                  <item.icon className="flex-shrink-0 h-6 w-6 text-indigo-600" aria-hidden="true" />
+                                  <item.icon className="flex-shrink-0 h-6 w-6 text-red-500" aria-hidden="true" />
                                   <div className="ml-4">
                                     <p className="text-base font-medium text-gray-900">{item.name}</p>
                                     <p className="mt-1 text-sm text-gray-500">{item.description}</p>
@@ -124,7 +124,7 @@ export default function Navbar() {
                 </a>
                 <a
                   href="/"
-                  className="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700"
+                  className="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-red-500 hover:bg-red-600"
                 >
                   Sign up
                 </a>
@@ -159,7 +159,7 @@ export default function Navbar() {
                       />
                     </div>
                     <div className="-mr-2">
-                      <Popover.Button className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                      <Popover.Button className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-red-400">
                         <span className="sr-only">Close menu</span>
                         <XIcon className="h-6 w-6" aria-hidden="true" />
                       </Popover.Button>
@@ -173,7 +173,7 @@ export default function Navbar() {
                           href={item.href}
                           className="-m-3 p-3 flex items-center rounded-md hover:bg-gray-50"
                         >
-                          <item.icon className="flex-shrink-0 h-6 w-6 text-indigo-600" aria-hidden="true" />
+                          <item.icon className="flex-shrink-0 h-6 w-6 text-red-500" aria-hidden="true" />
                           <span className="ml-3 text-base font-medium text-gray-900">{item.name}</span>
                         </a>
                       ))}
@@ -202,13 +202,13 @@ export default function Navbar() {
                   <div>
                     <a
                       href="/"
-                      className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700"
+                      className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-red-500 hover:bg-red-600"
                     >
                       Sign up
                     </a>
                     <p className="mt-6 text-center text-base font-medium text-gray-500">
                       Existing customer?{' '}
-                      <a href="/" className="text-indigo-600 hover:text-indigo-500">
+                      <a href="/" className="text-red-600 hover:text-red-500">
                         Sign in
                       </a>
                     </p>
