@@ -10,7 +10,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 
 // Components 
 import SkeletonLoader from '../../components/SkeletonLoaders/SkeletonLoader';
-// import SearchBar from '../../components/ComparisonSearch/ComparisonSearch';
+import SearchBar from '../../components/ComparisonSearch/ComparisonSearch';
 
 // import './Homepage.css'
 
@@ -70,9 +70,11 @@ const Homepage = ({ history }) => {
     };
 
     return (<>
-        {/* <SearchBar /> */}
+        <SearchBar />
 
-        <h1>Popular cosmetic items</h1>
+        <div className="text-center text-2xl font-medium mx-auto my-10">
+            Popular cosmetic items
+        </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-20 text-center">
             {products ?
                 <InfiniteScroll

@@ -21,7 +21,7 @@ const FooterBar = () => {
                                 •
                                 <span className="m-2">
                                     <Link to="/polices/privacy">
-                                        <p className="text-base font-medium text-gray-500 hover:text-gray-900 text-md">Terms of Service</p>
+                                        <p className="text-base font-medium text-gray-500 hover:text-gray-900 text-md">Privacy Policy</p>
                                     </Link>
                                 </span>
                             </div>
