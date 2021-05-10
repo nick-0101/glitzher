@@ -1,5 +1,6 @@
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
 import { Popover, Transition } from '@headlessui/react'
+
 import {
   ChartBarIcon,
   MenuIcon,
@@ -7,7 +8,9 @@ import {
   SupportIcon,
   XIcon,
 } from '@heroicons/react/outline'
-import { ChevronDownIcon } from '@heroicons/react/solid'
+
+// Components
+import SearchModal from '../SearchModal/SearchModal';
 
 const solutions = [
   {
@@ -27,11 +30,18 @@ const resources = [
   { name: 'Security', description: 'Understand how we take your privacy seriously.', href: '/', icon: ShieldCheckIcon },
 ]
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
-}
-
 export default function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+
+    // Search Modal
+    const openModal = () => {
+        setIsOpen(true);
+    }
+
+    const closeModal = () =>{
+        setIsOpen(false);
+    }
+
   return (
     <Popover className="relative bg-white">
       {({ open }) => (
@@ -55,79 +65,24 @@ export default function Navbar() {
                 </Popover.Button>
               </div>
               <Popover.Group as="nav" className="hidden md:flex space-x-10">
-                <Popover className="relative">
-                  {({ open }) => (
-                    <>
-                      <Popover.Button
-                        className={classNames(
-                          open ? 'text-gray-900' : 'text-gray-500',
-                          'group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-400'
-                        )}
-                      >
-                        <span>Solutions</span>
-                        <ChevronDownIcon
-                          className={classNames(
-                            open ? 'text-gray-600' : 'text-gray-400',
-                            'ml-2 h-5 w-5 group-hover:text-gray-500'
-                          )}
-                          aria-hidden="true"
-                        />
-                      </Popover.Button>
-
-                      <Transition
-                        show={open}
-                        as={Fragment}
-                        enter="transition ease-out duration-200"
-                        enterFrom="opacity-0 translate-y-1"
-                        enterTo="opacity-100 translate-y-0"
-                        leave="transition ease-in duration-150"
-                        leaveFrom="opacity-100 translate-y-0"
-                        leaveTo="opacity-0 translate-y-1"
-                      >
-                        <Popover.Panel
-                          static
-                          className="absolute z-10 -ml-4 mt-3 transform px-2 w-screen max-w-md sm:px-0 lg:ml-0 lg:left-1/2 lg:-translate-x-1/2"
-                        >
-                          <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
-                            <div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
-                              {solutions.map((item) => (
-                                <a
-                                  key={item.name}
-                                  href={item.href}
-                                  className="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50"
-                                >
-                                  <item.icon className="flex-shrink-0 h-6 w-6 text-red-500" aria-hidden="true" />
-                                  <div className="ml-4">
-                                    <p className="text-base font-medium text-gray-900">{item.name}</p>
-                                    <p className="mt-1 text-sm text-gray-500">{item.description}</p>
-                                  </div>
-                                </a>
-                              ))}
-                            </div>
-                          </div>
-                        </Popover.Panel>
-                      </Transition>
-                    </>
-                  )}
-                </Popover>
-
                 <a href="/" className="text-base font-medium text-gray-500 hover:text-gray-900">
-                  Pricing
+                  Search for a product
                 </a>
                 <a href="/" className="text-base font-medium text-gray-500 hover:text-gray-900">
-                  Docs
+                  Brands
                 </a>
               </Popover.Group>
               <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
-                <a href="/" className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">
-                  Sign in
-                </a>
-                <a
-                  href="/"
-                  className="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-red-500 hover:bg-red-600"
-                >
-                  Sign up
-                </a>
+                <div className="flex" onClick={openModal}>
+                  <button className="bg-red-500 hover:bg-red-600 rounded-md text-white p-3 focus:outline-none">
+                      <p className="font-semibold text-xl">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="text-white h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                              <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
+                          </svg>
+                      </p>
+                  </button>
+                </div>
+                <SearchModal isOpen={isOpen} closeModal={closeModal} openModal={isOpen} />
               </div>
             </div>
           </div>

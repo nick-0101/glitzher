@@ -1,179 +1,62 @@
 // App
-import React, { useContext } from 'react';
-import { AppContext } from "../Context/Context";
+import React, { useState } from 'react';
 import { withRouter } from "react-router-dom";
 
+// Components
+import SearchModal from '../SearchModal/SearchModal';
 
-// // Css
-import './ComparisonSearch.css'
+const ComparisonSearch = () => {
+    const [isOpen, setIsOpen] = useState(false);
 
-// Algolia 
-import algoliasearch from 'algoliasearch/lite';
-import { InstantSearch, Configure, Index, connectStateResults, connectHits, connectSearchBox } from 'react-instantsearch-dom';
-
-// //#23263b
-const algoliaClient = algoliasearch('GRXWQQHS2I', 'babd585148a07355c43a354cc0aece0f');
-
-const searchClient = {
-  search(requests) {
-    if (requests.every(({ params }) => !params.query)) {
-      return Promise.resolve({
-        results: requests.map(() => ({
-          hits: [],
-          nbHits: 0,
-          nbPages: 0,
-          processingTimeMS: 0,
-        })),
-      });
+    // Search Modal
+    const openModal = () => {
+        setIsOpen(true);
     }
 
-    return algoliaClient.search(requests);
-  },
-};
-
-
-const ComparisonSearch = ({ history }) => {
-    const { setSearch } = useContext(AppContext);    
-
-    const handleSetSearch = (e, searchValue) => {
-        const value = searchValue;
-
-        if(e.keyCode === 13){
-            e.preventDefault(); 
-
-            if (value !== '') {
-                if (typeof(Storage) !== "undefined") {
-                    sessionStorage.removeItem('searchResult');
-                    sessionStorage.setItem("searchResult", value);
-
-                    // Complete search
-                    history.push({  
-                        pathname: '/search',
-                        search: `?q=${sessionStorage.getItem("searchResult")}`
-                    })
-                } else {
-                    console.log('No session storage support')
-                    
-                    // Complete search with context
-                    setSearch(value);
-                    history.push({
-                        search: `?q=${setSearch}`
-                    })
-                }
-            } else {
-                return
-            }  
-        } 
-    };
-
-    const handleResultSearch = (suggestionValue) => {
-        const value = suggestionValue
-
-        if (value !== '') {
-            if (typeof(Storage) !== "undefined") {
-                sessionStorage.removeItem('searchResult');
-                sessionStorage.setItem("searchResult", value);
-
-                // Complete search
-                history.push({  
-                    pathname: '/search',
-                    search: `?q=${sessionStorage.getItem("searchResult")}`
-                })
-            } else {
-                console.log('No session storage support')
-                
-                // Complete search with context
-                setSearch(value);
-                history.push({
-                    search: `?q=${setSearch}`
-                })
-            }
-        } else {
-            return
-        }  
+    const closeModal = () =>{
+        setIsOpen(false);
     }
+
+
     return (
     <>
         <div className="flex justify-center h-screen/1 max-w-7xl mx-auto px-4 sm:px-20 text-center bg-hero">
             <div className="w-3/3 md:w-2/3 flex flex-col mx-auto my-44">
                 <div className="text-4xl md:text-5xl font-medium text-gray-800 mb-8 leading-tight">
-                    Compare cosmetic price's across <span style={{color: '#FC0F42'}}>major brands.</span>
+                    Compare cosmetic price's across <span style={{color: '#EF4444'}}>major brands.</span>
                 </div>
-                <InstantSearch indexName="amazonProducts" searchClient={searchClient}>
-                    <CustomSearch handleSetSearch={handleSetSearch} />
-
-                    <Index indexName="amazonProducts">
-                        <Configure hitsPerPage={1} />
-                        <Results>
-                            <CustomHits history={history} handleResultSearch={handleResultSearch}/>
-                        </Results>
-                    </Index>
-
-                    <Index indexName="sephoraProducts">
-                        <Configure hitsPerPage={2} />
-                        <Results>
-                            <CustomHits history={history} handleResultSearch={handleResultSearch}/>
-                        </Results>
-                    </Index>
-
-                    <Index indexName="shoppersdrugmartProducts">
-                        <Configure hitsPerPage={2} />
-                        <Results>
-                            <CustomHits history={history} handleResultSearch={handleResultSearch}/>
-                        </Results>
-                    </Index>
-                </InstantSearch>
+                <div className="flex flex-row cursor-pointer bg-white" onClick={openModal}>
+                    <div className="flex flex-grow w-auto rounded-md border border-gray-300 p-2 rounded-br-none rounded-tr-none">
+                        <span className="p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="text-gray-400 h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
+                            </svg>
+                        </span>
+                        <input 
+                            disabled
+                            className="w-full p-2 bg-white cursor-pointer focus:outline-none disabled" 
+                            type="text" 
+                            placeholder="Enter a product title..."
+                            autoComplete="on"
+                            autoCorrect="on"
+                            spellCheck="true"
+                        />
+                    </div>
+                    <div className="flex">
+                        <button className="focus:outline-none rounded-bl-none rounded-tl-none bg-red-500 hover:bg-red-600 rounded-md text-white px-5">
+                            <p className="font-semibold text-xl">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="text-white h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
+                                </svg>
+                            </p>
+                        </button>
+                    </div>
+                </div>
+                <SearchModal isOpen={isOpen} closeModal={closeModal} openModal={isOpen} />
             </div>
         </div>
     </>
     );
 }
-
-const CustomSearch = connectSearchBox(({currentRefinement, refine, handleSetSearch}) => {
-    return (
-        <div className="ais-SearchBox">
-            <form className="ais-SearchBox-form">
-                <input
-                    type="search"
-                    placeholder="Enter a product title..."
-                    autoComplete="on"
-                    autoCorrect="on"
-                    spellCheck="true"
-                    required
-                    value={currentRefinement}
-                    onChange={e => {refine(e.target.value)}}
-                    onKeyDown={e => handleSetSearch(e, currentRefinement)}
-                    className="ais-SearchBox-input"
-                />
-            </form>
-        </div>
-    )
-});
-
-const CustomHits = connectHits(({hits, handleResultSearch}) => {
-    return (
-        <div className="ais-Hits"> 
-            {hits.map(hit => (
-                <div 
-                    className="ais-Hits-item" 
-                    onClick={() => handleResultSearch(hit.title)} 
-                    key={hit.objectID}
-                >
-                    <div className="truncate">{hit.title}</div>
-                </div>
-            ))}
-        </div> 
-    )
-});
-
-const Results = connectStateResults(({ searchState, searchResults, children }) =>
-    searchResults && searchResults.nbHits !== 0 ? (
-      children
-    ) : (
-        <>
-            {searchState.query ? null: null}
-        </>
-    )
-);
 
 export default withRouter(ComparisonSearch);
