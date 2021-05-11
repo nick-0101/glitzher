@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import ReactGA from 'react-ga';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 // import { NavBar, SubNav, FooterBar, Error } from './components';
-import { NavBar, FooterBar, SubNav, Error } from './components';
+import { NavBar, FooterBar, Error } from './components';
 
 import './App.css';
 // import { Homepage, PriceComparison, Tos, Privacy } from './pages';
@@ -40,7 +40,7 @@ function App() {
                 path='/search'
                 render={() => (
                   <>
-                    <SubNav />
+                    <NavBar />
                     {/* <PriceComparison /> */}
                   </>
                 )}
