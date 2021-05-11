@@ -9,7 +9,7 @@ Built with
   * [Reactjs](https://reactjs.org)
   * [Expressjs](https://expressjs.com)
   * [Redis](https://redislabs.com/)
-  * [AntDesign](https://ant.design/)
+  * [TailwindCSS](https://tailwindcss.com/)
   * [Algolia](https://www.algolia.com/)
   * [Digital Ocean](https://digitalocean.com)
   
