@@ -1,11 +1,7 @@
-.ant-layout {
-  background: #fff;
-}
-
 .page-container {
   display: flex;
-  flex-direction: column;
   min-height: 100vh;
+  flex-direction: column;
 }
 .content-wrap {
   flex: 1;

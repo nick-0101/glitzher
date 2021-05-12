@@ -1,7 +1,6 @@
 export { default as NavBar } from './NavBar/NavBar';
 export { default as SkeletonLoader } from './SkeletonLoaders/SkeletonLoader';
 export { default as ComparisonSkeleton } from './SkeletonLoaders/ComparisonSkeleton';
-export { default as SubNav } from './SubNav/SubNav';
 export { default as FooterBar } from './FooterBar/FooterBar';
 export { default as Error } from './Error/Error';
 

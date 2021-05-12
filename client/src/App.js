@@ -6,7 +6,7 @@ import { NavBar, FooterBar, Error } from './components';
 
 import './App.css';
 // import { Homepage, PriceComparison, Tos, Privacy } from './pages';
-import { Homepage, Tos, Privacy } from './pages';
+import { Homepage, PriceComparison, Tos, Privacy } from './pages';
 
 /* Google Analytics */
 function usePageViews() {
@@ -25,48 +25,46 @@ function App() {
   usePageViews();
   return (
     <Router>
-      <div style={{ background: '#fff' }}>
-        <div className='page-container'>
-          <div className='content-wrap'>
-            <Switch>
-              {/* Homepage */}
-              <Route exact path='/'>
-                <NavBar />
-                <Homepage />
-              </Route>
+      <div className='page-container'>
+        <div className='content-wrap'>
+          <Switch>
+            {/* Homepage */}
+            <Route exact path='/'>
+              <NavBar />
+              <Homepage />
+            </Route>
 
-              {/* Price Comparison */}
-              <Route
-                path='/search'
-                render={() => (
-                  <>
-                    <NavBar />
-                    {/* <PriceComparison /> */}
-                  </>
-                )}
-              />
+            {/* Price Comparison */}
+            <Route
+              path='/search'
+              render={() => (
+                <>
+                  <NavBar />
+                  <PriceComparison />
+                </>
+              )}
+            />
 
-              {/* Tos */}
-              <Route path='/tos'>
-                <NavBar />
-                <Tos />
-              </Route>
+            {/* Tos */}
+            <Route path='/tos'>
+              <NavBar />
+              <Tos />
+            </Route>
 
-              {/* Privacy Policy */}
-              <Route path='/polices/privacy'>
-                <NavBar />
-                <Privacy />
-              </Route>
+            {/* Privacy Policy */}
+            <Route path='/polices/privacy'>
+              <NavBar />
+              <Privacy />
+            </Route>
 
-              {/* Error Page */}
-              <Route path='*'>
-                <NavBar />
-                <Error />
-              </Route>
-            </Switch>
-          </div>
-          <FooterBar />
+            {/* Error Page */}
+            <Route path='*'>
+              <NavBar />
+              <Error />
+            </Route>
+          </Switch>
         </div>
+        <FooterBar />
       </div>
     </Router>
   );
