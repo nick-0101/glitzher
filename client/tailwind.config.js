@@ -25,13 +25,14 @@ module.exports = {
         'screen/5': 'calc(100vh / 5)',
       }),
       backgroundImage: (theme) => ({
-        hero:
-          "url('./components/ComparisonSearch/images/frontpage-background.png')",
+        hero: "url('./components/ComparisonSearch/images/frontpage-background.png')",
       }),
     },
   },
   variants: {
-    extend: {},
+    extend: {
+      justifyContent: ['hover', 'focus'],
+    },
   },
   corePlugins: {
     container: false,
