@@ -123,7 +123,7 @@ export default function Navbar() {
                   <div className="p-1">
                     <SearchIcon className="text-gray-400 h-5 w-5" aria-hidden="true" />
                   </div>
-                  <div className="flex ml-2 my-auto text-gray-400">Search</div>
+                  <div className="flex ml-2 my-auto text-base font-medium text-gray-400">Search</div>
                 </div>
               </div>
               <SearchModal isOpen={isOpen} closeModal={closeModal} openModal={isOpen} />
