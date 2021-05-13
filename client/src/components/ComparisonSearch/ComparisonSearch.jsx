@@ -25,7 +25,7 @@ const ComparisonSearch = () => {
                 <div className="text-4xl md:text-5xl font-medium text-gray-800 mb-8 leading-tight">
                     Compare cosmetic price's across <span style={{color: '#EF4444'}}>major brands.</span>
                 </div>
-                <div className="flex flex-row cursor-pointer bg-white shadow-md" onClick={openModal}>
+                <div className="flex flex-row cursor-pointer bg-white" onClick={openModal}>
                     <div className="flex flex-grow w-auto rounded-md border border-gray-300 p-2 rounded-br-none rounded-tr-none">
                         <span className="p-2">
                             <svg xmlns="http://www.w3.org/2000/svg" className="text-gray-400 h-6 w-6" viewBox="0 0 20 20" fill="currentColor">

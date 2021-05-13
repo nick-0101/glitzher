@@ -1,5 +1,5 @@
 // App 
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, Fragment } from 'react';
 import { Link } from "react-router-dom";
 
 // Application Packages 
@@ -16,92 +16,64 @@ import notFound from './images/search_not_found.webp';
 
 const PriceComparison = () => {
     const [comparisonData, setComparisonData] = useState(null)
-
+    const [tableData, setTableData] = useState(null)
+    
     // Pagination 
-    const [page, setPageNumber] = useState(1);
+    const [page] = useState(1);
     const [perPage] = useState(5); 
-    const [pageCount, setPageCount] = useState(0)
 
     // Errors
     const [errorTitle, setErrorTitle] = useState(null)
     const [errorDesc, setErrorDesc] = useState(null)
 
-    // const searchProducts = useCallback(async() => {
-    //     const CancelToken = axios.CancelToken;
-    //     const source = CancelToken.source();
+    const searchProducts = useCallback(async() => {
+        const CancelToken = axios.CancelToken;
+        const source = CancelToken.source();
 
-    //     const searchValue = sessionStorage.getItem("searchResult");
+        const searchValue = sessionStorage.getItem("searchResult");
 
-    //     axios.get(`/api/search?q=${searchValue}`, 
-    //     { cancelToken: source.token })
-    //     .then(res => {            
-    //         const data = res.data;
+        axios.get(`/api/search?q=${searchValue}`, 
+        { cancelToken: source.token })
+        .then(res => {            
+            const data = res.data;
 
-    //         // Add Pages
-    //         const startIndex = (page - 1) * perPage;
-    //         const endIndex = page * perPage;
-    //         const dataResult = data.slice(startIndex, endIndex);
+            // Add Pages
+            const startIndex = (page - 1) * perPage;
+            const endIndex = page * perPage;
+            const dataResult = data.slice(startIndex, endIndex);
 
-    //         // Set Data
-    //         setComparisonData(dataResult)
-    //         setPageCount(Math.ceil(data.length / perPage))
+            // Set Data
+            setComparisonData(dataResult)
 
-    //         // Set & format table data
-    //         const tabledData = dataResult.map((item, index) => ({
-    //             key: index,
-    //             merchant: item.brand,
-    //             imageURL: item.thumbnail || item.subThumbnail || 'data:image/png;base64,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',
-    //             details: item.title,
-    //             price: item.price.current_price,
-    //             shopButton: item.url
-    //         }))
+            // Set & format table data
+            const formattedTableData = dataResult.map((item, index) => ({
+                key: index,
+                brand: item.brand,
+                thumbnail: item.thumbnail || item.subThumbnail || null,
+                title: item.title,
+                price:{ current_price: item.price.current_price },
+                url: item.url
+            }))
             
-    //         setTableData(tabledData)        
-    //     }).catch((err) => {
-    //         if (axios.isCancel(err)) return 
-    //         setErrorTitle(err.response.data.title)
-    //         setErrorDesc(err.response.data.desc + ' Make sure your search is descriptive and contains no major spelling mistakes.')
-    //     });
-    // }, [page, perPage])
+            setTableData(formattedTableData)        
 
-    // const handlePagination = (e) => {
-    //     const selectedPage = e.selected;
-    //     setPageNumber(selectedPage + 1)
-    //     searchProducts()
-    // }
+        }).catch((err) => {
+            if (axios.isCancel(err)) return 
+            setErrorTitle(err.response.data.title)
+            setErrorDesc(err.response.data.desc + ' Make sure your search is descriptive and contains no major spelling mistakes.')
+        });
+    }, [page, perPage])
+
 
     useEffect(() => { 
-        // searchProducts()
-        const mockData = [
-            {
-                brand: 'Amazon',
-                thumbnail: 'https://m.media-amazon.com/images/I/51k-gPOv-gL._AC_UL320_SP_SAME_DOMAIN_ASSETS_257061_.jpg',
-                title: 'Moroccanoil Treatment Hair Oil',
-                price: {current_price : '50.00'},
-                url: 'https://amazon.ca/Moroccanoil-Treatment-Hair-Type-Ounce/dp/B001AO0WCG/ref=sr_1_1?dchild=1&pg=1&qid=1618601921&s=luxury-beauty&sr=1-1',
-                reviews: {total_reviews: '554', rating: "4"}
-            },
-            {
-                brand: 'Walmart',
-                thumbnail: 'https://m.media-amazon.com/images/I/51k-gPOv-gL._AC_UL320_SP_SAME_DOMAIN_ASSETS_257061_.jpg',
-                title: 'Moroccanoil Treatment Hair Oil',
-                price: {current_price : '60.00'},
-                url: 'https://amazon.ca/Moroccanoil-Treatment-Hair-Type-Ounce/dp/B001AO0WCG/ref=sr_1_1?dchild=1&pg=1&qid=1618601921&s=luxury-beauty&sr=1-1',
-                reviews: {total_reviews: '554', rating: "4"}
-            },
-        ];
-
-        setComparisonData(mockData)
-    }, []);
-
-    console.log(comparisonData)
+        searchProducts()
+    }, [searchProducts]);
 
     return (
         <>
-            <div className="max-w-5xl mx-auto px-4 sm:px-20">
-
-                {/* Product Not Found */}
-                {errorTitle && errorDesc ? 
+            {/* Product Not Found */}
+            {errorTitle && errorDesc ? 
+                <div className="max-w-5xl mx-auto px-4 sm:px-20">
                     <div className="flex flex-col text-center">
                         <div className="mx-auto">
                             <img src={notFound} width={350} height={350} alt='product not found'/>
@@ -118,15 +90,16 @@ const PriceComparison = () => {
                             </div>
                         </Link>
                     </div>    
-                    : 
-                    <>
-                        {comparisonData ?
-                            <>  
+                </div>
+                : 
+                <>
+                    {comparisonData && tableData ?
+                        <>  
+                            <div className="max-w-5xl mx-auto px-4 sm:px-20">
                                 <div className="w-full mt-6 mb-8 text-center md:text-left">
                                     <div className="text-2xl font-medium text-gray-900">{comparisonData[0].title}</div>
                                 </div>
                                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2 gap-4">
-
                                     {/* Thumbnail */}
                                     {comparisonData[0].thumbnail || comparisonData[0].subThumbnail ?
                                         <> 
@@ -152,7 +125,6 @@ const PriceComparison = () => {
                                         <div className="bg-gray-200 h-80 rounded"></div>
                                     }
                                     <div className="justify-center md:justify-left">
-
                                         {/* Brand */}
                                         <div className="text-center md:text-left">
                                             {comparisonData[0].brand ? 
@@ -213,10 +185,12 @@ const PriceComparison = () => {
                                                     <span className="ml-2">Shop Now</span>
                                                 </div>
                                             </a>
-                                            <div className="flex text-red-600 bg-red-100 hover:bg-red-200 font-medium px-7 py-3.5 rounded-md justify-center cursor-pointer">
-                                                <SwitchHorizontalIcon className="h-6 w-6 text-red-500" aria-hidden="true" /> 
-                                                <span className="ml-2">Compare Prices</span>
-                                            </div>
+                                            <a href="#price-comparison">
+                                                <div className="flex text-red-600 bg-red-100 hover:bg-red-200 font-medium px-7 py-3.5 rounded-md justify-center">
+                                                    <SwitchHorizontalIcon className="h-6 w-6 text-red-500" aria-hidden="true" /> 
+                                                    <span className="ml-2">Compare Prices</span>
+                                                </div>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -225,35 +199,35 @@ const PriceComparison = () => {
                                 <div className="border-b my-4"></div>
                                 
                                 {/* Table Title */}
-                                <div className="w-full mt-6 mb-8 text-center md:text-left">
+                                <div className="w-full mt-3 mb-5 text-center md:text-left">
                                     <div className="text-2xl font-medium text-gray-900">Compare prices</div>
                                 </div>
 
                                 {/* Price Comparison Table */}
-                                <table className="min-w-full table-auto divide-y divide-gray-200">
+                                <table className="hidden md:table md:min-w-full md:table-auto md:divide-y md:divide-gray-200" id="price-comparison">
                                     <thead className="bg-gray-50">
                                         <tr>
                                             <th
                                                 scope="col"
-                                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider"
                                             >
                                                 Shop
                                             </th>
                                             <th
                                                 scope="col"
-                                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider"
                                             >
                                                 Image
                                             </th>
                                             <th
                                                 scope="col"
-                                                className="hidden md:block px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                                className="hidden md:block px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider"
                                             >
                                                 Product Details
                                             </th>
                                             <th
                                                 scope="col"
-                                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider"
                                             >
                                                 Price
                                             </th>
@@ -263,14 +237,18 @@ const PriceComparison = () => {
                                         </tr>
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-200">
-                                        {comparisonData.map((product, i) => (
-                                        <tr key={i}>
+                                        {tableData.map((product, i) => (
+                                        <tr key={i} className={i === 0 ? 
+                                            "border-2 border-red-200"
+                                            :
+                                            "border-0"
+                                        }>
                                             <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="flex items-center">
-                                                <div className="ml-4">
-                                                    <div className="text-sm font-medium text-gray-900">{product.brand}</div>
+                                                <div className="flex items-center">
+                                                    <div className="ml-4">
+                                                        <div className="text-sm font-medium text-gray-900">{product.brand}</div>
+                                                    </div>
                                                 </div>
-                                            </div>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <img 
@@ -280,63 +258,86 @@ const PriceComparison = () => {
                                                 />
                                             </td>
                                             <td className="px-6 py-4 text-sm text-gray-900">
+                                                {i === 0 ? 
+                                                    <div className="bg-red-100 w-20 rounded-md py-1 px-0.5 mb-2 text-center">
+                                                        <div className="text-red-600 text-xs font-medium uppercase">Best Offer</div>
+                                                    </div> 
+                                                    : 
+                                                    null
+                                                }
                                                 {product.title}
                                             </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                                 {'$' + product.price.current_price}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                <div className="bg-red-500 hover:bg-red-600 rounded-md px-2 py-3">
-                                                    <a href={product.url}>
+                                                <a href={product.url} className="cursor-pointer">
+                                                    <div className="bg-red-500 hover:bg-red-600 rounded-md px-2 py-3">
                                                         <ShoppingBagIcon className="h-5 w-5 mx-auto text-white" aria-hidden="true" /> 
-                                                    </a>
-                                                </div>
+                                                    </div>
+                                                </a>
                                             </td>
                                         </tr>
                                         ))}
                                     </tbody>
                                 </table>
-                            </>
-                            :
-                            <SkeletonLoader />
-                        }
-                        {/* {comparisonData > 5 ? 
-                            <>
-                                <Row justify="center" align="center" style={{margin: '2rem 0'}}>
-                                    <Row className="desktopPagination"> 
-                                        <ReactPaginate
-                                            previousLabel={<><CaretLeftOutlined /> Prev</>}
-                                            nextLabel={<><CaretRightOutlined /> Next</>}
-                                            breakLabel={"..."}
-                                            breakClassName={"break-me"}
-                                            pageCount={pageCount}
-                                            onPageChange={handlePagination}
-                                            containerClassName={"pagination"}
-                                            subContainerClassName={"pages pagination"}
-                                            activeClassName={"active"}
-                                            onClick={window.scrollTo(0, 0)}
-                                        />
-                                    </Row>
-                                    <Row className="mobilePagination">
-                                        <ReactPaginate
-                                            previousLabel={<><CaretLeftOutlined /> Prev</>}
-                                            nextLabel={<><CaretRightOutlined /> Next</>}
-                                            breakLabel={"..."}
-                                            breakClassName={"break-me"}
-                                            pageCount={pageCount}
-                                            onPageChange={handlePagination}
-                                            containerClassName={"pagination"}
-                                            subContainerClassName={"pages pagination"}
-                                            activeClassName={"active"}
-                                            onClick={window.scrollTo(0, 0)}
-                                        />
-                                    </Row>
-                                </Row> 
-                            </>
-                        : null}  */}
-                    </>
-                }
-            </div>
+                            
+                                {/* Table Responsive */}
+                                <div className="flex flex-col min-w-full md:hidden" id="price-comparison">
+                                    {tableData.map((product, i) => (
+                                        <Fragment key={i}>
+                                            <div className={i === 0 ? 
+                                                'grid grid-cols-4 sm:grid-cols-3 sm:mb-3 p-2 border-2 border-red-200 rounded-md' 
+                                                : 
+                                                'grid grid-cols-4 sm:mb-3 p-2 sm:grid-cols-3' 
+                                            }>
+                                                <a href={product.url} className="cursor-pointer">
+                                                    <img 
+                                                        className="object-scale-down mx-4 sm:w-full sm:mx-0 h-28"  
+                                                        src={product.thumbnail} 
+                                                        alt={product.title}
+                                                    />
+                                                    <div className="text-gray-900 sm:text-center ml-2 mt-2 sm:ml-0">
+                                                        Amazon
+                                                    </div>
+                                                </a>
+                                                <div className="col-span-3 sm:col-span-2 my-auto">
+                                                    <div className="flex-col grid grid-cols-3">
+                                                        <div className="col-span-2">
+                                                            {i === 0 ? 
+                                                                <div className="bg-red-100 w-20 rounded-md py-1 px-0.5 mb-2 text-center">
+                                                                    <div className="text-red-600 text-xs font-medium uppercase">Best Offer</div>
+                                                                </div> 
+                                                                : 
+                                                                null
+                                                            }
+                                                            <div className="mb-2 break-words text-gray-900">
+                                                                {product.title}
+                                                            </div>
+                                                            <div className="text-lg font-medium text-gray-900">
+                                                                {'$' + product.price.current_price}
+                                                            </div>
+                                                        </div>
+                                                        <div className="ml-auto my-auto">
+                                                            <a href={product.url} className="cursor-pointer">
+                                                                <div className="bg-red-500 hover:bg-red-600 rounded-md px-3 py-3">
+                                                                    <ShoppingBagIcon className="h-5 w-5 mx-auto text-white" aria-hidden="true" /> 
+                                                                </div>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </Fragment>
+                                   ))}
+                                </div>
+                            </div>
+                        </>
+                        :
+                        <SkeletonLoader />
+                    }
+                </>
+            }
         </>
     )
 }
