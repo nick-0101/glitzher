@@ -32,6 +32,7 @@ module.exports = {
   variants: {
     extend: {
       justifyContent: ['hover', 'focus'],
+      backgroundColor: ['odd', 'even'],
     },
   },
   corePlugins: {
