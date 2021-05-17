@@ -73,7 +73,6 @@ const Homepage = ({ history }) => {
 
     return (<>
         <SearchBar />
-
         {/* <div className="text-center text-2xl font-medium mx-auto my-10">
             Popular cosmetic items
         </div>

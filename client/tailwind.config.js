@@ -25,7 +25,10 @@ module.exports = {
         'screen/5': 'calc(100vh / 5)',
       }),
       backgroundImage: (theme) => ({
-        hero: "url('./components/ComparisonSearch/images/frontpage-background.png')",
+        desktop:
+          "url('./components/ComparisonSearch/images/frontpage-desktop.webp')",
+        mobile:
+          "url('./components/ComparisonSearch/images/frontpage-mobile.webp')",
       }),
     },
   },
