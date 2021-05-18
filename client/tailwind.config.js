@@ -18,7 +18,7 @@ module.exports = {
         sans: ['Inter var', ...defaultTheme.fontFamily.sans],
       },
       height: (theme) => ({
-        'screen/1': '85vh',
+        'screen/1': '91vh',
         'screen/2': '50vh',
         'screen/3': 'calc(100vh / 3)',
         'screen/4': 'calc(100vh / 4)',

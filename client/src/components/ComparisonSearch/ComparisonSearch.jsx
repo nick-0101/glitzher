@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import { withRouter } from "react-router-dom";
 
+import {SearchIcon} from '@heroicons/react/outline'
+
 // Components
 import SearchModal from '../SearchModal/SearchModal';
 
@@ -28,10 +30,8 @@ const ComparisonSearch = () => {
                     </div>
                     <div className="flex flex-row cursor-pointer bg-white" onClick={openModal}>
                         <div className="flex flex-grow w-auto rounded-md border border-gray-300 p-2 rounded-br-none rounded-tr-none">
-                            <span className="p-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="text-gray-400 h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
-                                </svg>
+                            <span className="px-2 pt-2.5">
+                                <SearchIcon className="text-gray-400 h-5 w-5" aria-hidden="true" />
                             </span>
                             <input 
                                 disabled
