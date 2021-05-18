@@ -9,8 +9,8 @@ import {
   PriceComparison,
   Tos,
   Privacy,
-  About,
   Brands,
+  PopularProducts,
 } from './pages';
 
 /* Google Analytics */
@@ -45,16 +45,16 @@ function App() {
               <PriceComparison />
             </Route>
 
+            {/* Popular Products */}
+            <Route path='/popular-products'>
+              <NavBar />
+              <PopularProducts />
+            </Route>
+
             {/* Brands */}
             <Route path='/brands'>
               <NavBar />
               <Brands />
-            </Route>
-
-            {/* About */}
-            <Route path='/about'>
-              <NavBar />
-              <About />
             </Route>
 
             {/* Tos */}

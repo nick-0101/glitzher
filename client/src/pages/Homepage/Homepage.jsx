@@ -1,14 +1,12 @@
 // App
 import React, { useState, useEffect, useContext } from 'react';
-// import React from 'react';
-
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import { AppContext } from "../../components/Context/Context";
 
 // Application Packages
 import axios from 'axios';
 import LazyLoad from 'react-lazyload';
-import { ShoppingBagIcon } from '@heroicons/react/outline'
+import { ShoppingBagIcon, ArrowRightIcon } from '@heroicons/react/outline'
 
 // Components 
 import SkeletonLoader from '../../components/SkeletonLoaders/SkeletonLoader';
@@ -123,7 +121,7 @@ const Homepage = ({ history }) => {
                                 </div>
                                 
                                 <a href={item.url} target="_blank" rel="noopener noreferrer">
-                                    <div className="mt-2 bg-red-200 w-4/4 px-4 py-2 rounded-md shadow-sm text-base font-medium text-white bg-red-500 hover:bg-red-600">
+                                    <div className="mt-2 bg-red-200 w-4/4 px-4 py-2 rounded-md shadow-sm text-base font-medium text-white bg-red-500 hover:bg-red-600 transition duration-300 ease-in-out">
                                         <div className="flex flex-row justify-center">
                                             <div className="flex text-base font-medium text-white px-8 py-1.5 rounded-md justify-center mb-2 md:mr-2 md:mb-0">
                                                     <ShoppingBagIcon className="h-6 w-6 text-white" aria-hidden="true" /> 
@@ -139,7 +137,17 @@ const Homepage = ({ history }) => {
                 :
                 <SkeletonLoader /> 
             }
+
+            <div className="mt-9 w-1/3 mx-auto">
+                <Link to='/popular-products'>
+                    <div className="flex transition duration-300 ease-in-out text-red-600 bg-red-100 hover:bg-red-200 font-medium px-7 py-3.5 rounded-md justify-center">
+                        <ArrowRightIcon className="h-6 w-6 text-red-500" aria-hidden="true" /> 
+                        <span className="ml-2">View More</span>
+                    </div>
+                </Link>
+            </div>
         </div>
+            
     </>)
 }
 
