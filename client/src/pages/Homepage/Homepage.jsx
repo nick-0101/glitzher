@@ -1,98 +1,75 @@
 // App
-// import React, { useState, useEffect, useContext } from 'react';
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+// import React from 'react';
 
 import { withRouter } from "react-router-dom";
-// import { AppContext } from "../../components/Context/Context";
+import { AppContext } from "../../components/Context/Context";
 
-// // Application Packages
-// import axios from 'axios';
-// import LazyLoad from 'react-lazyload';
-// import InfiniteScroll from 'react-infinite-scroll-component';
+// Application Packages
+import axios from 'axios';
+import LazyLoad from 'react-lazyload';
+import { ShoppingBagIcon } from '@heroicons/react/outline'
 
-// // Components 
-// import SkeletonLoader from '../../components/SkeletonLoaders/SkeletonLoader';
+// Components 
+import SkeletonLoader from '../../components/SkeletonLoaders/SkeletonLoader';
 import SearchBar from '../../components/ComparisonSearch/ComparisonSearch';
 
-// import './Homepage.css'
-
-
 const Homepage = ({ history }) => {
-    // const [page, setPage] = useState(1);
-    // const [products, setProducts] = useState('')
-    // const [hasMore, setHasMore] = useState(true)
-    // const { setSearch } = useContext(AppContext);
+    const [products, setProducts] = useState('')
+    const { setSearch } = useContext(AppContext);
 
 
-    // const getData = async(page) => {
-    //     const CancelToken = axios.CancelToken;
-    //     const source = CancelToken.source();
+    const getData = async() => {
+        const CancelToken = axios.CancelToken;
+        const source = CancelToken.source();
         
-    //     axios.get(`/api/homepage?page=${page}&limit=10`, { cancelToken: source.token })
-    //     .then(res => {
-    //         setProducts(prevProducts => {
-    //             return [...new Set([...prevProducts, ...res.data])]
-    //         })
-    //         setHasMore(res.data.length > 0)
-    //     }).catch(e => {
-    //         if (axios.isCancel(e)) return 
-    //     })
-    // }
+        axios.get(`/api/homepage?page=1&limit=8`, { cancelToken: source.token })
+        .then(res => {
+            setProducts(res.data)
+        }).catch(e => {
+            if (axios.isCancel(e)) return 
+        })
+    }
 
-    // useEffect(() => {
-    //     getData(page)
-    // }, [page])
+    useEffect(() => {
+        getData()
+    }, [])
 
-    // const handlePagination = () => {
-    //     setPage(page + 1)
-    // }
+    const comparePriceSearch = (value) => {
+        if (value !== '') {
+            if (typeof(Storage) !== "undefined") {
+                sessionStorage.removeItem('searchResult');
+                sessionStorage.setItem("searchResult", value);
 
-    // const comparePriceSearch = (value) => {
-    //     if (value !== '') {
-    //         if (typeof(Storage) !== "undefined") {
-    //             sessionStorage.removeItem('searchResult');
-    //             sessionStorage.setItem("searchResult", value);
-
-    //             // Complete search  
-    //             history.push({
-    //                 pathname: '/search',
-    //                 search: `?q=${sessionStorage.getItem("searchResult")}`
-    //             })
-    //         } else {
-    //             // Complete search with context
-    //             setSearch(value)
-    //             history.push({
-    //                 pathname: '/search',
-    //                 search: `?q=${setSearch}`
-    //             })
-    //         }
-    //     } else {
-    //         return
-    //     }
-    // };
+                // Complete search  
+                history.push({
+                    pathname: '/search',
+                    search: `?q=${sessionStorage.getItem("searchResult")}`
+                })
+            } else {
+                // Complete search with context
+                setSearch(value)
+                history.push({
+                    pathname: '/search',
+                    search: `?q=${setSearch}`
+                })
+            }
+        } else {
+            return
+        }
+    };
 
     return (<>
         <SearchBar />
-        {/* <div className="text-center text-2xl font-medium mx-auto my-10">
+        <div className="text-center text-2xl font-medium mx-auto my-10">
             Popular cosmetic items
         </div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-20 text-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-20 text-center" id="#popular-products">
             {products ?
-                <InfiniteScroll
-                    dataLength={products.length}
-                    next={handlePagination}
-                    hasMore={hasMore}
-                    loader={<div>Loading...</div>}
-                    endMessage={
-                        <h1>
-                            You're all caught up on the best discounts!
-                        </h1>
-                    }
-                >
                 <div className="grid grid-cols-1 px-4 lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-2">
                     {products.map((item, index) => {        
                         return (
-                            <div className="flex flex-col h-4/4 text-center mt-5 mx-2 border-b-2 border-gray-100" key={index}>
+                            <div className="flex flex-col h-4/4 text-center mx-3 pt-6 border-t-2 border-gray-100" key={index}>
                                 {item.thumbnail || item.subThumbnail ?
                                     <LazyLoad height={200} offset={400}>
                                         <a target="_blank" rel="noopener noreferrer" href={item.url}>
@@ -146,12 +123,12 @@ const Homepage = ({ history }) => {
                                 </div>
                                 
                                 <a href={item.url} target="_blank" rel="noopener noreferrer">
-                                    <div className="mt-2 mb-6 bg-red-200 w-4/4 px-4 py-2 rounded-md shadow-sm text-base font-medium text-white bg-red-500 hover:bg-red-600">
+                                    <div className="mt-2 bg-red-200 w-4/4 px-4 py-2 rounded-md shadow-sm text-base font-medium text-white bg-red-500 hover:bg-red-600">
                                         <div className="flex flex-row justify-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fillRule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clipRule="evenodd" />
-                                            </svg>
-                                            <p>Buy Now</p>
+                                            <div className="flex text-base font-medium text-white px-8 py-1.5 rounded-md justify-center mb-2 md:mr-2 md:mb-0">
+                                                    <ShoppingBagIcon className="h-6 w-6 text-white" aria-hidden="true" /> 
+                                                    <span className="ml-2">Shop Now</span>
+                                                </div>
                                         </div>
                                     </div>
                                 </a>
@@ -159,11 +136,10 @@ const Homepage = ({ history }) => {
                         )
                     })}
                 </div>    
-                </InfiniteScroll> 
                 :
                 <SkeletonLoader /> 
             }
-        </div> */}
+        </div>
     </>)
 }
 

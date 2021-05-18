@@ -1,14 +1,25 @@
 // App
 import React, { useState } from 'react';
 import { withRouter } from "react-router-dom";
+import { animateScroll as scroller } from 'react-scroll'
 
-import {SearchIcon} from '@heroicons/react/outline'
+// Icons
+import { SearchIcon, ArrowDownIcon } from '@heroicons/react/outline'
 
 // Components
 import SearchModal from '../SearchModal/SearchModal';
 
+
 const ComparisonSearch = () => {
     const [isOpen, setIsOpen] = useState(false);
+
+    const executeScroll = () => {
+        scroller.scrollTo(920, {
+            duration: 0,
+            delay: 0,
+            smooth: true
+        })
+    }
 
     // Search Modal
     const openModal = () => {
@@ -54,6 +65,9 @@ const ComparisonSearch = () => {
                         </div>
                     </div>
                     <SearchModal isOpen={isOpen} closeModal={closeModal} openModal={isOpen} />
+                    <a onClick={executeScroll} href="#popular-products" className="mt-auto mx-auto animate-bounce">
+                        <ArrowDownIcon className="text-gray-900 w-8 h-8" aria-hidden="true" />
+                    </a>
                 </div>
             </div>
         </div>
