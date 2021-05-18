@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import ReactGA from 'react-ga';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { NavBar, FooterBar, Error } from './components';
+import { NavBar, FooterBar, Error, CookieBanner } from './components';
 
 import './App.css';
 import {
@@ -77,6 +77,9 @@ function App() {
           </Switch>
         </div>
         <FooterBar />
+        <div className='fixed inset-x-0 bottom-0'>
+          <CookieBanner />
+        </div>
       </div>
     </Router>
   );
