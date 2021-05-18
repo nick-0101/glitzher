@@ -2,7 +2,7 @@ import React from 'react';
 
 const ComparisonSkeleton = () => {
     return (
-        <div className="flex flex-col mt-5 mx-2">
+        <div className="flex flex-col mt-5 mx-2 max-w-7xl mx-auto px-4 sm:px-20 text-center">
             <div className="animate-pulse flex">
                 <div className="h-10 bg-gray-200 w-screen md:w-4/4 mt-2 rounded-md"></div>
             </div>

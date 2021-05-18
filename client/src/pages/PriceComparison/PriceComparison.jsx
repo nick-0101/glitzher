@@ -180,13 +180,13 @@ const PriceComparison = () => {
                                         {/* Button Group */}
                                         <div className="flex justify-center flex-col md:flex md:justify-start md:flex-row">
                                             <a target="_blank" rel="noopener noreferrer" href={comparisonData[0].url}>
-                                                <div className="flex text-base font-medium text-white bg-red-500 hover:bg-red-600 px-8 py-3.5 rounded-md justify-center mb-2 md:mr-2 md:mb-0">
+                                                <div className="flex text-base font-medium text-white bg-red-500 hover:bg-red-600 px-8 py-3.5 rounded-md justify-center mb-2 md:mr-2 md:mb-0 transition duration-300 ease-in-out">
                                                     <ShoppingBagIcon className="h-6 w-6 text-white" aria-hidden="true" /> 
                                                     <span className="ml-2">Shop Now</span>
                                                 </div>
                                             </a>
                                             <a href="#price-comparison">
-                                                <div className="flex text-red-600 bg-red-100 hover:bg-red-200 font-medium px-7 py-3.5 rounded-md justify-center">
+                                                <div className="flex text-red-600 bg-red-100 hover:bg-red-200 font-medium px-7 py-3.5 rounded-md justify-center transition duration-300 ease-in-out">
                                                     <SwitchHorizontalIcon className="h-6 w-6 text-red-500" aria-hidden="true" /> 
                                                     <span className="ml-2">Compare Prices</span>
                                                 </div>
@@ -200,7 +200,7 @@ const PriceComparison = () => {
                                 
                                 {/* Table Title */}
                                 <div className="w-full mt-3 mb-5 text-center md:text-left">
-                                    <div className="text-2xl font-medium text-gray-900">Compare prices</div>
+                                    <div className="text-2xl font-medium text-gray-900 transition duration-300 ease-in-out">Compare prices</div>
                                 </div>
 
                                 {/* Price Comparison Table */}
@@ -272,7 +272,7 @@ const PriceComparison = () => {
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                 <a href={product.url} className="cursor-pointer">
-                                                    <div className="bg-red-500 hover:bg-red-600 rounded-md px-2 py-3">
+                                                    <div className="bg-red-500 hover:bg-red-600 rounded-md px-2 py-3 transition duration-300 ease-in-out">
                                                         <ShoppingBagIcon className="h-5 w-5 mx-auto text-white" aria-hidden="true" /> 
                                                     </div>
                                                 </a>
@@ -293,7 +293,7 @@ const PriceComparison = () => {
                                             }>
                                                 <a href={product.url} className="cursor-pointer">
                                                     <img 
-                                                        className="object-scale-down mx-4 sm:w-full sm:mx-0 h-28"  
+                                                        className="object-scale-down mx-2 sm:w-full sm:mx-0 h-28"  
                                                         src={product.thumbnail} 
                                                         alt={product.title}
                                                     />
@@ -320,7 +320,7 @@ const PriceComparison = () => {
                                                         </div>
                                                         <div className="ml-auto my-auto">
                                                             <a href={product.url} className="cursor-pointer">
-                                                                <div className="bg-red-500 hover:bg-red-600 rounded-md px-3 py-3">
+                                                                <div className="bg-red-500 hover:bg-red-600 rounded-md px-3 py-3 transition duration-300 ease-in-out">
                                                                     <ShoppingBagIcon className="h-5 w-5 mx-auto text-white" aria-hidden="true" /> 
                                                                 </div>
                                                             </a>

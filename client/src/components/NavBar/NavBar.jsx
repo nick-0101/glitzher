@@ -6,7 +6,6 @@ import {
   ShoppingBagIcon,
   MenuIcon,
   SearchIcon,
-  QuestionMarkCircleIcon,
   ShieldCheckIcon,
   SupportIcon,
   XIcon,
@@ -19,7 +18,7 @@ const solutions = [
   {
     name: 'Popular Products',
     description: 'View popular cosmetic products.',
-    href: '/popular',
+    href: '/popular-products',
     icon: TagIcon,
   },
   {
@@ -27,12 +26,6 @@ const solutions = [
     description: 'All the brands we collect products from.',
     href: '/brands',
     icon: ShoppingBagIcon,
-  },
-  {
-    name: 'About',
-    description: 'All about Glitzher.',
-    href: '/about',
-    icon: QuestionMarkCircleIcon,
   },
 ]
 
@@ -102,14 +95,11 @@ export default function Navbar() {
 
               {/* Desktop Menu Items */}
               <Popover.Group as="nav" className="hidden md:flex space-x-10">
-                <a href="/popular" className="text-base font-medium text-gray-500 hover:text-gray-900">
+                <a href="/popular-products" className="text-base font-medium text-gray-500 hover:text-gray-900">
                   Popular Products
                 </a>
                 <a href="/brands" className="text-base font-medium text-gray-500 hover:text-gray-900">
                   Brands
-                </a>
-                <a href="/about" className="text-base font-medium text-gray-500 hover:text-gray-900">
-                  About
                 </a>
               </Popover.Group>
 
