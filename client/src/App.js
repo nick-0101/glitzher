@@ -4,7 +4,14 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { NavBar, FooterBar, Error } from './components';
 
 import './App.css';
-import { Homepage, PriceComparison, Tos, Privacy } from './pages';
+import {
+  Homepage,
+  PriceComparison,
+  Tos,
+  Privacy,
+  About,
+  Brands,
+} from './pages';
 
 /* Google Analytics */
 function usePageViews() {
@@ -36,6 +43,18 @@ function App() {
             <Route path='/search'>
               <NavBar />
               <PriceComparison />
+            </Route>
+
+            {/* Brands */}
+            <Route path='/brands'>
+              <NavBar />
+              <Brands />
+            </Route>
+
+            {/* About */}
+            <Route path='/about'>
+              <NavBar />
+              <About />
             </Route>
 
             {/* Tos */}
