@@ -1,6 +1,7 @@
 // App
 import React, { useState, useEffect, useContext } from 'react';
 import { AppContext } from "../../components/Context/Context";
+import { useLocation } from 'react-router-dom';
 
 // Application Packages
 import axios from 'axios';
@@ -16,6 +17,7 @@ const PopularProducts = ({ history }) => {
     const [hasMore, setHasMore] = useState(true)
     const { setSearch } = useContext(AppContext);
 
+    let location = useLocation();
 
     const getData = async(page) => {
         const CancelToken = axios.CancelToken;
@@ -33,8 +35,9 @@ const PopularProducts = ({ history }) => {
     }
 
     useEffect(() => {
+        window.scrollTo(0, 0);
         getData(page)
-    }, [page])
+    }, [page, location])
 
     const handlePagination = () => {
         setPage(page + 1)

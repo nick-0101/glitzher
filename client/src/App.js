@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
+
+// App Packages
 import ReactGA from 'react-ga';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { NavBar, FooterBar, Error, CookieBanner } from './components';
 
-import './App.css';
+// Components
+import { NavBar, FooterBar, Error, CookieBanner } from './components';
 import {
   Homepage,
   PriceComparison,
@@ -13,8 +15,11 @@ import {
   PopularProducts,
 } from './pages';
 
-/* Google Analytics */
-function usePageViews() {
+// Css
+import './App.css';
+
+// Google Analytics
+const usePageViews = () => {
   let location = window.location;
   useEffect(() => {
     if (!window.GA_INITIALIZED) {
@@ -24,7 +29,7 @@ function usePageViews() {
     ReactGA.set({ page: location.pathname });
     ReactGA.pageview(location.pathname);
   }, [location]);
-}
+};
 
 function App() {
   usePageViews();
@@ -64,7 +69,7 @@ function App() {
             </Route>
 
             {/* Privacy Policy */}
-            <Route path='/polices/privacy'>
+            <Route path='/policies/privacy'>
               <NavBar />
               <Privacy />
             </Route>
@@ -75,11 +80,11 @@ function App() {
               <Error />
             </Route>
           </Switch>
+          <div className='fixed bottom-0'>
+            <CookieBanner />
+          </div>
         </div>
         <FooterBar />
-        <div className='fixed inset-x-0 bottom-0'>
-          <CookieBanner />
-        </div>
       </div>
     </Router>
   );

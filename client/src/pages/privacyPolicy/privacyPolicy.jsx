@@ -129,7 +129,7 @@ const privacyPolicy = () => {
                     <section id="5">
                         <p className="text-3xl font-bold mt-5 mb-3">5. IS YOUR INFORMATION TRANSFERRED INTERNATIONALLY?</p>
                         <p>In Short:  We may transfer, store, and process your information in countries other than your own.</p>
-                        <p>Our servers are located in. If you are accessing our Website from outside, please be aware that your information may be transferred to, stored, and processed by us in our facilities and by those third parties with whom we may share your personal information (see "WILL YOUR INFORMATION BE SHARED WITH ANYONE?" above), in and other countries. </p>
+                        <p>If you are accessing our Website from outside, please be aware that your information may be transferred to, stored, and processed by us in our facilities and by those third parties with whom we may share your personal information (see "WILL YOUR INFORMATION BE SHARED WITH ANYONE?" above), in and other countries. </p>
 
                         <p>If you are a resident in the European Economic Area (EEA) or United Kingdom (UK), then these countries may not necessarily have data protection laws or other similar laws as comprehensive as those in your country. We will however take all necessary measures to protect your personal information in accordance with this privacy notice and applicable law. </p>
                     </section>

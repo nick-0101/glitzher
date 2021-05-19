@@ -31,7 +31,7 @@ const solutions = [
 
 const resources = [
   {
-    name: 'Terms of Service',
+    name: 'Tos',
     description: 'Learn the terms of using our service.',
     href: '/tos',
     icon: SupportIcon,
@@ -39,7 +39,7 @@ const resources = [
   {
     name: 'Privacy Policy',
     description: 'Understand how we take your privacy seriously.',
-    href: '/polices/privacy',
+    href: '/policies/privacy',
     icon: ShieldCheckIcon,
   },
 ]
