@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 
 // Application Packages 
 import axios from 'axios';
-// import ReactPaginate from 'react-paginate';
 import { ShoppingBagIcon, SwitchHorizontalIcon } from '@heroicons/react/outline'
 
 // Components
