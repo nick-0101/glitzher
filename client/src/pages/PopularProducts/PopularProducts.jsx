@@ -1,7 +1,7 @@
 // App
 import React, { useState, useEffect, useContext } from 'react';
 import { AppContext } from "../../components/Context/Context";
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory  } from 'react-router-dom';
 
 // Application Packages
 import axios from 'axios';
@@ -11,13 +11,14 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 // Components 
 import SkeletonLoader from '../../components/SkeletonLoaders/SkeletonLoader';
 
-const PopularProducts = ({ history }) => {
+const PopularProducts = () => {
     const [page, setPage] = useState(1);
     const [products, setProducts] = useState('')
     const [hasMore, setHasMore] = useState(true)
     const { setSearch } = useContext(AppContext);
 
     let location = useLocation();
+    let history = useHistory();
 
     const getData = async(page) => {
         const CancelToken = axios.CancelToken;
@@ -69,6 +70,9 @@ const PopularProducts = ({ history }) => {
 
     return (
         <>
+        <div className="text-center text-2xl font-medium mx-auto my-10">
+            Popular cosmetic items
+        </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-20 text-center">
             {products ?
                 <InfiniteScroll
