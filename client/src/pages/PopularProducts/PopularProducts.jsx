@@ -1,12 +1,12 @@
 // App
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { AppContext } from "../../components/Context/Context";
-import { useLocation, useHistory  } from 'react-router-dom';
+import { useHistory  } from 'react-router-dom';
 
 // Application Packages
 import axios from 'axios';
 import LazyLoad from 'react-lazyload';
-import InfiniteScroll from 'react-infinite-scroll-component';
+import { ShoppingBagIcon, ArrowRightIcon } from '@heroicons/react/outline'
 
 // Components 
 import SkeletonLoader from '../../components/SkeletonLoaders/SkeletonLoader';
@@ -14,36 +14,61 @@ import SkeletonLoader from '../../components/SkeletonLoaders/SkeletonLoader';
 const PopularProducts = () => {
     const [page, setPage] = useState(1);
     const [products, setProducts] = useState('')
-    const [hasMore, setHasMore] = useState(true)
     const { setSearch } = useContext(AppContext);
-
-    let location = useLocation();
+    
+    // Filter State
+    const [sortData, setSortData] = useState('popular')
+    
     let history = useHistory();
 
-    const getData = async(page) => {
+    // Fetch Api Data
+    const getData = useCallback(async() => {
         const CancelToken = axios.CancelToken;
         const source = CancelToken.source();
         
-        axios.get(`/api/homepage?page=${page}&limit=10`, { cancelToken: source.token })
+        axios.get(`/api/homepage?page=${page}&limit=10&sortBy=${sortData}`, 
+        { cancelToken: source.token })
         .then(res => {
             setProducts(prevProducts => {
                 return [...new Set([...prevProducts, ...res.data])]
-            })
-            setHasMore(res.data.length > 0)
+            })   
         }).catch(e => {
             if (axios.isCancel(e)) return 
         })
+        return () => {
+            source.cancel();
+        };
+    }, [page, sortData])
+    
+    // Sort Products
+    const sortProducts = async (value) => {
+        setSortData(value)
+        setProducts('')
+
+        await getData(sortData)
     }
 
+    // Scroll to top on load
     useEffect(() => {
         window.scrollTo(0, 0);
-        getData(page)
-    }, [page, location])
+    }, [])
 
+    // Inital Fetch Data
+    useEffect(() => {
+        getData(page, sortData)
+
+        // If change in sortData, re-run getData with updated sort
+        // if(sortData) {
+        //     getData(page, sortData)
+        // }
+    }, [page, getData, sortData])
+
+    // Handle Pagination / Infinite scroll
     const handlePagination = () => {
         setPage(page + 1)
     }
 
+    // Search on click
     const comparePriceSearch = (value) => {
         if (value !== '') {
             if (typeof(Storage) !== "undefined") {
@@ -70,23 +95,39 @@ const PopularProducts = () => {
 
     return (
         <>
-        <div className="text-center text-2xl font-medium mx-auto my-10">
-            Popular cosmetic items
-        </div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-20 text-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-20">
+            <div className="flex flex-wrap my-10 justify-center md:justify-between">
+                <div className="flex flex-row text-2xl font-medium">
+                    Popular cosmetic items
+                    <div className="text-gray-500 ml-2">
+                    - 8,033 Items
+                    </div>
+                </div>
+
+                <div className="flex text-base font-medium">
+                    <div className="my-auto">Sort: </div>
+                    <div className="flex flex-row divide-x-2 divide-gray-200 my-auto">
+                        <div onClick={() => sortProducts('popular')} className={sortData === 'popular' ? "px-2 text-red-500 cursor-pointer hover:underline" : "px-2 text-gray-500 cursor-pointer hover:underline"}>
+                            Popular
+                        </div>
+                        <div className="px-2 flex flex-row">
+                            <div className="px-2">Price: </div>
+                            <div onClick={() => sortProducts('low')} className={sortData === 'low' ? "px-0.5 text-red-500 cursor-pointer hover:underline" : "px-0.5 text-gray-500 cursor-pointer hover:underline"}>
+                                Low
+                            </div>
+                            <div onClick={() => sortProducts('high')} className={sortData === 'high' ? "px-0.5 text-red-500 cursor-pointer hover:underline" : "px-0.5 text-gray-500 cursor-pointer hover:underline"}>
+                                High
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div className="border-b-2 border-gray-100"></div>
+
             {products ?
-                <InfiniteScroll
-                    dataLength={products.length}
-                    next={handlePagination}
-                    hasMore={hasMore}
-                    loader={<div>Loading...</div>}
-                    endMessage={
-                        <h1>
-                            You're all caught up on the best discounts!
-                        </h1>
-                    }
-                >
-                <div className="grid grid-cols-1 px-4 lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-2">
+                <div className="grid grid-cols-1 px-4 lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-2 mt-8">
                     {products.map((item, index) => {        
                         return (
                             <div className="flex flex-col h-4/4 text-center mt-5 mx-2 border-b-2 border-gray-100" key={index}>
@@ -140,12 +181,12 @@ const PopularProducts = () => {
                                 </div>
                                 
                                 <a href={item.url} target="_blank" rel="noopener noreferrer">
-                                    <div className="mt-2 mb-6 bg-red-200 w-4/4 px-4 py-2 rounded-md shadow-sm text-base font-medium text-white bg-red-500 hover:bg-red-600">
+                                    <div className="mt-2 bg-red-200 w-4/4 px-4 py-2 rounded-md shadow-sm text-base font-medium text-white bg-red-500 hover:bg-red-600 transition duration-300 ease-in-out">
                                         <div className="flex flex-row justify-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fillRule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clipRule="evenodd" />
-                                            </svg>
-                                            <p>Buy Now</p>
+                                            <div className="flex text-base font-medium text-white px-8 py-1.5 rounded-md justify-center mb-2 md:mr-2 md:mb-0">
+                                                    <ShoppingBagIcon className="h-6 w-6 text-white" aria-hidden="true" /> 
+                                                    <span className="ml-2">Shop Now</span>
+                                                </div>
                                         </div>
                                     </div>
                                 </a>
@@ -153,10 +194,15 @@ const PopularProducts = () => {
                         )
                     })}
                 </div>    
-                </InfiniteScroll> 
                 :
                 <SkeletonLoader /> 
             }
+            <div className="mt-9 w-1/3 mx-auto" onClick={handlePagination}>
+                <div className="flex transition duration-300 ease-in-out text-red-600 bg-red-100 hover:bg-red-200 font-medium px-7 py-3.5 rounded-md justify-center">
+                    <ArrowRightIcon className="h-6 w-6 text-red-500" aria-hidden="true" /> 
+                    <span className="ml-2">View More</span>
+                </div>
+            </div>
         </div>
         </>
     );
