@@ -123,7 +123,7 @@ const Homepage = ({ history }) => {
                                 <a href={item.url} target="_blank" rel="noopener noreferrer">
                                     <div className="mt-2 bg-red-200 w-4/4 px-4 py-2 rounded-md shadow-sm text-base font-medium text-white bg-red-500 hover:bg-red-600 transition duration-300 ease-in-out">
                                         <div className="flex flex-row justify-center">
-                                            <div className="flex text-base font-medium text-white px-8 py-1.5 rounded-md justify-center mb-2 md:mr-2 md:mb-0">
+                                            <div className="flex text-base flex-wrap font-medium text-white px-8 py-1.5 rounded-md justify-center mb-2 md:mr-2 md:mb-0">
                                                     <ShoppingBagIcon className="h-6 w-6 text-white" aria-hidden="true" /> 
                                                     <span className="ml-2">Shop Now</span>
                                                 </div>
