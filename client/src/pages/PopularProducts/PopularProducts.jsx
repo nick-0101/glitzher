@@ -41,11 +41,12 @@ const PopularProducts = () => {
     }, [page, sortData])
     
     // Sort Products
-    const sortProducts = async (value) => {
+    const sortProducts = (value) => {
         setSortData(value)
         setProducts('')
+        setPage(1)
 
-        await getData(sortData)
+        console.log(sortData)
     }
 
     // Scroll to top on load
@@ -57,10 +58,6 @@ const PopularProducts = () => {
     useEffect(() => {
         getData(page, sortData)
 
-        // If change in sortData, re-run getData with updated sort
-        // if(sortData) {
-        //     getData(page, sortData)
-        // }
     }, [page, getData, sortData])
 
     // Handle Pagination / Infinite scroll
