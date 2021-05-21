@@ -8,7 +8,7 @@ module.exports = {
     colors: {
       default: '#FC0f42',
       indigo: colors.indigo,
-      gray: colors.trueGray,
+      gray: colors.coolGray,
       white: colors.white,
       red: colors.red,
       yellow: colors.yellow,
