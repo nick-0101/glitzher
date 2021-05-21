@@ -55,17 +55,17 @@ const ComparisonSearch = () => {
                             />
                         </div>
                         <div className="flex">
-                            <button className="focus:outline-none rounded-bl-none rounded-tl-none bg-red-500 hover:bg-red-600 rounded-md text-white px-5">
+                            <div className="focus:outline-none p-4 rounded-bl-none rounded-tl-none bg-red-500 hover:bg-red-600 rounded-md text-white px-5">
                                 <p className="font-semibold text-xl">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="text-white h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
                                         <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
                                     </svg>
                                 </p>
-                            </button>
+                            </div>
                         </div>
                     </div>
                     <SearchModal isOpen={isOpen} closeModal={closeModal} openModal={isOpen} />
-                    <a onClick={executeScroll} href="#popular-products" className="mt-auto mx-auto animate-bounce">
+                    <a onClick={executeScroll} href="#popular-products" className="mt-auto mx-auto animate-bounce cursor-pointer" name="skip-to-content">
                         <ArrowDownIcon className="text-gray-900 w-8 h-8" aria-hidden="true" />
                     </a>
                 </div>

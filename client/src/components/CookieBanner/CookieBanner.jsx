@@ -43,12 +43,12 @@ const CookieBanner = () => {
                     </div>
                 </div>
                 <div className="flex flex-col md:flex-row text-center">
-                    <div className="text-red-600 bg-red-100 md:w-3/6 mt-3 md:mr-3 hover:bg-red-200 font-medium px-7 py-3.5 rounded-md justify-center transition duration-300 ease-in-out">
+                    <div className="text-red-600 bg-red-50 md:w-3/6 mt-3 md:mr-3 hover:bg-red-100 font-medium px-7 py-3.5 rounded-md justify-center transition duration-300 ease-in-out">
                         <Link to="/policies/privacy">
                             Privacy Policy
                         </Link>
                     </div>
-                    <div onClick={cookieConsented} className="text-base font-medium md:w-3/6	cursor-pointer mt-3 text-white bg-red-500 hover:bg-red-600 px-8 py-3.5 rounded-md transition duration-300 ease-in-out">
+                    <div onClick={cookieConsented} className="text-base font-medium md:w-3/6 cursor-pointer mt-3 text-white bg-red-500 hover:bg-red-600 px-8 py-3.5 rounded-md transition duration-300 ease-in-out">
                         OK
                     </div>
                 </div>

@@ -190,13 +190,13 @@ const CustomSearch = connectSearchBox(({currentRefinement, refine, handleSetSear
                 />
             </div>
             <div className="flex">
-                <button className="rounded-bl-none rounded-tl-none bg-red-500 hover:bg-red-600 rounded-md text-white px-5 focus:outline-none" onClick={() => handleResultSearch(currentRefinement)}>
+                <div className="rounded-bl-none p-4 rounded-tl-none bg-red-500 hover:bg-red-600 rounded-md text-white px-5 focus:outline-none" onClick={() => handleResultSearch(currentRefinement)}>
                     <p className="font-semibold text-xl">
                         <svg xmlns="http://www.w3.org/2000/svg" className="text-white h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
                             <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
                         </svg>
                     </p>
-                </button>
+                </div>
             </div>
         </div>
    </>)
