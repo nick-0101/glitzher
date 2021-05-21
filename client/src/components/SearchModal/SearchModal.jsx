@@ -110,7 +110,7 @@ const SearchModal = ({closeModal, isOpen, history}) => {
             >   
                 <div className="flex flex-row justify-between mt-5">
                     <div className="flex justify-start">
-                        <div className="text-5xl font-bold text-gray-900">Search</div>
+                        <div className="text-5xl font-medium text-gray-900">Search</div>
                     </div>
                     <div className="flex justify-end">
                         <div onClick={closeModal} className="mt-2 p-2 text-gray-400 rounded-md hover:text-gray-500 hover:bg-gray-100 cursor-pointer">
@@ -120,7 +120,7 @@ const SearchModal = ({closeModal, isOpen, history}) => {
                         </div>
                     </div>
                 </div>
-                <div className="mt-6 md:mt-10 shadow-md rounded-md">
+                <div className="mt-6 rounded-md">
                     <InstantSearch indexName="amazonProducts" searchClient={searchClient}>
                         <CustomSearch handleSetSearch={handleSetSearch} handleResultSearch={handleResultSearch} />
                         
@@ -168,7 +168,7 @@ const SearchModal = ({closeModal, isOpen, history}) => {
 
 const CustomSearch = connectSearchBox(({currentRefinement, refine, handleSetSearch, handleResultSearch}) => {
     return (<>
-        <div className="flex flex-row">
+        <div className="flex flex-row cursor-pointer">
             <div className="flex flex-grow w-auto rounded-md border border-gray-300 p-2 rounded-br-none rounded-tr-none">
                 <span className="p-2">
                     <svg xmlns="http://www.w3.org/2000/svg" className="text-gray-400 h-6 w-6" viewBox="0 0 20 20" fill="currentColor">

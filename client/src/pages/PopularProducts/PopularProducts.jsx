@@ -94,9 +94,9 @@ const PopularProducts = () => {
         <>
         <div className="max-w-7xl mx-auto px-4 sm:px-20">
             <div className="flex flex-wrap my-10 justify-center md:justify-between">
-                <div className="flex flex-row text-2xl font-medium">
+                <div className="flex flex-col md:flex-row text-2xl font-medium">
                     Popular cosmetic items
-                    <div className="text-gray-500 ml-2">
+                    <div className="text-gray-500 ml-2 text-center">
                     - 8,033 Items
                     </div>
                 </div>
@@ -127,7 +127,7 @@ const PopularProducts = () => {
                 <div className="grid grid-cols-1 px-4 lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-2 mt-8">
                     {products.map((item, index) => {        
                         return (
-                            <div className="flex flex-col h-4/4 text-center mt-5 mx-2 border-b-2 border-gray-100" key={index}>
+                            <div className="flex flex-col h-4/4 text-center mt-5 px-3 pb-5 border-b-2 border-gray-100" key={index}>
                                 {item.thumbnail || item.subThumbnail ?
                                     <LazyLoad height={200} offset={400}>
                                         <a target="_blank" rel="noopener noreferrer" href={item.url}>
@@ -178,9 +178,9 @@ const PopularProducts = () => {
                                 </div>
                                 
                                 <a href={item.url} target="_blank" rel="noopener noreferrer">
-                                    <div className="mt-2 bg-red-200 w-4/4 px-4 py-2 rounded-md shadow-sm text-base font-medium text-white bg-red-500 hover:bg-red-600 transition duration-300 ease-in-out">
+                                    <div className="mt-2 bg-red-200 w-auto px-4 py-2 rounded-md shadow-sm text-base font-medium text-white bg-red-500 hover:bg-red-600 transition duration-300 ease-in-out">
                                         <div className="flex flex-row justify-center">
-                                            <div className="flex text-base font-medium text-white px-8 py-1.5 rounded-md justify-center mb-2 md:mr-2 md:mb-0">
+                                            <div className="flex flex-wrap text-base font-medium text-white px-8 py-1.5 rounded-md justify-center">
                                                     <ShoppingBagIcon className="h-6 w-6 text-white" aria-hidden="true" /> 
                                                     <span className="ml-2">Shop Now</span>
                                                 </div>
