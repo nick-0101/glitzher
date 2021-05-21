@@ -1,3 +1,9 @@
+# BEFORE PUSHING TO PROD
+1. Make sure to change the version number in the serviceworker.js file.
+2. Remove any console logs in the code.
+
+- - - - 
+
 # Glitzher #
 This was my first real production app. Glitzher was created to help cosmetic consumers find the best price's on products from multiple different brands. 
 
