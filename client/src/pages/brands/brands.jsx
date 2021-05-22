@@ -30,7 +30,7 @@ const brands = () => {
             </div>
             <div className="mx-auto border-t-2 border-gray-100 w-2/4"></div>
             <div className="mt-9 mx-0 md:mx-24 text-base text-gray-900">
-                Glitzher tracks thousands of products from Amazon, Hudson's Bay, Shoppers Drug Mart, Sephora, Walmart and Wellca.
+                Glitzher tracks thousands of products from Amazon, Hudson's Bay, Shoppers Drug Mart, Sephora, Walmart and Well.ca.
                 We are constantly working to add new brands & to keep existing products up to date.
             </div>
         </div>
