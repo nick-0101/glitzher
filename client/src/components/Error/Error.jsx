@@ -1,32 +1,17 @@
 import React from 'react';
-import { Row, Col, Typography, Button } from 'antd';
-import { ArrowRightOutlined } from '@ant-design/icons';
-
-
-const { Title, Link, Paragraph } = Typography;
+import { Link } from 'react-router-dom';
 
 const Error = () => {
     return (
-        <Row justify="center" align="center"> 
-            <Col>
-                <Paragraph style={{marginBottom: 0, fontWeight: 600, fontSize: 150, textAlign:'center'}}>
-                    404
-                </Paragraph>
-                <Title 
-                    level={4}
-                    style={{marginBottom: '5%', margin:'0 5% 5% 5%', textAlign:'center'}}
-                >
-                    We're sorry, we couldn't find the page you were looking for :(
-                </Title>
-                <Row justify="center">
-                    <Link href="/" >
-                        <Button className="productButton" type="primary" size='medium' icon={<ArrowRightOutlined/>}  style={{marginTop: '10px', height: '45px', fontSize: '16px', width: '100%'}}>
-                            Back to Home
-                        </Button>
-                    </Link>
-                </Row>
-            </Col>
-        </Row> 
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center h-screen/2">
+            <div className="my-20">
+                <h1 className="text-9xl font-bold text-gray-900 my-5">404</h1>
+                <p className="text-base">We're sorry, we couldn't find the page you were looking for :(</p>
+                <Link to="/">
+                    <div className="mt-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-red-500 hover:bg-red-600">Return Home</div>
+                </Link>
+            </div>
+        </div>
     )
 }
 

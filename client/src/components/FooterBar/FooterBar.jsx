@@ -1,30 +1,50 @@
 import React from 'react';
-
-// Ant d
-import { Layout, Row, Typography } from 'antd';
-
-// Css
-import './FooterBar.css';
-
-const { Footer } = Layout;
-const { Text, Link } = Typography;
+import { Link } from 'react-router-dom';
 
 const FooterBar = () => {
     return (
         <>
-            <Footer className="footer">
-                <Link href="/tos" title="Terms of Service">
-                    <Text>Terms of Service</Text>
-                </Link>
-                <Row className="breaker">|</Row>
-                <Link href="#" title="Copyright">
-                    <Text>Copyright ©{new Date().getFullYear()} Glitzher All Rights Reserved</Text>
-                </Link>
-                <Row className="breaker">|</Row>
-                <Link href="/polices/privacy" title="Privacy Policy">
-                    <Text>Privacy Policy</Text>
-                </Link>
-            </Footer>
+            <footer className="bg-white mt-10">
+                <div className="border-t-2 border-gray-100 items-center">
+                    <div className="py-6 flex justify-center">
+                        <div className="hidden md:flex flex-row items-center">
+                            <span className="m-2">
+                                <Link to="/tos">
+                                    <p className="text-base font-medium text-gray-500 hover:text-gray-900 text-md">Terms of Service</p>
+                                </Link>
+                            </span>
+                            •
+                            <p className="text-base font-medium text-gray-900 text-md m-2">
+                                Copyright © {new Date().getFullYear()} Glitzher All Rights Reserved
+                            </p>
+                            •
+                            <span className="m-2">
+                                <Link to="/policies/privacy">
+                                    <p className="text-base font-medium text-gray-500 hover:text-gray-900 text-md">Privacy Policy</p>
+                                </Link>
+                            </span>
+                        </div>
+                        {/* Mobile */}
+                        <div className="flex flex-col items-center md:hidden">
+                            <div className="flex flex-row">
+                                <span className="m-2">
+                                    <Link to="/tos">
+                                        <p className="text-base font-medium text-gray-500 hover:text-gray-900 text-md">Terms of Service</p>
+                                    </Link>
+                                </span>
+                                <span className="m-2">
+                                    <Link to="/policies/privacy">
+                                        <p className="text-base font-medium text-gray-500 hover:text-gray-900 text-md">Privacy Policy</p>
+                                    </Link>
+                                </span>
+                            </div>
+                            <p className="text-base font-medium text-gray-900">
+                                Copyright © {new Date().getFullYear()} Glitzher All Rights Reserved
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </footer>
         </>
     )
 }

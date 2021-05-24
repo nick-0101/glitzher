@@ -1,184 +1,78 @@
-// Required
-import React, { useContext } from 'react';
-
-import { AppContext } from "../Context/Context";
+// App
+import React, { useState } from 'react';
 import { withRouter } from "react-router-dom";
+import { animateScroll as scroller } from 'react-scroll'
 
-// Ant D 
-import { Row, Col, Typography } from 'antd';
+// Icons
+import { SearchIcon, ArrowDownIcon } from '@heroicons/react/outline'
 
-// Css
-import './ComparisonSearch.css'
+// Components
+import SearchModal from '../SearchModal/SearchModal';
 
-// Algolia 
-import algoliasearch from 'algoliasearch/lite';
-import { InstantSearch, Configure, Index, connectStateResults, connectHits, connectSearchBox } from 'react-instantsearch-dom';
 
-//#23263b
-const algoliaClient = algoliasearch('GRXWQQHS2I', 'babd585148a07355c43a354cc0aece0f');
+const ComparisonSearch = () => {
+    const [isOpen, setIsOpen] = useState(false);
 
-const searchClient = {
-  search(requests) {
-    if (requests.every(({ params }) => !params.query)) {
-      return Promise.resolve({
-        results: requests.map(() => ({
-          hits: [],
-          nbHits: 0,
-          nbPages: 0,
-          processingTimeMS: 0,
-        })),
-      });
+    const executeScroll = () => {
+        scroller.scrollTo(920, {
+            duration: 0,
+            delay: 0,
+            smooth: true
+        })
     }
 
-    return algoliaClient.search(requests);
-  },
-};
-
-const { Text } = Typography;
-
-const ComparisonSearch = ({ history }) => {
-    const { setSearch } = useContext(AppContext);    
-
-    const handleSetSearch = (e, searchValue) => {
-        const value = searchValue;
-
-        if(e.keyCode === 13){
-            e.preventDefault(); 
-
-            if (value !== '') {
-                if (typeof(Storage) !== "undefined") {
-                    sessionStorage.removeItem('searchResult');
-                    sessionStorage.setItem("searchResult", value);
-
-                    // Complete search
-                    history.push({  
-                        pathname: '/search',
-                        search: `?q=${sessionStorage.getItem("searchResult")}`
-                    })
-                } else {
-                    console.log('No session storage support')
-                    
-                    // Complete search with context
-                    setSearch(value);
-                    history.push({
-                        search: `?q=${setSearch}`
-                    })
-                }
-            } else {
-                return
-            }  
-        } 
-    };
-
-    const handleResultSearch = (suggestionValue) => {
-        const value = suggestionValue
-
-        if (value !== '') {
-            if (typeof(Storage) !== "undefined") {
-                sessionStorage.removeItem('searchResult');
-                sessionStorage.setItem("searchResult", value);
-
-                // Complete search
-                history.push({  
-                    pathname: '/search',
-                    search: `?q=${sessionStorage.getItem("searchResult")}`
-                })
-            } else {
-                console.log('No session storage support')
-                
-                // Complete search with context
-                setSearch(value);
-                history.push({
-                    search: `?q=${setSearch}`
-                })
-            }
-        } else {
-            return
-        }  
+    // Search Modal
+    const openModal = () => {
+        setIsOpen(true);
     }
+
+    const closeModal = () =>{
+        setIsOpen(false);
+    }
+
+
     return (
-    <>
-        <Row className="frontpage-section" justify="center" align="middle">
-            <Col className="searchCol">
-                <Text strong className="searchBarTitle">
-                    Compare cosmetic price's across <span style={{color: '#FC0F42'}}>major brands.</span>
-                </Text>
-                <Row style={{marginBottom: '1rem'}}></Row>
-                <InstantSearch indexName="amazonProducts" searchClient={searchClient}>
-                    <CustomSearch handleSetSearch={handleSetSearch} />
-
-                    <Index indexName="amazonProducts">
-                        <Configure hitsPerPage={1} />
-                        <Results>
-                            <CustomHits history={history} handleResultSearch={handleResultSearch}/>
-                        </Results>
-                    </Index>
-
-                    <Index indexName="sephoraProducts">
-                        <Configure hitsPerPage={2} />
-                        <Results>
-                            <CustomHits history={history} handleResultSearch={handleResultSearch}/>
-                        </Results>
-                    </Index>
-
-                    <Index indexName="shoppersdrugmartProducts">
-                        <Configure hitsPerPage={2} />
-                        <Results>
-                            <CustomHits history={history} handleResultSearch={handleResultSearch}/>
-                        </Results>
-                    </Index>
-                </InstantSearch>
-            </Col>
-        </Row>
+    <>  
+        <div className="bg-no-repeat bg-center bg-cover bg-mobile md:bg-desktop">
+            <div className="flex justify-center h-screen/1 max-w-7xl mx-auto px-4 sm:px-20 text-center">
+                <div className="w-3/3 md:w-2/3 flex flex-col mx-auto my-64 md:my-52">
+                    <div className="text-4xl md:text-5xl font-medium text-gray-800 mb-8 leading-tight">
+                        Compare cosmetic price's across major brands.
+                    </div>
+                    <div className="flex flex-row cursor-pointer bg-white" onClick={openModal}>
+                        <div className="flex flex-grow w-auto rounded-md border border-gray-300 p-2 rounded-br-none rounded-tr-none">
+                            <span className="px-2 pt-2.5">
+                                <SearchIcon className="text-gray-400 h-5 w-5" aria-hidden="true" />
+                            </span>
+                            <input 
+                                disabled
+                                className="w-full p-2 bg-white cursor-pointer focus:outline-none disabled" 
+                                type="text" 
+                                placeholder="Enter a product title..."
+                                autoComplete="on"
+                                autoCorrect="on"
+                                spellCheck="true"
+                            />
+                        </div>
+                        <div className="flex">
+                            <div className="focus:outline-none p-4 rounded-bl-none rounded-tl-none bg-red-500 hover:bg-red-600 rounded-md text-white px-5">
+                                <p className="font-semibold text-xl">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="text-white h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
+                                    </svg>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <SearchModal isOpen={isOpen} closeModal={closeModal} openModal={isOpen} />
+                    <a onClick={executeScroll} href="#popular-products" className="mt-auto mx-auto animate-bounce cursor-pointer" name="skip-to-content">
+                        <ArrowDownIcon className="text-gray-900 w-8 h-8" aria-hidden="true" />
+                    </a>
+                </div>
+            </div>
+        </div>
     </>
     );
 }
-
-const CustomSearch = connectSearchBox(({currentRefinement, refine, handleSetSearch}) => {
-    return (
-        <div className="ais-SearchBox">
-            <form className="ais-SearchBox-form">
-                <input
-                    type="search"
-                    placeholder="Enter a product title..."
-                    autoComplete="on"
-                    autoCorrect="on"
-                    spellCheck="true"
-                    required
-                    value={currentRefinement}
-                    onChange={e => {refine(e.target.value)}}
-                    onKeyDown={e => handleSetSearch(e, currentRefinement)}
-                    className="ais-SearchBox-input"
-                />
-            </form>
-        </div>
-    )
-});
-
-const CustomHits = connectHits(({hits, handleResultSearch}) => {
-    return (
-        <Col className="ais-Hits"> 
-            {hits.map(hit => (
-                <Row 
-                    className="ais-Hits-item" 
-                    onClick={() => handleResultSearch(hit.title)} 
-                    key={hit.objectID}
-                >
-                    <Text ellipsis={true}>{hit.title}</Text>
-                </Row>
-            ))}
-        </Col> 
-    )
-});
-
-const Results = connectStateResults(({ searchState, searchResults, children }) =>
-    searchResults && searchResults.nbHits !== 0 ? (
-      children
-    ) : (
-        <>
-            {searchState.query ? null: null}
-        </>
-    )
-);
 
 export default withRouter(ComparisonSearch);

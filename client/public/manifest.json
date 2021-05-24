@@ -4,13 +4,18 @@
     "icons": [
         {
             "src": "/images/logo.webp",
-            "type": "image/png",
+            "type": "image/webp",
             "sizes": "1024x1024",
             "purpose": "any maskable"
+        },
+        {
+            "src": "/images/logo512.png",
+            "sizes": "512x512",
+            "type": "image/png"
         }
     ],
     "start_url": "./",
     "display": "standalone",
-    "theme_color": "#FC0F42",
+    "theme_color": "#EF4444",
     "background_color": "#ffffff"
 }

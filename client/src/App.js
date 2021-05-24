@@ -1,16 +1,25 @@
 import React, { useEffect } from 'react';
+
+// App Packages
 import ReactGA from 'react-ga';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { NavBar, SubNav, FooterBar, Error } from './components';
-import { Layout } from 'antd';
+
+// Components
+import { NavBar, FooterBar, Error, CookieBanner } from './components';
+import {
+  Homepage,
+  PriceComparison,
+  Tos,
+  Privacy,
+  Brands,
+  PopularProducts,
+} from './pages';
+
+// Css
 import './App.css';
-import { Homepage, PriceComparison, Tos, Privacy } from './pages';
-import { createBrowserHistory } from 'history';
-const history = createBrowserHistory();
 
-const { Content } = Layout;
-
-function usePageViews() {
+// Google Analytics
+const usePageViews = () => {
   let location = window.location;
   useEffect(() => {
     if (!window.GA_INITIALIZED) {
@@ -20,67 +29,63 @@ function usePageViews() {
     ReactGA.set({ page: location.pathname });
     ReactGA.pageview(location.pathname);
   }, [location]);
-}
+};
 
 function App() {
   usePageViews();
   return (
-    <Router history={history}>
-      <Content style={{ background: '#fff' }}>
-        <div className='page-container'>
-          <div className='content-wrap'>
-            <Switch>
-              <Route
-                path='/'
-                exact
-                render={() => (
-                  <>
-                    <NavBar />
-                    <Homepage />
-                  </>
-                )}
-              />
-              <Route
-                path='/search'
-                render={() => (
-                  <>
-                    <SubNav />
-                    <PriceComparison />
-                  </>
-                )}
-              />
-              <Route
-                path='/tos'
-                render={() => (
-                  <>
-                    <NavBar />
-                    <Tos />
-                  </>
-                )}
-              />
-              <Route
-                path='/polices/privacy'
-                render={() => (
-                  <>
-                    <NavBar />
-                    <Privacy />
-                  </>
-                )}
-              />
-              <Route
-                path='*'
-                render={() => (
-                  <>
-                    <NavBar />
-                    <Error />
-                  </>
-                )}
-              />
-            </Switch>
+    <Router>
+      <div className='page-container'>
+        <div className='content-wrap'>
+          <Switch>
+            {/* Homepage */}
+            <Route exact path='/'>
+              <NavBar />
+              <Homepage />
+            </Route>
+
+            {/* Price Comparison */}
+            <Route path='/search'>
+              <NavBar />
+              <PriceComparison />
+            </Route>
+
+            {/* Popular Products */}
+            <Route path='/popular-products'>
+              <NavBar />
+              <PopularProducts />
+            </Route>
+
+            {/* Brands */}
+            <Route path='/brands'>
+              <NavBar />
+              <Brands />
+            </Route>
+
+            {/* Tos */}
+            <Route path='/tos'>
+              <NavBar />
+              <Tos />
+            </Route>
+
+            {/* Privacy Policy */}
+            <Route path='/policies/privacy'>
+              <NavBar />
+              <Privacy />
+            </Route>
+
+            {/* Error Page */}
+            <Route path='*'>
+              <NavBar />
+              <Error />
+            </Route>
+          </Switch>
+          <div className='fixed bottom-0'>
+            <CookieBanner />
           </div>
-          <FooterBar />
         </div>
-      </Content>
+        <FooterBar />
+      </div>
     </Router>
   );
 }
