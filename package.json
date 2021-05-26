@@ -16,7 +16,7 @@
     "amazon-buddy": "^2.2.36",
     "async": "^3.2.0",
     "colors": "^1.4.0",
-    "dotenv": "^8.2.0",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-rate-limit": "^5.2.6",
     "helmet": "^4.4.1",
