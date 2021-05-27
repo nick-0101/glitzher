@@ -35,8 +35,8 @@ const ComparisonSearch = () => {
     <>  
         <div className="bg-no-repeat bg-center bg-cover bg-mobile md:bg-desktop">
             <div className="flex justify-center h-screen/1 max-w-7xl mx-auto px-4 sm:px-20 text-center">
-                <div className="w-3/3 md:w-2/3 flex flex-col mx-auto my-64 md:my-52">
-                    <div className="text-4xl md:text-5xl font-medium text-gray-800 mb-8 leading-tight">
+                <div className="w-3/3 md:w-2/3 flex flex-col mx-auto my-auto pt-12 md:my-52 md:pt-0 ">
+                    <div className="text-4xl md:text-5xl font-medium text-gray-800 mb-4 md:mb-8 leading-tight">
                         Compare cosmetic price's across major brands.
                     </div>
                     <div className="flex flex-row cursor-pointer bg-white" onClick={openModal}>
@@ -65,8 +65,8 @@ const ComparisonSearch = () => {
                         </div>
                     </div>
                     <SearchModal isOpen={isOpen} closeModal={closeModal} openModal={isOpen} />
-                    <a onClick={executeScroll} href="#popular-products" className="mt-auto mx-auto animate-bounce cursor-pointer" name="skip-to-content">
-                        <ArrowDownIcon className="text-gray-900 w-8 h-8" aria-hidden="true" />
+                    <a onClick={executeScroll} href="#popular-products" className="z-0 mx-auto my-12 md:py-0 animate-bounce cursor-pointer" name="skip-to-content">
+                        <ArrowDownIcon className="text-gray-900 w-6 h-6 md:w-8 md:h-8" aria-hidden="true" />
                     </a>
                 </div>
             </div>

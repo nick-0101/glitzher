@@ -6,8 +6,8 @@ import { AppContext } from "../Context/Context";
 import algoliasearch from 'algoliasearch/lite';
 import { Index, InstantSearch, Configure, connectStateResults, connectHits, connectSearchBox } from 'react-instantsearch-dom';
 
-// //#23263b
-const algoliaClient = algoliasearch('GRXWQQHS2I', 'babd585148a07355c43a354cc0aece0f');
+//
+const algoliaClient = algoliasearch('MBEPWP2KU4', '707e446460ad927473b80fc736b70c1a');
 
 const searchClient = {
   search(requests) {
@@ -140,10 +140,10 @@ const SearchModal = ({closeModal, isOpen, history}) => {
                                 <CustomHits history={history} handleResultSearch={handleResultSearch}/>
                             </Index>
 
-                            <Index indexName="walmartProducts">
+                            {/* <Index indexName="walmartProducts">
                                 <Configure hitsPerPage={2} />
                                 <CustomHits history={history} handleResultSearch={handleResultSearch}/>
-                            </Index>
+                            </Index> */}
 
                             <Index indexName="wellProducts">
                                 <Configure hitsPerPage={2} />
