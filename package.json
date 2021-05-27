@@ -13,7 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "algoliasearch": "^4.9.1",
-    "amazon-buddy": "^2.2.36",
+    "amazon-buddy": "^2.2.37",
     "async": "^3.2.0",
     "colors": "^1.4.0",
     "dotenv": "^10.0.0",
