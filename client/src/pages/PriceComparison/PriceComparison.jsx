@@ -177,9 +177,9 @@ const PriceComparison = () => {
                                         <div className="border-b my-4"></div>
                                         
                                         {/* Button Group */}
-                                        <div className="flex justify-center flex-col md:flex md:justify-start md:flex-row">
+                                        <div className="flex flex-wrap justify-center flex-col">
                                             <a target="_blank" rel="noopener noreferrer" href={comparisonData[0].url}>
-                                                <div className="flex text-base font-medium text-white bg-red-500 hover:bg-red-600 px-8 py-3.5 rounded-md justify-center mb-2 md:mr-2 md:mb-0 transition duration-300 ease-in-out">
+                                                <div className="flex text-base font-medium text-white bg-red-500 hover:bg-red-600 px-8 py-3.5 rounded-md justify-center mb-2 transition duration-300 ease-in-out">
                                                     <ShoppingBagIcon className="h-6 w-6 text-white" aria-hidden="true" /> 
                                                     <span className="ml-2">Shop Now</span>
                                                 </div>

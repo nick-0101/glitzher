@@ -22,6 +22,7 @@ app.use(helmet());
 
 // Routes
 app.use('/', require('./routes/index'));
+app.use('/', require('./routes/search'));
 
 // Server
 const PORT = 3001;
