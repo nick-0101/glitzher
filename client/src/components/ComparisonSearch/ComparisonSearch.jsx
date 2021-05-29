@@ -36,8 +36,11 @@ const ComparisonSearch = () => {
         <div className="bg-no-repeat bg-center bg-cover bg-mobile md:bg-desktop">
             <div className="flex justify-center h-screen/1 max-w-7xl mx-auto px-4 sm:px-20 text-center">
                 <div className="w-3/3 md:w-2/3 flex flex-col mx-auto my-auto pt-12 md:my-52 md:pt-0 ">
-                    <div className="text-4xl md:text-5xl font-medium text-gray-800 mb-4 md:mb-8 leading-tight">
-                        Compare cosmetic price's across major brands.
+                    <div className="font-gilroy text-5xl font-medium text-gray-800 mb-4 md:mb-8 leading-tight hidden md:flex">
+                        Find the best prices on Canadian cosmetics.
+                    </div>
+                    <div className="font-gilroy text-4xl font-medium text-gray-800 mb-4 md:mb-8 leading-tight visible md:hidden">
+                        Compare prices on Canadian cosmetics
                     </div>
                     <div className="flex flex-row cursor-pointer bg-white" onClick={openModal}>
                         <div className="flex flex-grow w-auto rounded-md border border-gray-300 p-2 rounded-br-none rounded-tr-none">
