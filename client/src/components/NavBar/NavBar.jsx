@@ -36,7 +36,7 @@ const solutions = [
 
 const resources = [
   {
-    name: 'Tos',
+    name: 'Terms of Service',
     description: 'Learn the terms of using our service.',
     href: '/tos',
     icon: SupportIcon,
