@@ -113,7 +113,7 @@ const SearchModal = ({closeModal, isOpen, history}) => {
                         <div className="text-5xl font-medium text-gray-900">Search</div>
                     </div>
                     <div className="flex justify-end">
-                        <div onClick={closeModal} className="mt-2 p-2 text-gray-400 rounded-md hover:text-gray-500 hover:bg-gray-100 cursor-pointer">
+                        <div onClick={closeModal} className="p-2 text-gray-400 rounded-md hover:text-gray-500 hover:bg-gray-100 cursor-pointer focus:ring-2 focus:ring-inset focus:ring-red-400">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                             </svg>
@@ -139,11 +139,6 @@ const SearchModal = ({closeModal, isOpen, history}) => {
                                 <Configure hitsPerPage={2} />
                                 <CustomHits history={history} handleResultSearch={handleResultSearch}/>
                             </Index>
-
-                            {/* <Index indexName="walmartProducts">
-                                <Configure hitsPerPage={2} />
-                                <CustomHits history={history} handleResultSearch={handleResultSearch}/>
-                            </Index> */}
 
                             <Index indexName="wellProducts">
                                 <Configure hitsPerPage={2} />

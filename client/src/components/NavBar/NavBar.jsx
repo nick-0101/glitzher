@@ -174,11 +174,20 @@ export default function Navbar() {
                 <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white divide-y-2 divide-gray-50">
                   <div className="pt-5 pb-6 px-5">
                     <div className="flex items-center justify-between">
-                      <div>
+                      <div className="flex">
                         <img
-                          className="h-8 w-auto"
-                          src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
-                          alt="Workflow"
+                          className="h-8 w-auto sm:h-10"
+                          src={logo}
+                          width="auto"
+                          height="auto"
+                          alt="Glitzher Logo"
+                        />
+                        <img
+                          className="w-auto h-10 sm:h-12"
+                          src={text}
+                          width="auto"
+                          height="auto"
+                          alt="Glitzher text"
                         />
                       </div>
                       <div className="-mr-2">
