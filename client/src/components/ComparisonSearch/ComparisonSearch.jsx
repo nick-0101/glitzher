@@ -35,11 +35,11 @@ const ComparisonSearch = () => {
     <>  
         <div className="bg-no-repeat bg-center bg-cover bg-mobile md:bg-desktop">
             <div className="flex justify-center h-screen/1 max-w-7xl mx-auto px-4 sm:px-20 text-center">
-                <div className="w-3/3 md:w-2/3 flex flex-col mx-auto my-auto pt-12 md:my-52 md:pt-0 ">
-                    <div className="font-gilroy text-5xl text-gray-800 mb-4 md:mb-8 leading-tight hidden md:flex">
+                <div className="w-3/3 md:w-2/3 flex flex-col m-auto">
+                    <div className="font-gilroy text-5xl text-gray-800 mb-4 leading-tight hidden lg:flex">
                         Find the best prices on Canadian cosmetics.
                     </div>
-                    <div className="font-gilroy text-4xl text-gray-800 mb-4 md:mb-8 leading-tight visible md:hidden">
+                    <div className="font-gilroy text-4xl text-gray-800 mb-4  leading-tight visible lg:hidden">
                         Compare prices on Canadian cosmetics
                     </div>
                     <div className="flex flex-row cursor-pointer" onClick={openModal}>
