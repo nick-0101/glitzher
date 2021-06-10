@@ -55,7 +55,7 @@ const PriceComparison = () => {
             }))
             
             setTableData(formattedTableData)        
-
+            console.log(formattedTableData)
         }).catch((err) => {
             if (axios.isCancel(err)) return 
             setErrorTitle(err.response.data.title)
@@ -297,7 +297,7 @@ const PriceComparison = () => {
                                                         alt={product.title}
                                                     />
                                                     <div className="text-gray-900 sm:text-center ml-2 mt-2 sm:ml-0">
-                                                        Amazon
+                                                        {product.brand}
                                                     </div>
                                                 </a>
                                                 <div className="col-span-3 sm:col-span-2 my-auto">
