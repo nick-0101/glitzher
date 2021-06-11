@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 // Application Packages 
 import axios from 'axios';
 import { ShoppingBagIcon, SwitchHorizontalIcon } from '@heroicons/react/outline'
+import { Helmet } from "react-helmet";
 
 // Components
 import SkeletonLoader from '../../components/SkeletonLoaders/ComparisonSkeleton';
@@ -70,6 +71,11 @@ const PriceComparison = () => {
 
     return (
         <>
+            <Helmet>
+                <meta charSet="utf-8" />
+                <title>Search - Glitzher</title>
+                <meta name="description" content="Search for the best price on a Canadian cosmetic product." />
+            </Helmet>
             {/* Product Not Found */}
             {errorTitle && errorDesc ? 
                 <div className="max-w-5xl mx-auto px-4 sm:px-20">

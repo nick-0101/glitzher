@@ -1,10 +1,15 @@
 import React from 'react';
-
-// Ant d
+import { Helmet } from "react-helmet";
 
 const privacyPolicy = () => {
     return (
         <>
+        <Helmet>
+            <meta charSet="utf-8" />
+            <title>Privacy Policy - Glitzher</title>
+            <meta name="description" content="Glitzher's privacy policy." />
+        </Helmet>
+
         <section className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="mt-10 mb-5">
                 <p className="text-5xl font-bold mt-5 mb-3">Privacy Notice</p>
