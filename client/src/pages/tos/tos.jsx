@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from "react-helmet";
 
 // Css
 import './tos.module.css';
@@ -6,6 +7,12 @@ import './tos.module.css';
 const tos = () => {
     return (
         <>
+        <Helmet>
+            <meta charSet="utf-8" />
+            <title>Terms of Service - Glitzher</title>
+            <meta name="description" content="Glitzher's terms of service." />
+        </Helmet>
+
         <section className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="my-5">
                 <p className="text-5xl font-bold mt-5 mb-3">Terms and Conditions</p>
