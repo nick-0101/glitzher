@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: Gilroy-ExtraBold;
+  src: url('../assets/Gilroy-ExtraBold.woff');
+}
+
+html {
+  scroll-behavior: smooth;
+}
+.page-container {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+.content-wrap {
+  flex: 1;
+}
