@@ -6,7 +6,7 @@ function Layout({ children }) {
     <div className='page-container w-full'>
       <div className='content-wrap'>
         <Navbar />
-        {children}
+        <div className='max-w-7xl mx-auto px-4 sm:px-6'>{children}</div>
       </div>
       <Footer />
     </div>

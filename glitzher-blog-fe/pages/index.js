@@ -1,6 +1,8 @@
 import Head from 'next/head';
+import Image from 'next/image';
 
 import imageUrlBuilder from '@sanity/image-url';
+import TextTruncate from 'react-text-truncate';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
@@ -27,7 +29,7 @@ export default function Home({ posts }) {
       setMappedPosts([]);
     }
   }, [posts]);
-
+  console.log(mappedPosts);
   return (
     <div>
       <Head>
@@ -48,19 +50,47 @@ export default function Home({ posts }) {
       </Head>
 
       <div>
-        <h1>Welcome to Glitzher blog</h1>
+        <div className='font-gilroy text-5xl text-gray-800 my-12 text-center md:text-left'>
+          Glitzher Blog
+        </div>
 
-        <h3>Recent posts: </h3>
-
-        <div>
+        <div
+          className='grid gap-8 grid-cols-1 lg:grid-cols-3 md:grid-cols-3
+          sm:grid-cols-2'
+        >
           {mappedPosts.length ? (
             mappedPosts.map((p, index) => (
               <div
+                className='flex flex-col justify-center md:block sm:block'
                 onClick={() => router.push(`/post/${p.slug.current}`)}
                 key={index}
               >
-                <h3>{p.title}</h3>
-                <img src={p.mainImage} />
+                <Image
+                  className='z-0'
+                  alt='Mountains'
+                  src={'' + p.mainImage + ''}
+                  layout='intrinsic'
+                  width={450}
+                  height={250}
+                />
+                <div className='my-2 text-gray-500 uppercase'>
+                  {new Date(p.publishedAt).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </div>
+                <div className='font-medium text-xl text-gray-900'>
+                  {p.title}
+                </div>
+                <div className='mt-2 text-gray-700'>
+                  <TextTruncate
+                    line={3}
+                    element='span'
+                    truncateText='…'
+                    text={p.body[0].children[0].text}
+                  />
+                </div>
               </div>
             ))
           ) : (

@@ -51,7 +51,7 @@ function Navbar() {
 
   return (
     <header>
-      <Popover className='relative bg-white'>
+      <Popover className='relative bg-white z-40'>
         {({ open }) => (
           <>
             <div className='max-w-7xl mx-auto px-4 sm:px-6'>
@@ -200,18 +200,18 @@ function Navbar() {
                       <Link href='/'>
                         <a>
                           <div className='flex flex-row mt-1'>
-                            <div>
+                            <div className='mt-1'>
                               <img
-                                className='h-8 w-auto sm:h-10'
-                                src={'../public/nav-logo.webp'}
+                                className='h-10 w-auto'
+                                src={logo}
                                 width='auto'
                                 height='auto'
                                 alt='Glitzher Logo'
                               />
                             </div>
                             <img
-                              className='w-auto sm:h-12'
-                              src={'../public/nav-text.webp'}
+                              className='h-14'
+                              src={text}
                               width='auto'
                               height='auto'
                               alt='Glitzher text'
