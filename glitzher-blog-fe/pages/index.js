@@ -61,18 +61,20 @@ export default function Home({ posts }) {
           {mappedPosts.length ? (
             mappedPosts.map((p, index) => (
               <div
-                className='flex flex-col justify-center md:block sm:block'
+                className='flex flex-col justify-center md:block sm:block cursor-pointer group'
                 onClick={() => router.push(`/post/${p.slug.current}`)}
                 key={index}
               >
-                <Image
-                  className='z-0'
-                  alt='Mountains'
-                  src={'' + p.mainImage + ''}
-                  layout='intrinsic'
-                  width={450}
-                  height={250}
-                />
+                <div className='bg-white'>
+                  <Image
+                    className='z-0 group-hover:opacity-75 transform group-hover:scale-110 transition duration-300 ease-in-out'
+                    alt='Mountains'
+                    src={'' + p.mainImage + ''}
+                    layout='intrinsic'
+                    width={450}
+                    height={250}
+                  />
+                </div>
                 <div className='my-2 text-gray-500 uppercase'>
                   {new Date(p.publishedAt).toLocaleDateString('en-US', {
                     year: 'numeric',
@@ -80,7 +82,7 @@ export default function Home({ posts }) {
                     day: 'numeric',
                   })}
                 </div>
-                <div className='font-medium text-xl text-gray-900'>
+                <div className='font-medium text-xl text-gray-900 group-hover:text-red-500'>
                   {p.title}
                 </div>
                 <div className='mt-2 text-gray-700'>

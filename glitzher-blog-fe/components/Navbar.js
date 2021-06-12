@@ -85,28 +85,27 @@ function Navbar() {
                 </div>
 
                 {/* Mobile SearchBar */}
-                <div
-                  onClick={openModal}
-                  className='flex flex-grow items-center border p-1.5 mx-3 border-gray-300 rounded-md md:hidden cursor-pointer'
-                >
-                  <div className='flex'>
-                    <span className='px-2 pt-2.5'>
-                      <SearchIcon
-                        className='text-gray-400 h-5 w-5'
-                        aria-hidden='true'
+                <Link href='https://glitzher.com'>
+                  <a className='flex flex-grow items-center border p-1.5 mx-3 border-gray-300 rounded-md md:hidden cursor-pointer'>
+                    <div className='flex'>
+                      <span className='px-2 pt-2.5'>
+                        <SearchIcon
+                          className='text-gray-400 h-5 w-5'
+                          aria-hidden='true'
+                        />
+                      </span>
+                      <input
+                        disabled
+                        className='w-full p-2 bg-white cursor-pointer focus:outline-none disabled'
+                        type='text'
+                        placeholder='Enter a product title...'
+                        autoComplete='on'
+                        autoCorrect='on'
+                        spellCheck='true'
                       />
-                    </span>
-                    <input
-                      disabled
-                      className='w-full p-2 bg-white cursor-pointer focus:outline-none disabled'
-                      type='text'
-                      placeholder='Enter a product title...'
-                      autoComplete='on'
-                      autoCorrect='on'
-                      spellCheck='true'
-                    />
-                  </div>
-                </div>
+                    </div>
+                  </a>
+                </Link>
 
                 {/* Mobile Icon */}
                 <div className='-mr-2 -my-2 md:hidden'>
@@ -153,28 +152,27 @@ function Navbar() {
                 <div className='hidden md:flex justify-between lg:w-1/5'></div>
 
                 {/* Desktop SearchBar */}
-                <div
-                  onClick={openModal}
-                  className='hidden md:flex items-center border p-1.5 border-gray-300 rounded-md cursor-pointer md:flex-1 lg:w-0'
-                >
-                  <div className='flex'>
-                    <span className='px-2 pt-2.5'>
-                      <SearchIcon
-                        className='text-gray-400 h-5 w-5'
-                        aria-hidden='true'
+                <Link href='https://glitzher.com'>
+                  <a className='hidden md:flex items-center border p-1.5 border-gray-300 rounded-md cursor-pointer md:flex-1 lg:w-0'>
+                    <div className='flex'>
+                      <span className='px-2 pt-2.5'>
+                        <SearchIcon
+                          className='text-gray-400 h-5 w-5'
+                          aria-hidden='true'
+                        />
+                      </span>
+                      <input
+                        disabled
+                        className='w-full p-2 bg-white cursor-pointer focus:outline-none disabled'
+                        type='text'
+                        placeholder='Enter a product title...'
+                        autoComplete='on'
+                        autoCorrect='on'
+                        spellCheck='true'
                       />
-                    </span>
-                    <input
-                      disabled
-                      className='w-full p-2 bg-white cursor-pointer focus:outline-none disabled'
-                      type='text'
-                      placeholder='Enter a product title...'
-                      autoComplete='on'
-                      autoCorrect='on'
-                      spellCheck='true'
-                    />
-                  </div>
-                </div>
+                    </div>
+                  </a>
+                </Link>
               </div>
             </div>
 
@@ -246,18 +244,19 @@ function Navbar() {
                       </nav>
                     </div>
                   </div>
-                  <div className='py-6 px-5 space-y-6'>
-                    <div
-                      onClick={openModal}
-                      className='w-full flex items-center justify-center p-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-red-500 hover:bg-red-600'
-                    >
-                      <SearchIcon
-                        className='flex-shrink-0 h-6 w-6 text-white'
-                        aria-hidden='true'
-                      />
-                      <span className='ml-3'>Search</span>
-                    </div>
-                  </div>
+                  <Link href='https://glitzher.com'>
+                    <a>
+                      <div className='py-6 px-5 space-y-6'>
+                        <div className='w-full flex items-center justify-center p-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-red-500 hover:bg-red-600'>
+                          <SearchIcon
+                            className='flex-shrink-0 h-6 w-6 text-white'
+                            aria-hidden='true'
+                          />
+                          <span className='ml-3'>Search</span>
+                        </div>
+                      </div>
+                    </a>
+                  </Link>
                 </div>
               </Popover.Panel>
             </Transition>

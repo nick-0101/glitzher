@@ -12,6 +12,7 @@ module.exports = {
       white: colors.white,
       red: colors.red,
       yellow: colors.yellow,
+      blue: colors.blue,
     },
     extend: {
       fontFamily: {
@@ -31,6 +32,9 @@ module.exports = {
     extend: {
       justifyContent: ['hover', 'focus'],
       backgroundColor: ['odd', 'even'],
+      textColor: ['responsive', 'hover', 'focus', 'group-hover'],
+      transform: ['hover', 'group-hover'],
+      scale: ['hover', 'group-hover'],
     },
   },
   corePlugins: {
