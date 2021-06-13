@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import styles from '../../styles/Post.module.css';
+import Link from 'next/link';
+import block from '../../styles/Post.module.css';
 
 // Sanity
 import imageUrlBuilder from '@sanity/image-url';
 import BlockContent from '@sanity/block-content-to-react';
 
-export const Post = ({ title, body, image }) => {
+export const Post = ({ post }) => {
   const [imageUrl, setImageUrl] = useState('');
 
   useEffect(() => {
@@ -16,17 +17,64 @@ export const Post = ({ title, body, image }) => {
     });
 
     // Set image to state
-    setImageUrl(imgBuilder.image(image));
-  }, [image]);
+    setImageUrl(imgBuilder.image(post.mainImage));
+  }, [post.mainImage]);
   return (
     <div>
-      <div className={styles.main}>
-        <h1>{title}</h1>
-        {imageUrl && <img className={styles.mainImage} src={imageUrl} />}
+      <div className='max-w-5xl mx-auto my-12 sm:px-6'>
+        {/* Breadcrumbs */}
+        <ol className='list-reset flex text-gray-700 my-8 text-sm'>
+          <li>
+            <Link href='https://glitzher.com'>
+              <a className='font-semibold uppercase'>Home</a>
+            </Link>
+          </li>
+          <li>
+            <span className='mx-2 font-semibold uppercase'>/</span>
+          </li>
+          <li>
+            <Link href='https://glitzher.com/blog'>
+              <a className='font-semibold uppercase'>Blog</a>
+            </Link>
+          </li>
+          <li>
+            <span className='mx-2 font-semibold uppercase'>/</span>
+          </li>
+          <li className='uppercase'>post</li>
+          <li>
+            <span className='mx-2 font-semibold uppercase'>/</span>
+          </li>
+          <li className='uppercase'>
+            {post.slug.current.replaceAll('-', ' ')}
+          </li>
+        </ol>
 
-        <div className={styles.body}>
-          <BlockContent blocks={body} />
+        {/* Date Published */}
+        <div className='font-semibold text-gray-500 uppercase'>
+          {new Date(post.publishedAt).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          })}
         </div>
+
+        {/* Title */}
+        <div className='font-medium text-4xl font-bold text-gray-900'>
+          {post.title}
+        </div>
+
+        {/* Author */}
+        <div className='flex mt-2 font-medium mb-4 text-lg text-gray-900'>
+          By <div className='ml-1 text-red-500'>Glitzher</div>
+        </div>
+
+        {/* Image */}
+        {/* {imageUrl && <img className={styles.mainImage} src={imageUrl} />} */}
+
+        {/* Article */}
+        <article className={block.body}>
+          <BlockContent blocks={post.body} />
+        </article>
       </div>
     </div>
   );
@@ -61,9 +109,7 @@ export const getServerSideProps = async (pageContext) => {
   } else {
     return {
       props: {
-        body: post.body,
-        title: post.title,
-        image: post.mainImage,
+        post: post,
       },
     };
   }

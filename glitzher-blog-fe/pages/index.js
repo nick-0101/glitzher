@@ -65,6 +65,7 @@ export default function Home({ posts }) {
                 onClick={() => router.push(`/post/${p.slug.current}`)}
                 key={index}
               >
+                {/* Image */}
                 <div className='bg-white'>
                   <Image
                     className='z-0 group-hover:opacity-75 transform group-hover:scale-110 transition duration-300 ease-in-out'
@@ -75,6 +76,8 @@ export default function Home({ posts }) {
                     height={250}
                   />
                 </div>
+
+                {/* Date Published */}
                 <div className='my-2 text-gray-500 uppercase'>
                   {new Date(p.publishedAt).toLocaleDateString('en-US', {
                     year: 'numeric',
@@ -82,9 +85,13 @@ export default function Home({ posts }) {
                     day: 'numeric',
                   })}
                 </div>
+
+                {/* Title of Article */}
                 <div className='font-medium text-xl text-gray-900 group-hover:text-red-500'>
                   {p.title}
                 </div>
+
+                {/* Text Summary */}
                 <div className='mt-2 text-gray-700'>
                   <TextTruncate
                     line={3}

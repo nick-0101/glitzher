@@ -1,17 +1,27 @@
-.main {
-  margin: auto;
-  width: 750px;
-  max-width: calc(100vw - 50px);
-}
-
-.mainImage {
-  width: 100%;
-}
-
 .body p {
-  font-size: 24px;
-  text-indent: 50px;
-  line-height: 45px;
-  text-align: justify;
-  letter-spacing: 1.5px;
+  line-height: calc(28 / 18);
+  font-size: calc(1rem / 16 * 18);
+  margin: 0.55rem 0;
+}
+
+.body h2 {
+  font-size: calc(1rem / 16 * 25);
+  line-height: calc(28 / 25);
+  margin: 4rem 0 0.75rem;
+  font-weight: 600;
+}
+
+.body ul {
+  margin: 1rem 0;
+  padding: 0 0 0 1.5em;
+  list-style-type: disc;
+}
+
+.body a {
+  color: #ef4444;
+  cursor: pointer;
+}
+
+.body a:hover {
+  color: #b91c1c;
 }
