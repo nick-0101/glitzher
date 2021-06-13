@@ -7,7 +7,7 @@
 .body h2 {
   font-size: calc(1rem / 16 * 25);
   line-height: calc(28 / 25);
-  margin: 4rem 0 0.75rem;
+  margin: 3rem 0 0.75rem;
   font-weight: 600;
 }
 

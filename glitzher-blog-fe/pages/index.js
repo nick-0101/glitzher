@@ -2,7 +2,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 
 import imageUrlBuilder from '@sanity/image-url';
-import TextTruncate from 'react-text-truncate';
+import Truncate from 'react-truncate';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
@@ -29,7 +29,7 @@ export default function Home({ posts }) {
       setMappedPosts([]);
     }
   }, [posts]);
-  console.log(mappedPosts);
+  console.log(posts);
   return (
     <div>
       <Head>
@@ -60,7 +60,7 @@ export default function Home({ posts }) {
         >
           {mappedPosts.length ? (
             mappedPosts.map((p, index) => (
-              <div
+              <article
                 className='flex flex-col justify-center md:block sm:block cursor-pointer group'
                 onClick={() => router.push(`/post/${p.slug.current}`)}
                 key={index}
@@ -69,7 +69,7 @@ export default function Home({ posts }) {
                 <div className='bg-white'>
                   <Image
                     className='z-0 group-hover:opacity-75 transform group-hover:scale-110 transition duration-300 ease-in-out'
-                    alt='Mountains'
+                    alt={p.title + 'article image'}
                     src={'' + p.mainImage + ''}
                     layout='intrinsic'
                     width={450}
@@ -93,14 +93,11 @@ export default function Home({ posts }) {
 
                 {/* Text Summary */}
                 <div className='mt-2 text-gray-700'>
-                  <TextTruncate
-                    line={3}
-                    element='span'
-                    truncateText='…'
-                    text={p.body[0].children[0].text}
-                  />
+                  <Truncate lines={2} ellipsis={<span>...</span>}>
+                    {p.body[0].children[0].text}
+                  </Truncate>
                 </div>
-              </div>
+              </article>
             ))
           ) : (
             <>No Posts Yet</>

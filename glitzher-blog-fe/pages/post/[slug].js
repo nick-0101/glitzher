@@ -1,13 +1,21 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import Truncate from 'react-truncate';
+
 import block from '../../styles/Post.module.css';
 
 // Sanity
 import imageUrlBuilder from '@sanity/image-url';
 import BlockContent from '@sanity/block-content-to-react';
 
-export const Post = ({ post }) => {
+export const Post = ({ post, filterArticles }) => {
+  const router = useRouter();
   const [imageUrl, setImageUrl] = useState('');
+  const [relatedArticleUrl, setRelatedArticleUrl] = useState('');
+
+  const relatedArticleImage = filterArticles || undefined;
 
   useEffect(() => {
     // Create imgbuilder object with provided info
@@ -18,7 +26,15 @@ export const Post = ({ post }) => {
 
     // Set image to state
     setImageUrl(imgBuilder.image(post.mainImage));
-  }, [post.mainImage]);
+
+    // Set related article image to state
+    if (relatedArticleImage == undefined) {
+      setRelatedArticleUrl('');
+    } else {
+      setRelatedArticleUrl(imgBuilder.image(relatedArticleImage.mainImage));
+    }
+  }, [post.mainImage, relatedArticleImage]);
+
   return (
     <div>
       <div className='max-w-5xl mx-auto my-12 sm:px-6'>
@@ -44,8 +60,8 @@ export const Post = ({ post }) => {
           <li>
             <span className='mx-2 font-semibold uppercase'>/</span>
           </li>
-          <li className='uppercase'>
-            {post.slug.current.replaceAll('-', ' ')}
+          <li className='uppercase truncate overflow-ellipsis overflow-hidden'>
+            {post.slug.current.replace(/-/g, ' ')}
           </li>
         </ol>
 
@@ -69,12 +85,60 @@ export const Post = ({ post }) => {
         </div>
 
         {/* Image */}
-        {/* {imageUrl && <img className={styles.mainImage} src={imageUrl} />} */}
+        {imageUrl && (
+          <img
+            className='z-0 transform group-hover:scale-110 transition duration-300 ease-in-out'
+            src={imageUrl}
+          />
+        )}
 
         {/* Article */}
         <article className={block.body}>
           <BlockContent blocks={post.body} />
         </article>
+
+        {/* Related Article */}
+        <div>
+          {filterArticles ? (
+            <>
+              {/* Other Articles */}
+              <div className='font-medium text-4xl mt-20 mb-6 font-bold text-gray-900'>
+                Related Articles
+              </div>
+
+              <div
+                className='flex flex-col justify-center md:block sm:block cursor-pointer group'
+                onClick={() =>
+                  router.push(`/post/${filterArticles.slug.current}`)
+                }
+              >
+                {/* Image */}
+                {imageUrl && (
+                  <Image
+                    className='z-0 transform group-hover:scale-105 transition duration-300 ease-in-out'
+                    alt={filterArticles.title + 'article image'}
+                    src={'' + relatedArticleUrl + ''}
+                    layout='intrinsic'
+                    width={450}
+                    height={350}
+                  />
+                )}
+
+                {/* Title of Article */}
+                <div className='font-medium text-xl my-1 text-gray-900 group-hover:text-red-500'>
+                  {filterArticles.title}
+                </div>
+
+                {/* Text Summary */}
+                <div className='mt-1 text-gray-700'>
+                  <Truncate lines={2} ellipsis={<span>...</span>}>
+                    {filterArticles.body[0].children[0].text}...
+                  </Truncate>
+                </div>
+              </div>
+            </>
+          ) : null}
+        </div>
       </div>
     </div>
   );
@@ -93,7 +157,7 @@ export const getServerSideProps = async (pageContext) => {
 
   // Sanity query string to return the post that equals the pageSlug
   const query = encodeURIComponent(
-    `*[ _type == "post" && slug.current == "${pageSlug}" ]`
+    `*[ _type == "post" && slug.current == "${pageSlug}"]`
   );
 
   // Fetch blog from url & parse it
@@ -101,15 +165,37 @@ export const getServerSideProps = async (pageContext) => {
   const result = await fetch(url).then((res) => res.json());
   const post = result.result[0];
 
-  // Return data
+  // Get the category reference
+  const category = post.categories[0]._ref;
+
+  // Fetch Related Articles
+  const relatedArticlesQuery = await encodeURIComponent(
+    `*[_type == "post" && categories[0]._ref == "${category}"]`
+  );
+
+  // Fetch blog from url & parse it
+  const relatedArticlesUrl = `https://oanpf4cr.api.sanity.io/v2021-03-25/data/query/production?query=${relatedArticlesQuery}`;
+  const articlesResult = await fetch(relatedArticlesUrl).then((res) =>
+    res.json()
+  );
+  const articles = articlesResult.result;
+
+  // Filter out current post
+  const filterArticles =
+    articles.filter((item) => {
+      if (item.slug.current !== pageSlug) return item;
+    })[0] || null;
+
   if (!post) {
+    // Return data
     return {
       notFound: true,
     };
   } else {
     return {
       props: {
-        post: post,
+        post,
+        filterArticles,
       },
     };
   }
