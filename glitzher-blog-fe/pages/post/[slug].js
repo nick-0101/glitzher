@@ -45,8 +45,14 @@ export const Post = ({ post, filterArticles }) => {
         <meta charSet='utf-8' />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <meta name='theme-color' content='#EE4444' />
+        <meta
+          name='description'
+          content={
+            post.body[0].children[0].text ||
+            'Discover the Glitzher blog. Here we write about cosmetic reviews, beauty tips and tricks and the best product deals.'
+          }
+        />
       </Head>
-
       {post && filterArticles ? (
         <>
           <div className='max-w-5xl mx-auto my-12 sm:px-6'>
