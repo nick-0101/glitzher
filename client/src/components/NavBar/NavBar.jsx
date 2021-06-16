@@ -6,8 +6,7 @@ import {
   ShoppingBagIcon,
   MenuIcon,
   SearchIcon,
-  ShieldCheckIcon,
-  SupportIcon,
+  PencilAltIcon,
   XIcon,
 } from '@heroicons/react/outline'
 
@@ -32,20 +31,12 @@ const solutions = [
     href: '/brands',
     icon: ShoppingBagIcon,
   },
-]
-
-const resources = [
   {
-    name: 'Terms of Service',
-    description: 'Learn the terms of using our service.',
-    href: '/tos',
-    icon: SupportIcon,
-  },
-  {
-    name: 'Privacy Policy',
-    description: 'Understand how we take your privacy seriously.',
-    href: '/policies/privacy',
-    icon: ShieldCheckIcon,
+    name: 'Blog',
+    description:
+      'Discover the Glitzher blog. Here we write about cosmetic reviews, beauty tips and tricks and the best product deals.',
+    href: 'https://glitzher.com/brands',
+    icon: PencilAltIcon,
   },
 ]
 
@@ -127,6 +118,9 @@ export default function Navbar() {
                     Popular Products
                   </a>
                   <a href="/brands" className="text-base font-medium text-gray-500 hover:text-gray-900">
+                    Brands
+                  </a>
+                  <a href="https://glitzher.com/blog" className="text-base font-medium text-gray-500 hover:text-gray-900">
                     Brands
                   </a>
                 </Popover.Group>
@@ -213,18 +207,6 @@ export default function Navbar() {
                     </div>
                   </div>
                   <div className="py-6 px-5 space-y-6">
-                    <div className="grid grid-cols-2 gap-y-4 gap-x-8">
-                      {resources.map((item) => (
-                        <a
-                          key={item.name}
-                          href={item.href}
-                          className="flex text-base font-medium text-gray-900 hover:text-gray-700"
-                        >
-                          <item.icon className="flex-shrink-0 h-6 w-6 text-red-500" aria-hidden="true"/>
-                          <span className="ml-3 text-base font-medium text-gray-900">{item.name}</span>
-                        </a>
-                      ))}
-                    </div>
                     <div
                       onClick={openModal}
                       className="w-full flex items-center justify-center p-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-red-500 hover:bg-red-600"

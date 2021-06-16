@@ -32,6 +32,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
     "react-scroll": "^1.8.2",
+    "react-truncate": "^2.4.0",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.1.2",
     "web-vitals": "^0.2.4",
     "workbox-cacheable-response": "^6.1.5",

@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import axios from 'axios';
 import { ShoppingBagIcon, SwitchHorizontalIcon } from '@heroicons/react/outline'
 import { Helmet } from "react-helmet";
+import Truncate from 'react-truncate';
 
 // Components
 import SkeletonLoader from '../../components/SkeletonLoaders/ComparisonSkeleton';
@@ -256,11 +257,13 @@ const PriceComparison = () => {
                                                 </div>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
-                                                <img 
-                                                    className="object-scale-down w-full h-28"  
-                                                    src={product.thumbnail} 
-                                                    alt={product.title}
-                                                />
+                                                <a href={product.url} target="_blank" rel="noopener noreferrer" className="cursor-pointer">
+                                                    <img 
+                                                        className="object-scale-down w-full h-28"  
+                                                        src={product.thumbnail} 
+                                                        alt={product.title}
+                                                    />
+                                                </a>
                                             </td>
                                             <td className="px-6 py-4 text-sm text-gray-900">
                                                 {i === 0 ? 
@@ -270,14 +273,16 @@ const PriceComparison = () => {
                                                     : 
                                                     null
                                                 }
-                                                {product.title}
+                                                <a href={product.url} target="_blank" rel="noopener noreferrer" className="cursor-pointer">
+                                                    {product.title}
+                                                </a>
                                             </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                            <td className="px-6 py-4 whitespace-nowrap text-lg font-medium text-gray-900">
                                                 {'$' + product.price.current_price}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                <a href={product.url} className="cursor-pointer">
-                                                    <div className="bg-red-500 hover:bg-red-600 rounded-md px-2 py-3 transition duration-300 ease-in-out">
+                                                <a href={product.url} target="_blank" rel="noopener noreferrer" className="cursor-pointer">
+                                                    <div className="bg-red-500 hover:bg-red-600 rounded-md px-4 py-3 transition duration-300 ease-in-out">
                                                         <ShoppingBagIcon className="h-5 w-5 mx-auto text-white" aria-hidden="true" /> 
                                                     </div>
                                                 </a>
@@ -296,13 +301,13 @@ const PriceComparison = () => {
                                                 : 
                                                 'grid grid-cols-4 sm:mb-3 p-2 sm:grid-cols-3' 
                                             }>
-                                                <a href={product.url} className="cursor-pointer">
+                                                <a href={product.url} target="_blank" rel="noopener noreferrer" className="cursor-pointer">
                                                     <img 
                                                         className="object-scale-down mx-2 sm:w-full sm:mx-0 h-28"  
                                                         src={product.thumbnail} 
                                                         alt={product.title}
                                                     />
-                                                    <div className="text-gray-900 sm:text-center ml-2 mt-2 sm:ml-0">
+                                                    <div className="text-sm font-medium text-gray-900 sm:text-center ml-2 mt-2">
                                                         {product.brand}
                                                     </div>
                                                 </a>
@@ -316,15 +321,19 @@ const PriceComparison = () => {
                                                                 : 
                                                                 null
                                                             }
-                                                            <div className="mb-2 break-words text-gray-900">
-                                                                {product.title}
-                                                            </div>
+                                                            <a href={product.url} target="_blank" rel="noopener noreferrer" className="cursor-pointer">
+                                                                <div className="mb-2 break-words text-sm text-gray-900">
+                                                                    <Truncate lines={2} ellipsis={<span>...</span>}>
+                                                                        {product.title}
+                                                                    </Truncate>
+                                                                </div>
+                                                            </a>
                                                             <div className="text-lg font-medium text-gray-900">
                                                                 {'$' + product.price.current_price}
                                                             </div>
                                                         </div>
                                                         <div className="ml-auto my-auto">
-                                                            <a href={product.url} className="cursor-pointer">
+                                                            <a href={product.url} target="_blank" rel="noopener noreferrer" className="cursor-pointer">
                                                                 <div className="bg-red-500 hover:bg-red-600 rounded-md px-3 py-3 transition duration-300 ease-in-out">
                                                                     <ShoppingBagIcon className="h-5 w-5 mx-auto text-white" aria-hidden="true" /> 
                                                                 </div>
