@@ -8,15 +8,15 @@ const SkeletonLoader = () => {
                 return (       
                     <div className="flex flex-col h-96 text-center mt-5 mx-2 border-b-2 border-gray-100" key={index}>
                         <div className="animate-pulse flex">
-                            <div className="bg-gray-200 h-44 w-screen"></div>
+                            <div className="bg-gray-300 h-44 w-screen rounded"></div>
                         </div>
                         <div className="px-4 pt-3 text-left animate-pulse">
-                            <div className="mt-2 font-medium truncate h-5 bg-gray-200 rounded w-4/4"></div>
-                            <div className="mt-2 h-5 bg-gray-200 rounded w-4/4"></div>
-                            <div className="mt-2 text-2xl h-8 bg-gray-200 rounded w-2/4"></div>
-                            <div className="mt-2 text-sm truncate h-5 bg-gray-200 rounded w-4/4"></div>
+                            <div className="mt-2 font-medium truncate h-5 bg-gray-300 rounded w-4/4"></div>
+                            <div className="mt-2 h-5 bg-gray-300 rounded w-4/4"></div>
+                            <div className="mt-2 text-2xl h-8 bg-gray-300 rounded w-2/4"></div>
+                            <div className="mt-2 text-sm truncate h-5 bg-gray-300 rounded w-4/4"></div>
                             <div className="flex">
-                                <div className="h-10 bg-gray-200 rounded w-4/4 mt-2 w-screen text-center px-4 py-2 rounded-md"></div>
+                                <div className="h-10 bg-gray-300 rounded w-4/4 mt-2 w-screen text-center px-4 py-2 rounded-md"></div>
                             </div>
                         </div>
                     </div>
