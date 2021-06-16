@@ -1,6 +1,7 @@
 // Nextjs & Reactjs
 import Link from 'next/link';
 import Head from 'next/head';
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
@@ -41,7 +42,7 @@ export const Post = ({ post, filterArticles }) => {
   return (
     <div>
       <Head>
-        <title>{post.title}</title>
+        <title>Glitzher - {post.title}</title>
         <meta charSet='utf-8' />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <meta name='theme-color' content='#EE4444' />
@@ -49,9 +50,10 @@ export const Post = ({ post, filterArticles }) => {
           name='description'
           content={
             post.body[0].children[0].text ||
-            'Discover the Glitzher blog. Here we write about cosmetic reviews, beauty tips and tricks and the best product deals.'
+            'Discover the Glitzher blog. Here we write cosmetic reviews about beauty tips & tricks and the best product deals.'
           }
         />
+        <link rel='canonical' href='https://glitzher.com' />
       </Head>
       {post && filterArticles ? (
         <>
@@ -93,9 +95,9 @@ export const Post = ({ post, filterArticles }) => {
             </div>
 
             {/* Title */}
-            <div className='font-medium text-4xl font-bold text-gray-900'>
+            <h1 className='font-medium text-4xl font-bold text-gray-900'>
               {post.title}
-            </div>
+            </h1>
 
             {/* Author */}
             <div className='flex mt-2 font-medium mb-4 text-lg text-gray-900'>
@@ -105,7 +107,7 @@ export const Post = ({ post, filterArticles }) => {
             {/* Image */}
             {imageUrl && (
               <img
-                className='z-0 transform group-hover:scale-110 transition duration-300 ease-in-out'
+                className='z-0 mb-4 transform group-hover:scale-110 transition duration-300 ease-in-out'
                 src={imageUrl}
                 alt={post.title + 'article image'}
               />
@@ -117,7 +119,7 @@ export const Post = ({ post, filterArticles }) => {
             </article>
 
             {/* Related Article */}
-            <div>
+            <div className='w-4/4 md:w-2/4'>
               {filterArticles ? (
                 <>
                   {/* Other Articles */}
@@ -133,15 +135,17 @@ export const Post = ({ post, filterArticles }) => {
                   >
                     {/* Image */}
                     {imageUrl && (
-                      <img
-                        className='z-0'
+                      <Image
+                        className='z-0 transform group-hover:scale-105 transition duration-300 ease-in-out'
                         alt={filterArticles.title + 'article image'}
                         src={'' + relatedArticleUrl + ''}
+                        width={420}
+                        height={320}
                       />
                     )}
 
                     {/* Title of Article */}
-                    <div className='font-medium text-xl my-1 text-gray-900 group-hover:text-red-500'>
+                    <div className='font-medium text-xl my-1 mt-2 text-gray-900 group-hover:text-red-500'>
                       {filterArticles.title}
                     </div>
 
@@ -164,20 +168,9 @@ export const Post = ({ post, filterArticles }) => {
   );
 };
 
-export const getServerSideProps = async (pageContext) => {
-  // Get the page slug from the url
-  const pageSlug = pageContext.query.slug;
-
-  // If not page slug, display 404
-  if (!pageSlug) {
-    return {
-      notFound: true,
-    };
-  }
-
-  // Sanity query string to return the post that equals the pageSlug
-  const query = encodeURIComponent(
-    `*[ _type == "post" && slug.current == "${pageSlug}"]`
+export async function getStaticProps({ params }) {
+  const query = await encodeURIComponent(
+    `*[ _type == "post" && slug.current == "${params.slug}"]`
   );
 
   // Fetch blog from url & parse it
@@ -188,7 +181,7 @@ export const getServerSideProps = async (pageContext) => {
   // Get the category reference
   const category = post.categories[0]._ref;
 
-  // Fetch Related Articles
+  // ---- Fetch Related Articles ---- //
   const relatedArticlesQuery = await encodeURIComponent(
     `*[_type == "post" && categories[0]._ref == "${category}"]`
   );
@@ -203,22 +196,34 @@ export const getServerSideProps = async (pageContext) => {
   // Filter out current post
   const filterArticles =
     articles.filter((item) => {
-      if (item.slug.current !== pageSlug) return item;
+      if (item.slug.current !== params.slug) return item;
     })[0] || null;
 
-  if (!post) {
-    // Return data
-    return {
-      notFound: true,
-    };
-  } else {
-    return {
-      props: {
-        post,
-        filterArticles,
-      },
-    };
-  }
-};
+  return {
+    props: {
+      post: post,
+      filterArticles,
+    },
+    revalidate: 600, // 10 min re-render
+  };
+}
+
+export async function getStaticPaths() {
+  const query = encodeURIComponent(
+    `*[_type == "post" && defined(slug.current)][].slug.current`
+  );
+
+  const url = `https://oanpf4cr.api.sanity.io/v2021-03-25/data/query/production?query=${query}`;
+  const slugs = await fetch(url).then((res) => res.json());
+
+  const paths = slugs.result.map((slug) => ({
+    params: { slug },
+  }));
+
+  return {
+    paths: paths,
+    fallback: false,
+  };
+}
 
 export default Post;

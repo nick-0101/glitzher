@@ -1,5 +1,6 @@
 // Nextjs & React
 import Head from 'next/head';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
@@ -39,19 +40,22 @@ export default function Home({ posts }) {
   return (
     <div>
       <Head>
-        <title>Blog - Glitzher</title>
+        <title>
+          Glitzher Blog - Read the top reviews on Canadian cosmetic products.
+        </title>
         <meta charSet='utf-8' />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <link rel='shortcut icon' href={favico} />
         <meta
           name='keywords'
-          content='makeup, cosmetics, canada, blog, beauty'
+          content='makeup, cosmetic, Canadian, best price, skin care, canada, beauty,'
         />
         <meta name='theme-color' content='#EE4444' />
         <meta
           name='description'
-          content='Discover the Glitzher blog. Here we write about cosmetic reviews, beauty tips and tricks and the best product deals.'
+          content='Discover the Glitzher blog. Here we write cosmetic reviews about beauty tips & tricks and the best product deals.'
         />
+        <link rel='canonical' href='https://glitzher.com' />
       </Head>
 
       {posts ? (
@@ -74,10 +78,12 @@ export default function Home({ posts }) {
                   >
                     {/* Image */}
                     <div className='bg-white'>
-                      <img
+                      <Image
                         className='z-0 group-hover:opacity-75 transform group-hover:scale-105 transition duration-300 ease-in-out'
                         alt={p.title + 'article image'}
                         src={'' + p.mainImage + ''}
+                        width={371}
+                        height={190}
                       />
                     </div>
 
@@ -116,7 +122,7 @@ export default function Home({ posts }) {
   );
 }
 
-export const getServerSideProps = async (pageContext) => {
+export const getStaticProps = async () => {
   // Sanity query string to return the post that equals the pageSlug
   const query = encodeURIComponent('*[ _type == "post"]');
 
