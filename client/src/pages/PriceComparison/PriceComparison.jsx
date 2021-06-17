@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import axios from 'axios';
 import { ShoppingBagIcon, SwitchHorizontalIcon } from '@heroicons/react/outline'
 import { Helmet } from "react-helmet";
-import Truncate from 'react-truncate';
 
 // Components
 import SkeletonLoader from '../../components/SkeletonLoaders/ComparisonSkeleton';
@@ -257,7 +256,7 @@ const PriceComparison = () => {
                                                 </div>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
-                                                <a href={product.url} target="_blank" rel="noopener noreferrer" className="cursor-pointer">
+                                                 <a href={product.url} target="_blank" rel="noopener noreferrer" className="cursor-pointer">
                                                     <img 
                                                         className="object-scale-down w-full h-28"  
                                                         src={product.thumbnail} 
@@ -301,7 +300,7 @@ const PriceComparison = () => {
                                                 : 
                                                 'grid grid-cols-4 sm:mb-3 p-2 sm:grid-cols-3' 
                                             }>
-                                                <a href={product.url} target="_blank" rel="noopener noreferrer" className="cursor-pointer">
+                                               <a href={product.url} target="_blank" rel="noopener noreferrer" className="cursor-pointer">
                                                     <img 
                                                         className="object-scale-down mx-2 sm:w-full sm:mx-0 h-28"  
                                                         src={product.thumbnail} 
@@ -323,9 +322,7 @@ const PriceComparison = () => {
                                                             }
                                                             <a href={product.url} target="_blank" rel="noopener noreferrer" className="cursor-pointer">
                                                                 <div className="mb-2 break-words text-sm text-gray-900">
-                                                                    <Truncate lines={2} ellipsis={<span>...</span>}>
-                                                                        {product.title}
-                                                                    </Truncate>
+                                                                     {product.title}
                                                                 </div>
                                                             </a>
                                                             <div className="text-lg font-medium text-gray-900">
