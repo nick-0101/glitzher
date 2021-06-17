@@ -1,9 +1,6 @@
 import React from 'react';
 import { Helmet } from "react-helmet";
 
-// Css
-import './tos.module.css';
-
 const tos = () => {
     return (
         <>
