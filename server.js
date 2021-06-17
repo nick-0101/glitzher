@@ -17,11 +17,14 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-// Helmet
+// Middleware
 app.use(helmet());
+app.use(express.json()); // req.body
 
 // Routes
 app.use('/', require('./routes/index'));
+app.use('/', require('./routes/search'));
+app.use('/', require('./routes/blog'));
 
 // Server
 const PORT = 3001;

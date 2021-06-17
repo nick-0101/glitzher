@@ -67,7 +67,7 @@ const Homepage = ({ history }) => {
                 <div className="grid grid-cols-1 px-4 lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-2">
                     {products.map((item, index) => {        
                         return (
-                            <div className="flex flex-col h-4/4 text-center mx-3 pt-6 border-t-2 border-gray-100" key={index}>
+                            <div className="flex flex-col h-4/4 text-center px-2 py-6 border-t-2 border-gray-100" key={index}>
                                 {item.thumbnail || item.subThumbnail ?
                                     <LazyLoad height={200} offset={400}>
                                         <a target="_blank" rel="noopener noreferrer" href={item.url}>
@@ -123,7 +123,7 @@ const Homepage = ({ history }) => {
                                 <a href={item.url} target="_blank" rel="noopener noreferrer">
                                     <div className="mt-2 bg-red-200 w-4/4 px-4 py-2 rounded-md shadow-sm text-base font-medium text-white bg-red-500 hover:bg-red-600 transition duration-300 ease-in-out">
                                         <div className="flex flex-row justify-center">
-                                            <div className="flex text-base flex-wrap font-medium text-white px-8 py-1.5 rounded-md justify-center mb-2 md:mr-2 md:mb-0">
+                                            <div className="flex text-base flex-wrap font-medium text-white px-8 py-1.5 rounded-md justify-center md:mr-2 md:mb-0">
                                                     <ShoppingBagIcon className="h-6 w-6 text-white" aria-hidden="true" /> 
                                                     <span className="ml-2">Shop Now</span>
                                                 </div>
@@ -137,12 +137,13 @@ const Homepage = ({ history }) => {
                 :
                 <SkeletonLoader /> 
             }
-
-            <div className="mt-9 w-1/3 mx-auto">
-                <Link to='/popular-products'>
-                    <div className="flex transition duration-300 ease-in-out text-red-600 bg-red-100 hover:bg-red-200 font-medium px-7 py-3.5 rounded-md justify-center">
-                        <ArrowRightIcon className="h-6 w-6 text-red-500" aria-hidden="true" /> 
-                        <span className="ml-2">View More</span>
+            <div className="px-4 mx-3 border-t-2 border-gray-100">
+                <Link to="/popular-products">
+                    <div className="mt-6 mx-auto py-2 w-4/4 md:w-1/4 rounded-md shadow-sm text-base bg-red-100 hover:bg-red-200 transition duration-300 ease-in-out">
+                        <div className="flex text-base flex-wrap font-medium text-red-600 px-8 py-1.5 rounded-md justify-center md:mr-2 md:mb-0">
+                            <ArrowRightIcon className="h-6 w-6 text-red-600" aria-hidden="true" /> 
+                            <span className="ml-2">View More</span>
+                        </div>
                     </div>
                 </Link>
             </div>

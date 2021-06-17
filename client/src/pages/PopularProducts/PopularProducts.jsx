@@ -7,6 +7,7 @@ import { useHistory  } from 'react-router-dom';
 import axios from 'axios';
 import LazyLoad from 'react-lazyload';
 import { ShoppingBagIcon, ArrowRightIcon } from '@heroicons/react/outline'
+import { Helmet } from "react-helmet";
 
 // Components 
 import SkeletonLoader from '../../components/SkeletonLoaders/SkeletonLoader';
@@ -92,6 +93,11 @@ const PopularProducts = () => {
 
     return (
         <>
+        <Helmet>
+            <meta charSet="utf-8" />
+            <title>Popular Products - Glitzher</title>
+            <meta name="description" content="Most popular Canadian beauty products." />
+        </Helmet>
         <div className="max-w-7xl mx-auto px-4 sm:px-20">
             <div className="flex flex-wrap my-10 justify-center md:justify-between">
                 <div className="flex flex-col md:flex-row text-2xl font-medium">

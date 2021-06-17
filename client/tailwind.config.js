@@ -16,6 +16,7 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ['Inter var', ...defaultTheme.fontFamily.sans],
+        gilroy: 'Gilroy-ExtraBold',
       },
       height: (theme) => ({
         'screen/1': '80vh',

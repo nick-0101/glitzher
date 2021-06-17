@@ -6,8 +6,7 @@ import {
   ShoppingBagIcon,
   MenuIcon,
   SearchIcon,
-  ShieldCheckIcon,
-  SupportIcon,
+  PencilAltIcon,
   XIcon,
 } from '@heroicons/react/outline'
 
@@ -32,20 +31,12 @@ const solutions = [
     href: '/brands',
     icon: ShoppingBagIcon,
   },
-]
-
-const resources = [
   {
-    name: 'Tos',
-    description: 'Learn the terms of using our service.',
-    href: '/tos',
-    icon: SupportIcon,
-  },
-  {
-    name: 'Privacy Policy',
-    description: 'Understand how we take your privacy seriously.',
-    href: '/policies/privacy',
-    icon: ShieldCheckIcon,
+    name: 'Blog',
+    description:
+      'Discover the Glitzher blog. Here we write about cosmetic reviews, beauty tips and tricks and the best product deals.',
+    href: 'https://glitzher.com/brands',
+    icon: PencilAltIcon,
   },
 ]
 
@@ -129,6 +120,9 @@ export default function Navbar() {
                   <a href="/brands" className="text-base font-medium text-gray-500 hover:text-gray-900">
                     Brands
                   </a>
+                  <a href="https://glitzher.com/blog" className="text-base font-medium text-gray-500 hover:text-gray-900">
+                    Brands
+                  </a>
                 </Popover.Group>
 
                 {/* Seperator */}
@@ -174,11 +168,20 @@ export default function Navbar() {
                 <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white divide-y-2 divide-gray-50">
                   <div className="pt-5 pb-6 px-5">
                     <div className="flex items-center justify-between">
-                      <div>
+                      <div className="flex">
                         <img
-                          className="h-8 w-auto"
-                          src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
-                          alt="Workflow"
+                          className="h-8 w-auto sm:h-10"
+                          src={logo}
+                          width="auto"
+                          height="auto"
+                          alt="Glitzher Logo"
+                        />
+                        <img
+                          className="w-auto h-10 sm:h-12"
+                          src={text}
+                          width="auto"
+                          height="auto"
+                          alt="Glitzher text"
                         />
                       </div>
                       <div className="-mr-2">
@@ -204,18 +207,6 @@ export default function Navbar() {
                     </div>
                   </div>
                   <div className="py-6 px-5 space-y-6">
-                    <div className="grid grid-cols-2 gap-y-4 gap-x-8">
-                      {resources.map((item) => (
-                        <a
-                          key={item.name}
-                          href={item.href}
-                          className="flex text-base font-medium text-gray-900 hover:text-gray-700"
-                        >
-                          <item.icon className="flex-shrink-0 h-6 w-6 text-red-500" aria-hidden="true"/>
-                          <span className="ml-3 text-base font-medium text-gray-900">{item.name}</span>
-                        </a>
-                      ))}
-                    </div>
                     <div
                       onClick={openModal}
                       className="w-full flex items-center justify-center p-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-red-500 hover:bg-red-600"

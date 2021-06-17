@@ -3,4 +3,6 @@
 
 # misc
 .DS_Store
-config.env
+
+# db config
+/config
