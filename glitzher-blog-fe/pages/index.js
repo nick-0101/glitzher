@@ -1,6 +1,5 @@
 // Nextjs & React
 import Head from 'next/head';
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
@@ -66,7 +65,7 @@ export default function Home({ posts }) {
             </div>
 
             <div
-              className='grid gap-8 grid-cols-1 lg:grid-cols-3 md:grid-cols-3
+              className='grid gap-8 grid-cols-1 lg:grid-cols-3 md:grid-cols-2
           sm:grid-cols-2'
             >
               {mappedPosts.length ? (
@@ -78,12 +77,10 @@ export default function Home({ posts }) {
                   >
                     {/* Image */}
                     <div className='bg-white'>
-                      <Image
-                        className='z-0 group-hover:opacity-75 transform group-hover:scale-105 transition duration-300 ease-in-out'
+                      <img
+                        className='z-0 group-hover:opacity-75 transition duration-300 ease-in-out'
                         alt={p.title + 'article image'}
                         src={'' + p.mainImage + ''}
-                        width={371}
-                        height={190}
                       />
                     </div>
 
@@ -142,6 +139,7 @@ export const getStaticProps = async () => {
       props: {
         posts: result.result,
       },
+      revalidate: 600, // 10 min re-render
     };
   }
 };

@@ -7,13 +7,13 @@ import React, { useEffect } from 'react';
 import ReactGA from 'react-ga';
 
 function MyApp({ Component, pageProps }) {
-  // const router = useRouter();
-  // let location = router.pathname;
-  // useEffect(() => {
-  //   ReactGA.initialize('UA-194144958-1');
-  //   ReactGA.set({ page: window.location.pathname });
-  //   ReactGA.pageview(window.location.pathname);
-  // }, [location]);
+  const router = useRouter();
+  let location = router.pathname;
+  useEffect(() => {
+    ReactGA.initialize('UA-194144958-1');
+    ReactGA.set({ page: window.location.pathname });
+    ReactGA.pageview(window.location.pathname);
+  }, [location]);
 
   return (
     <Layout>

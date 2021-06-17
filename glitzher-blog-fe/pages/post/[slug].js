@@ -1,7 +1,6 @@
 // Nextjs & Reactjs
 import Link from 'next/link';
 import Head from 'next/head';
-import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
@@ -33,9 +32,11 @@ export const Post = ({ post, filterArticles }) => {
 
     // Set related article image to state
     if (relatedArticleImage == undefined) {
-      setRelatedArticleUrl('');
+      return setRelatedArticleUrl('');
     } else {
-      setRelatedArticleUrl(imgBuilder.image(relatedArticleImage.mainImage));
+      return setRelatedArticleUrl(
+        imgBuilder.image(relatedArticleImage.mainImage)
+      );
     }
   }, [post.mainImage, relatedArticleImage]);
 
@@ -55,7 +56,7 @@ export const Post = ({ post, filterArticles }) => {
         />
         <link rel='canonical' href='https://glitzher.com' />
       </Head>
-      {post && filterArticles ? (
+      {post ? (
         <>
           <div className='max-w-5xl mx-auto my-12 sm:px-6'>
             {/* Breadcrumbs */}
@@ -107,7 +108,7 @@ export const Post = ({ post, filterArticles }) => {
             {/* Image */}
             {imageUrl && (
               <img
-                className='z-0 mb-4 transform group-hover:scale-110 transition duration-300 ease-in-out'
+                className='z-0 mb-4 transition duration-300 ease-in-out'
                 src={imageUrl}
                 alt={post.title + 'article image'}
               />
@@ -120,7 +121,7 @@ export const Post = ({ post, filterArticles }) => {
 
             {/* Related Article */}
             <div className='w-4/4 md:w-2/4'>
-              {filterArticles ? (
+              {filterArticles !== null ? (
                 <>
                   {/* Other Articles */}
                   <div className='font-medium text-4xl mt-20 mb-6 font-bold text-gray-900'>
@@ -135,12 +136,10 @@ export const Post = ({ post, filterArticles }) => {
                   >
                     {/* Image */}
                     {imageUrl && (
-                      <Image
-                        className='z-0 transform group-hover:scale-105 transition duration-300 ease-in-out'
+                      <img
+                        className='z-0 transition duration-300 ease-in-out'
                         alt={filterArticles.title + 'article image'}
                         src={'' + relatedArticleUrl + ''}
-                        width={420}
-                        height={320}
                       />
                     )}
 
