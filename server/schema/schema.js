@@ -4,15 +4,25 @@ const { gql } = require('apollo-server-express');
 const AlgoliaClient = require('../clients/algolia');
 
 const typeDefs = gql`
+  type PriceType {
+    current_price: String
+  }
+
+  type ReviewsType {
+    rating: String
+  }
+
   type Search {
     brand: String
     title: String
     url: String
     thumbnail: String
+    price: PriceType
+    reviews: ReviewsType
   }
 
   type Query {
-    results(query: String!): [Search]
+    results(query: String!, first: Int): [Search]
   }
 `;
 
@@ -64,10 +74,10 @@ const resolvers = {
 
         // Validation
         if (!Array.isArray(filterResults) || !filterResults.length) {
-          res.status(404).send({
-            title: 'No result found',
-            desc: "We couldn't find any products related to your query.",
-          });
+          let error = new Error('No result found');
+          error.desc = "We couldn't find any products related to your query.";
+
+          return error;
         } else {
           // Store Results
           const results = [];
