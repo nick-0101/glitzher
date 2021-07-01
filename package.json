@@ -34,7 +34,7 @@
   "devDependencies": {
     "autoprefixer": "^9.8.6",
     "concurrently": "^6.2.0",
-    "nodemon": "^2.0.7",
+    "nodemon": "^2.0.9",
     "response-time": "^2.3.2"
   }
 }
