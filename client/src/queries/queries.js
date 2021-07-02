@@ -1,10 +1,18 @@
 import { gql } from '@apollo/client';
 
-const GET_BOOKS = gql`
-  {
-    books {
-      name
-      id
+const GET_FRONTPAGE = gql`
+  query Homepage($page: String, $limit: String, $sortBy: String) {
+    products(page: $page, limit: $limit, sortBy: $sortBy) {
+      title
+      brand
+      thumbnail
+      url
+      price {
+        current_price
+      }
+      reviews {
+        rating
+      }
     }
   }
 `;
@@ -26,4 +34,4 @@ const GET_SEARCH = gql`
   }
 `;
 
-export { GET_BOOKS, GET_SEARCH };
+export { GET_FRONTPAGE, GET_SEARCH };
