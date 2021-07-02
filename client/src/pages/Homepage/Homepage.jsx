@@ -1,12 +1,13 @@
 // App
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { withRouter, Link } from "react-router-dom";
 import { AppContext } from "../../components/Context/Context";
 
 // Application Packages
-import axios from 'axios';
 import LazyLoad from 'react-lazyload';
 import { ShoppingBagIcon, ArrowRightIcon } from '@heroicons/react/outline'
+import { useQuery } from '@apollo/client';
+import { GET_FRONTPAGE } from '../../queries/queries';
 
 // Components 
 import SkeletonLoader from '../../components/SkeletonLoaders/SkeletonLoader';
@@ -16,22 +17,24 @@ const Homepage = ({ history }) => {
     const [products, setProducts] = useState('')
     const { setSearch } = useContext(AppContext);
 
+    // Apollo
+    const { data, error } = useQuery(GET_FRONTPAGE, {
+        variables: { page: "1", limit: '8', sortBy: 'popular'}
+    });
 
-    const getData = async() => {
-        const CancelToken = axios.CancelToken;
-        const source = CancelToken.source();
-        
-        axios.get(`/api/homepage?page=1&limit=8`, { cancelToken: source.token })
-        .then(res => {
-            setProducts(res.data)
-        }).catch(e => {
-            if (axios.isCancel(e)) return 
-        })
-    }
+    const getFrontPageData = useCallback(async() => {
+        try {
+            return setProducts(data.products)
+        } catch {
+            if (error) {
+                return error.message
+            }
+        }
+    }, [data, error])
 
     useEffect(() => {
-        getData()
-    }, [])
+        getFrontPageData()
+    }, [getFrontPageData])
 
     const comparePriceSearch = (value) => {
         if (value !== '') {

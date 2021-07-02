@@ -28,14 +28,13 @@ const PriceComparison = () => {
 
     const displayBooks = useCallback(async() => {
         try {
-            setComparisonData(data.results)
-            return console.log(comparisonData)
+            return setComparisonData(data.results)
         } catch {
             if (error) {
                 return setErrorTitle(error.message)
             }
         }
-    }, [data, error, comparisonData])
+    }, [data, error])
 
     useEffect(() => { 
         displayBooks()
