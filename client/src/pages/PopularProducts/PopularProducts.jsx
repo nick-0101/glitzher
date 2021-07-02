@@ -4,62 +4,57 @@ import { AppContext } from "../../components/Context/Context";
 import { useHistory  } from 'react-router-dom';
 
 // Application Packages
-import axios from 'axios';
 import LazyLoad from 'react-lazyload';
 import { ShoppingBagIcon, ArrowRightIcon } from '@heroicons/react/outline'
 import { Helmet } from "react-helmet";
+import { useQuery } from '@apollo/client';
+import { GET_FRONTPAGE } from '../../queries/queries';
 
 // Components 
 import SkeletonLoader from '../../components/SkeletonLoaders/SkeletonLoader';
 
 const PopularProducts = () => {
+    // History 
+    let history = useHistory();
+
+    // State
     const [page, setPage] = useState(1);
     const [products, setProducts] = useState('')
     const { setSearch } = useContext(AppContext);
     
     // Filter State
     const [sortData, setSortData] = useState('popular')
-    
-    let history = useHistory();
+
+    // Apollo
+    const { data, error } = useQuery(GET_FRONTPAGE, {
+        variables: { 
+            page: page.toString(), 
+            limit: "10", 
+            sortBy: sortData.toString()}
+    });
 
     // Fetch Api Data
-    const getData = useCallback(async() => {
-        const CancelToken = axios.CancelToken;
-        const source = CancelToken.source();
-        
-        axios.get(`/api/homepage?page=${page}&limit=10&sortBy=${sortData}`, 
-        { cancelToken: source.token })
-        .then(res => {
-            setProducts(prevProducts => {
-                return [...new Set([...prevProducts, ...res.data])]
+    const getPopularProductsData = useCallback(async() => {
+        try {
+            console.log(data.products)
+            return setProducts(prevProducts => {
+                return [...new Set([...prevProducts, ...data.products])]
             })   
-        }).catch(e => {
-            if (axios.isCancel(e)) return 
-        })
-        return () => {
-            source.cancel();
-        };
-    }, [page, sortData])
+        } catch {
+            if (error) {
+                return error.message
+            }
+        }
+    }, [data, error])
     
     // Sort Products
-    const sortProducts = (value) => {
+    const sortProducts = (value) => {   
         setSortData(value)
         setProducts('')
         setPage(1)
 
         console.log(sortData)
     }
-
-    // Scroll to top on load
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, [])
-
-    // Inital Fetch Data
-    useEffect(() => {
-        getData(page, sortData)
-
-    }, [page, getData, sortData])
 
     // Handle Pagination / Infinite scroll
     const handlePagination = () => {
@@ -90,6 +85,17 @@ const PopularProducts = () => {
             return
         }
     };
+
+    // Scroll to top on load
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [])
+
+    // Inital Fetch Data
+    useEffect(() => {
+        getPopularProductsData()
+
+    }, [getPopularProductsData])
 
     return (
         <>
