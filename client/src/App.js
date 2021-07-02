@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 // App Packages
 import ReactGA from 'react-ga';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
 // Components
 import { NavBar, FooterBar, Error, CookieBanner } from './components';
@@ -31,62 +32,70 @@ const usePageViews = () => {
   }, [location]);
 };
 
+// Apollo client
+const client = new ApolloClient({
+  uri: 'http://localhost:3001/graphql',
+  cache: new InMemoryCache(),
+});
+
 function App() {
   usePageViews();
   return (
-    <Router>
-      <div className='page-container'>
-        <div className='content-wrap'>
-          <Switch>
-            {/* Homepage */}
-            <Route exact path='/'>
-              <NavBar />
-              <Homepage />
-            </Route>
+    <ApolloProvider client={client}>
+      <Router>
+        <div className='page-container'>
+          <div className='content-wrap'>
+            <Switch>
+              {/* Homepage */}
+              <Route exact path='/'>
+                <NavBar />
+                <Homepage />
+              </Route>
 
-            {/* Price Comparison */}
-            <Route path='/search'>
-              <NavBar />
-              <PriceComparison />
-            </Route>
+              {/* Price Comparison */}
+              <Route path='/search'>
+                <NavBar />
+                <PriceComparison />
+              </Route>
 
-            {/* Popular Products */}
-            <Route path='/popular-products'>
-              <NavBar />
-              <PopularProducts />
-            </Route>
+              {/* Popular Products */}
+              <Route path='/popular-products'>
+                <NavBar />
+                <PopularProducts />
+              </Route>
 
-            {/* Brands */}
-            <Route path='/brands'>
-              <NavBar />
-              <Brands />
-            </Route>
+              {/* Brands */}
+              <Route path='/brands'>
+                <NavBar />
+                <Brands />
+              </Route>
 
-            {/* Tos */}
-            <Route path='/tos'>
-              <NavBar />
-              <Tos />
-            </Route>
+              {/* Tos */}
+              <Route path='/tos'>
+                <NavBar />
+                <Tos />
+              </Route>
 
-            {/* Privacy Policy */}
-            <Route path='/policies/privacy'>
-              <NavBar />
-              <Privacy />
-            </Route>
+              {/* Privacy Policy */}
+              <Route path='/policies/privacy'>
+                <NavBar />
+                <Privacy />
+              </Route>
 
-            {/* Error Page */}
-            <Route path='*'>
-              <NavBar />
-              <Error />
-            </Route>
-          </Switch>
-          <div className='fixed bottom-0'>
-            <CookieBanner />
+              {/* Error Page */}
+              <Route path='*'>
+                <NavBar />
+                <Error />
+              </Route>
+            </Switch>
+            <div className='fixed bottom-0'>
+              <CookieBanner />
+            </div>
           </div>
+          <FooterBar />
         </div>
-        <FooterBar />
-      </div>
-    </Router>
+      </Router>
+    </ApolloProvider>
   );
 }
 

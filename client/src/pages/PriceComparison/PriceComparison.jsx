@@ -3,9 +3,10 @@ import React, { useEffect, useState, useCallback, Fragment } from 'react';
 import { Link } from "react-router-dom";
 
 // Application Packages 
-import axios from 'axios';
 import { ShoppingBagIcon, SwitchHorizontalIcon } from '@heroicons/react/outline'
 import { Helmet } from "react-helmet";
+import { useQuery } from '@apollo/client';
+import { GET_SEARCH } from '../../queries/queries';
 
 // Components
 import SkeletonLoader from '../../components/SkeletonLoaders/ComparisonSkeleton';
@@ -16,58 +17,29 @@ import notFound from './images/search_not_found.webp';
 
 const PriceComparison = () => {
     const [comparisonData, setComparisonData] = useState(null)
-    const [tableData, setTableData] = useState(null)
     
-    // Pagination 
-    const [page] = useState(1);
-    const [perPage] = useState(5); 
-
     // Errors
     const [errorTitle, setErrorTitle] = useState(null)
-    const [errorDesc, setErrorDesc] = useState(null)
 
-    const searchProducts = useCallback(async() => {
-        const CancelToken = axios.CancelToken;
-        const source = CancelToken.source();
+    // Apollo
+    const { data, error } = useQuery(GET_SEARCH, {
+        variables: { query: sessionStorage.getItem("searchResult")}
+    });
 
-        const searchValue = sessionStorage.getItem("searchResult");
-
-        axios.get(`/api/search?q=${searchValue}`, 
-        { cancelToken: source.token })
-        .then(res => {            
-            const data = res.data;
-
-            // Add Pages
-            const startIndex = (page - 1) * perPage;
-            const endIndex = page * perPage;
-            const dataResult = data.slice(startIndex, endIndex);
-
-            // Set Data
-            setComparisonData(dataResult)
-
-            // Set & format table data
-            const formattedTableData = dataResult.map((item, index) => ({
-                key: index,
-                brand: item.brand,
-                thumbnail: item.thumbnail || item.subThumbnail || null,
-                title: item.title,
-                price:{ current_price: item.price.current_price },
-                url: item.url
-            }))
-            
-            setTableData(formattedTableData)        
-            console.log(formattedTableData)
-        }).catch((err) => {
-            if (axios.isCancel(err)) return 
-            setErrorTitle(err.response.data.title)
-            setErrorDesc(err.response.data.desc + ' Make sure your search is descriptive and contains no major spelling mistakes.')
-        });
-    }, [page, perPage])
-
+    const displayBooks = useCallback(async() => {
+        try {
+            setComparisonData(data.results)
+            return console.log(comparisonData)
+        } catch {
+            if (error) {
+                return setErrorTitle(error.message)
+            }
+        }
+    }, [data, error, comparisonData])
 
     useEffect(() => { 
-        searchProducts()
-    }, [searchProducts]);
+        displayBooks()
+    }, [displayBooks]);
 
     return (
         <>
@@ -76,18 +48,19 @@ const PriceComparison = () => {
                 <title>Search - Glitzher</title>
                 <meta name="description" content="Search for the best price on a Canadian cosmetic product." />
             </Helmet>
+
             {/* Product Not Found */}
-            {errorTitle && errorDesc ? 
+            {errorTitle ? 
                 <div className="max-w-5xl mx-auto px-4 sm:px-20">
                     <div className="flex flex-col text-center">
                         <div className="mx-auto">
                             <img src={notFound} width={350} height={350} alt='product not found'/>
                         </div>
-                        <div className="text-6xl font-bold text-gray-900 my-3">
+                        <div className="text-6xl font-bold text-gray-900 my-2">
                             {errorTitle}
                         </div>
-                        <div className="mx-10 md:mx-40 my-2 text-lg text-gray-500">
-                            {errorDesc}
+                        <div className="mx-10 md:mx-40 my-3 text-lg text-gray-500">
+                            We couldn't find any products related to your query. Make sure your search is descriptive and contains no major spelling mistakes.
                         </div>
                         <Link to="/">
                             <div className="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-red-500 hover:bg-red-600">
@@ -98,7 +71,7 @@ const PriceComparison = () => {
                 </div>
                 : 
                 <>
-                    {comparisonData && tableData ?
+                    {comparisonData  ?
                         <>  
                             <div className="max-w-5xl mx-auto px-4 sm:px-20">
                                 <div className="w-full mt-6 mb-8 text-center md:text-left">
@@ -242,7 +215,7 @@ const PriceComparison = () => {
                                         </tr>
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-200">
-                                        {tableData.map((product, i) => (
+                                        {comparisonData.map((product, i) => (
                                         <tr key={i} className={i === 0 ? 
                                             "border-2 border-red-200"
                                             :
@@ -293,7 +266,7 @@ const PriceComparison = () => {
                             
                                 {/* Table Responsive */}
                                 <div className="flex flex-col min-w-full md:hidden" id="price-comparison">
-                                    {tableData.map((product, i) => (
+                                    {comparisonData.map((product, i) => (
                                         <Fragment key={i}>
                                             <div className={i === 0 ? 
                                                 'grid grid-cols-4 sm:grid-cols-3 sm:mb-3 p-2 border-2 border-red-200 rounded-md' 
