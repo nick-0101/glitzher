@@ -6,7 +6,6 @@ import {
   ShoppingBagIcon,
   MenuIcon,
   SearchIcon,
-  PencilAltIcon,
   XIcon,
 } from '@heroicons/react/outline'
 
