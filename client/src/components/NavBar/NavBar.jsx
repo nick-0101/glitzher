@@ -31,13 +31,6 @@ const solutions = [
     href: '/brands',
     icon: ShoppingBagIcon,
   },
-  {
-    name: 'Blog',
-    description:
-      'Discover the Glitzher blog. Here we write about cosmetic reviews, beauty tips and tricks and the best product deals.',
-    href: 'https://glitzher.com/brands',
-    icon: PencilAltIcon,
-  },
 ]
 
 
@@ -118,9 +111,6 @@ export default function Navbar() {
                     Popular Products
                   </a>
                   <a href="/brands" className="text-base font-medium text-gray-500 hover:text-gray-900">
-                    Brands
-                  </a>
-                  <a href="https://glitzher.com/blog" className="text-base font-medium text-gray-500 hover:text-gray-900">
                     Brands
                   </a>
                 </Popover.Group>
