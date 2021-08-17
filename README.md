@@ -1,23 +1,20 @@
-# BEFORE PUSHING TO PROD
-1. Make sure to change the version number in the serviceworker.js file.
-2. Remove any console logs in the code.
-
-- - - - 
-
 # Glitzher #
-This was my first real production app. Glitzher was created to help cosmetic consumers find the best price's on products from multiple different brands. 
+This was my first real production app. Glitzher was created to help cosmetic consumers find the best price's on cosmetic products from different brands.
 
-Glitzher can be found here: https://glitzher.com (If not found the site has been taken offline)
+There are 2 parts to this app, they can be found in "branches". The first is the main website and the second is a blog extension which was made with NextJS and Sanityio..
+
+Glitzher can be found here: https://glitzher.com & the blog can be found at https://glitzher.com/blog (If not found the site has been taken offline).
 
 # Tech/framework used #
 Built with
 
-  * [Reactjs](https://reactjs.org)
-  * [Expressjs](https://expressjs.com)
-  * [Redis](https://redislabs.com/)
-  * [TailwindCSS](https://tailwindcss.com/)
-  * [Algolia](https://www.algolia.com/)
-  * [Digital Ocean](https://digitalocean.com)
+  * [Reactjs](https://reactjs.org) (Frontend library used to create Glitzher)
+  * [Expressjs](https://expressjs.com) (Backend & API)
+  * [Redis](https://redislabs.com/) (Cache frontpage products)
+  * [TailwindCSS](https://tailwindcss.com/) (Used for styling the website)
+  * [Algolia](https://www.algolia.com/) (Used for instant search & storing products)
+  * [Digital Ocean](https://digitalocean.com) (Hosting for website, blog and API)
+  * [NextJS](https://nextjs.org) (Used to create blog extension to the site)
   
 - - - -  
     
