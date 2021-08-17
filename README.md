@@ -1,7 +1,7 @@
 # Glitzher #
-This was my first real production app. Glitzher was created to help cosmetic consumers find the best price's on cosmetic products from different brands.
+![glitzher_example](https://user-images.githubusercontent.com/54145857/129775335-4edcda73-dfc0-4082-ac40-d4fbbd6c5e0d.jpg)
 
-There are 2 parts to this app, they can be found in "branches". The first is the main website and the second is a blog extension which was made with NextJS and Sanityio..
+This was my first real production app. Glitzher was created to help cosmetic consumers find the best price's on cosmetic products from different brands. There are 2 parts to this app, they can be found in "branches". The first is the main website and the second is a blog extension which was made with NextJS and Sanity.io
 
 Glitzher can be found here: https://glitzher.com & the blog can be found at https://glitzher.com/blog (If not found the site has been taken offline).
 
