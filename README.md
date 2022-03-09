@@ -8,11 +8,15 @@ Glitzher can be found here: https://glitzher.com & the blog can be found at http
 # How it works #
 Cosmetic products from all the major Canadian retailers were scraped into Redis and Algolia. Redis was used as the database for this project as well as the caching layer. It served the content for the main page and the popular products page. Algolia was used for product instant search. The web scrapers were hosted on the digital ocean server and would scrape the data right before the redis cache expired. This ensured that all product prices were kept up to date. 
 
+# Things I would do different #
+I would not use graphql for the api as it was unneeded. However, I'm glad I did as I used it on other projects.
+
 # Tech/framework used #
 Built with
 
   * [Reactjs](https://reactjs.org) (Frontend)
-  * [Expressjs](https://expressjs.com) (Backend & API)
+  * [Expressjs](https://expressjs.com) (Backend)
+  * [Graphql](https://graphql.org/) (API)
   * [Redis](https://redislabs.com/) (Cache & database for products)
   * [TailwindCSS](https://tailwindcss.com/) (Used for styling the website)
   * [Algolia](https://www.algolia.com/) (Used for instant search)
